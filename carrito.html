@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="estilos.css">
+    <title>Carrito · BookPort</title>
+</head>
+<body>
+
+    <!-- Header (copiado de index.html) -->
+    <header>
+        <nav class="navbar navbar-expand-lg bg-fondo-1">
+            <div class="container-fluid EspacioHeader">
+                <a class="navbar-brand" href="index.html">
+                    <img src="img/logo.png" alt="Logo" width="50" height="50" class="d-inline-block align-text-top">
+                    Bookport
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <!-- Barra de búsqueda -->
+                    <br>
+                    <form class="d-flex mx-auto flex-grow-1" role="search" style="max-width: 600px">
+                        <input class="form-control me-2" type="search" placeholder="Buscar libros" aria-label="Search">
+                        <button class="btn btn-buscar" type="submit">Buscar</button>
+                    </form>
+                    <br>
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active mx-3" aria-current="page" href="index.html"><i class="fa fa-home fa-2x" aria-hidden="true"></i></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link mx-3" href="#">Productos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link mx-3" href="carrito.html"><i class="fa fa-shopping-cart fa-2x" aria-hidden="true"></i></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link mx-3" href="#"><i class="fa fa-heart fa-2x" aria-hidden="true"></i></a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle mx-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle fa-2x" aria-hidden="true"></i>
+                            Mi cuenta
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">Mi cuenta</a></li>
+                                <li><a class="dropdown-item" href="#">Seguimiento de pedido</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#">Cerrar Sesión</a></li>
+                            </ul>
+                        </li>
+                        <br>
+                        <li class="nav-item">
+                            <button class="featured-btn">Registrarse</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Carrito -->
+    <main class="container my-5">
+        <h2 class="mb-4">Tu carrito</h2>
+
+        <div class="table-responsive">
+            <table class="table align-middle" id="cartTable">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th class="text-center">Precio</th>
+                        <th class="text-center">Cantidad</th>
+                        <th class="text-center">Subtotal</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Item 1 -->
+                    <tr class="cart-item" data-price="59.9">
+                        <td class="d-flex align-items-center">
+                            <img src="img/book1.jpg" alt="Libro 1" width="80" class="me-3">
+                            <div>
+                                <strong>El misterio del bosque</strong>
+                                <div class="text-muted">Autor: Juan Pérez</div>
+                            </div>
+                        </td>
+                        <td class="text-center">S/ <span class="item-price">59.90</span></td>
+                        <td class="text-center">
+                            <input type="number" class="form-control quantity-input" value="1" min="1" style="width:90px;margin:0 auto;">
+                        </td>
+                        <td class="text-center">S/ <span class="item-subtotal">59.90</span></td>
+                        <td class="text-end"><button class="btn btn-outline-danger btn-sm remove-item">Eliminar</button></td>
+                    </tr>
+
+                    <!-- Item 2 -->
+                    <tr class="cart-item" data-price="42.5">
+                        <td class="d-flex align-items-center">
+                            <img src="img/book2.jpg" alt="Libro 2" width="80" class="me-3">
+                            <div>
+                                <strong>Aventuras en la ciudad</strong>
+                                <div class="text-muted">Autor: Ana Gómez</div>
+                            </div>
+                        </td>
+                        <td class="text-center">S/ <span class="item-price">42.50</span></td>
+                        <td class="text-center">
+                            <input type="number" class="form-control quantity-input" value="2" min="1" style="width:90px;margin:0 auto;">
+                        </td>
+                        <td class="text-center">S/ <span class="item-subtotal">85.00</span></td>
+                        <td class="text-end"><button class="btn btn-outline-danger btn-sm remove-item">Eliminar</button></td>
+                    </tr>
+
+                    <!-- Item 3 -->
+                    <tr class="cart-item" data-price="75.0">
+                        <td class="d-flex align-items-center">
+                            <img src="img/book3.jpg" alt="Libro 3" width="80" class="me-3">
+                            <div>
+                                <strong>Historias para soñar</strong>
+                                <div class="text-muted">Autor: María Ruiz</div>
+                            </div>
+                        </td>
+                        <td class="text-center">S/ <span class="item-price">75.00</span></td>
+                        <td class="text-center">
+                            <input type="number" class="form-control quantity-input" value="1" min="1" style="width:90px;margin:0 auto;">
+                        </td>
+                        <td class="text-center">S/ <span class="item-subtotal">75.00</span></td>
+                        <td class="text-end"><button class="btn btn-outline-danger btn-sm remove-item">Eliminar</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <h5>Datos para el pedido</h5>
+                <form id="orderForm">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Nombre completo</label>
+                        <input type="text" id="name" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Dirección de envío</label>
+                        <input type="text" id="address" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Teléfono</label>
+                        <input type="tel" id="phone" class="form-control" required>
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card p-3">
+                    <h5>Resumen del pedido</h5>
+                    <div class="d-flex justify-content-between my-2">
+                        <div>Subtotal</div>
+                        <div>S/ <span id="subtotalValue">219.90</span></div>
+                    </div>
+                    <div class="d-flex justify-content-between my-2">
+                        <div>Envío</div>
+                        <div>S/ <span id="shippingValue">10.00</span></div>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between fw-bold fs-5">
+                        <div>Total</div>
+                        <div>S/ <span id="totalValue">229.90</span></div>
+                    </div>
+                    <div class="mt-3 text-end">
+                        <button id="checkoutBtn" class="btn featured-btn">Realizar pedido</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer (copiado de index.html) -->
+    <footer class="custom-footer pt-5 pb-4 mt-5">
+        <div class="container text-center text-md-start">
+            <div class="row text-center text-md-start">
+            
+                <!-- Columna 1: Nombre o logo -->
+                <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+                    <h5 class="text-uppercase mb-4 fw-bold section-title">Bookport</h5>
+                    <p>
+                    En Bookport nos dedicamos a ofrecer los mejores productos y servicios con envíos a toda Sudamérica. 
+                    Tu satisfacción es nuestra prioridad.
+                    </p>
+                </div>
+
+                <!-- Columna 2: Links -->
+                <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
+                    <h5 class="text-uppercase mb-4 fw-bold section-title">Enlaces</h5>
+                    <p><a href="index.html" class="footer-link text-decoration-none">Inicio</a></p>
+                    <p><a href="#" class="footer-link text-decoration-none">Productos</a></p>
+                    <p><a href="#" class="footer-link text-decoration-none">Nosotros</a></p>
+                    <p><a href="#" class="footer-link text-decoration-none">Contacto</a></p>
+                </div>
+
+                <!-- Columna 3: Contacto -->
+                <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
+                    <h5 class="text-uppercase mb-4 fw-bold section-title">Contacto</h5>
+                    <p><i class="bi bi-house-door me-2"></i> Lima, Perú</p>
+                    <p><i class="bi bi-envelope me-2"></i> contacto@mitienda.com</p>
+                    <p><i class="bi bi-phone me-2"></i> +51 987 654 321</p>
+                    <p><i class="bi bi-clock me-2"></i> Lun - Vie: 9am - 6pm</p>
+                </div>
+
+                <!-- Columna 4: Redes sociales -->
+                <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+                    <h5 class="text-uppercase mb-4 fw-bold section-title">Síguenos</h5>
+                    <a href="#" class="btn btn-outline-dark btn-floating m-1"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="btn btn-outline-dark btn-floating m-1"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="btn btn-outline-dark btn-floating m-1"><i class="bi bi-twitter-x"></i></a>
+                    <a href="#" class="btn btn-outline-dark btn-floating m-1"><i class="bi bi-whatsapp"></i></a>
+                </div>
+            </div>
+
+            <hr class="my-4">
+
+            <div class="row align-items-center">
+                <div class="col-md-7 col-lg-8">
+                    <p class="text-center text-md-start mb-0">
+                    © 2025 Bookport. Todos los derechos reservados.
+                    </p>
+                </div>
+                <div class="col-md-5 col-lg-4">
+                    <p class="text-center text-md-end mb-0">
+                    Diseñado con ❤️ por tu equipo.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Actualiza subtotales y totales
+        function updateTotals() {
+            const rows = document.querySelectorAll('.cart-item');
+            let subtotal = 0;
+            rows.forEach(row => {
+                if (row.style.display === 'none') return;
+                const price = parseFloat(row.dataset.price) || 0;
+                const qtyInput = row.querySelector('.quantity-input');
+                const qty = Math.max(1, parseInt(qtyInput.value, 10) || 1);
+                const itemSubtotal = price * qty;
+                row.querySelector('.item-subtotal').textContent = itemSubtotal.toFixed(2);
+                subtotal += itemSubtotal;
+            });
+
+            const shipping = subtotal > 0 ? 10.00 : 0.00; // tarifa fija de ejemplo
+            const total = subtotal + shipping;
+
+            document.getElementById('subtotalValue').textContent = subtotal.toFixed(2);
+            document.getElementById('shippingValue').textContent = shipping.toFixed(2);
+            document.getElementById('totalValue').textContent = total.toFixed(2);
+        }
+
+        // Inicializa controladores
+        document.querySelectorAll('.quantity-input').forEach(input => {
+            input.addEventListener('change', () => {
+                if (parseInt(input.value, 10) < 1 || isNaN(parseInt(input.value, 10))) input.value = 1;
+                updateTotals();
+            });
+        });
+
+        document.querySelectorAll('.remove-item').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const row = e.target.closest('tr');
+                row.style.display = 'none';
+                updateTotals();
+            });
+        });
+
+        document.getElementById('checkoutBtn').addEventListener('click', () => {
+            const subtotal = parseFloat(document.getElementById('subtotalValue').textContent) || 0;
+            if (subtotal <= 0) {
+                alert('Tu carrito está vacío. Agrega productos antes de realizar el pedido.');
+                return;
+            }
+
+            const form = document.getElementById('orderForm');
+            if (!form.reportValidity()) return;
+
+            const name = document.getElementById('name').value;
+            const address = document.getElementById('address').value;
+            const phone = document.getElementById('phone').value;
+            const total = document.getElementById('totalValue').textContent;
+
+            // En una app real aquí enviaríamos los datos al servidor.
+            alert(`Pedido realizado\n\nCliente: ${name}\nDirección: ${address}\nTel: ${phone}\nTotal: S/ ${total}`);
+        });
+
+        // Calcular totales al cargar
+        updateTotals();
+    </script>
+
+</body>
+</html>
