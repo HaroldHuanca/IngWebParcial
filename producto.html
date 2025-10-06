@@ -11,53 +11,64 @@
     <title>Producto · BookPort</title>
 </head>
 <body>
-
-    <!-- Header (copiado de index.html) -->
-    <header>
-        <nav class="navbar navbar-expand-lg bg-fondo-1">
-            <div class="container-fluid EspacioHeader">
-                <a class="navbar-brand" href="index.html">
-                    <img src="img/logo.png" alt="Logo" width="50" height="50" class="d-inline-block align-text-top">
-                    Bookport
+     <header>
+        <nav class="navbar navbar-expand-lg bg-fondo-1 shadow-sm fixed-top"> 
+                <div class="container-fluid EspacioHeader"><!--container fluid para mejorar la responsividad--> 
+                <a class="navbar-brand d-flex align-items-center" href="index.html"> 
+                    <img src="img/logo.webp" alt="Logo BookPort" class="img-fluid me-2" style="height: 40px;">
+                    <span class="fw-bold fs-4">BookPort</span> <!-- negrita y tamaño de fuente -->
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Barra de búsqueda -->
-                    <br>
-                    <form class="d-flex mx-auto flex-grow-1" role="search" style="max-width: 600px">
-                        <input class="form-control me-2" type="search" placeholder="Buscar libros" aria-label="Search">
-                        <button class="btn btn-buscar" type="submit">Buscar</button>
+                <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent"> <!-- alineacion con justify-content-between -->
+                    <!-- barra de búsqueda -->
+                    <form class="d-flex mx-lg-auto my-2 my-lg-0" role="search" style="max-width: 450px; width: 100%;"> <!-- centrado en pantallas grandes y max-width para limitar tamaño -->
+                        <input class="form-control me-2" type="search" placeholder="Buscar libros por título o autor..." aria-label="Search">
+                        <button class="btn-buscar" type="submit">
+                            <i class="bi bi-search"></i> <!-- icono de busqueda -->
+                        </button>
                     </form>
-                    <br>
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+
+                    <!-- navegacion principal -->
+                    <ul class="navbar-nav mb-2 mb-lg-0 align-items-center"> <!-- alineado verticalmente -->
                         <li class="nav-item">
-                            <a class="nav-link active mx-3" aria-current="page" href="index.html"><i class="fa fa-home fa-2x" aria-hidden="true"></i></a>
+                            <!-- usamos bootstrap Icons para home -->
+                            <a class="nav-link active" aria-current="page" href="index.html" title="Inicio">
+                                <i class="bi bi-house-door-fill fs-4"></i>Home <!-- icono mas moderno y grande -->
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link mx-3" href="#">Productos</a>
+                            <a class="nav-link" href="producto.html" title="Todos los Productos"> <!-- enlace a pagina de productos -->
+                                <i class="bi bi-book-half fs-4 me-1"></i>Productos
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link mx-3" href="#"><i class="fa fa-shopping-cart fa-2x" aria-hidden="true"></i></a>
+                            <!-- se usa bootstrap Icons para el carrito -->
+                            <a class="nav-link" href="carrito.html" title="Carrito de compras"> <!-- enlace a pagina de carrito -->
+                                <i class="bi bi-cart-fill fs-4"></i>Carrito
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link mx-3" href="#"><i class="fa fa-heart fa-2x" aria-hidden="true"></i></a>
+                            <!-- usamos bootstrap Icons para favoritos -->
+                            <a class="nav-link" title="Favoritos"> <!-- enlace a pagina de favoritos -->
+                                <i class="bi bi-star-fill fs-4"></i>Favoritos
+                            </a>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle mx-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle fa-2x" aria-hidden="true"></i>
-                            Mi cuenta
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="Mi Cuenta">
+                                <i class="bi bi-person-circle fs-4 me-1"></i>Mi cuenta
                             </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Mi cuenta</a></li>
-                                <li><a class="dropdown-item" href="#">Seguimiento de pedido</a></li>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="login.html">Mi perfil</a></li> <!-- enlace a perfil -->
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="#">Cerrar Sesión</a></li>
+                                <li><a class="dropdown-item" href="login.html">Iniciar Sesión</a></li> <!-- enlace a login -->
+                                <li><a class="dropdown-item" href="login.html">Registrarse</a></li> <!-- enlace a registro -->
                             </ul>
                         </li>
-                        <br>
-                        <li class="nav-item">
-                            <button class="featured-btn">Registrarse</button>
+                        <!-- boton de registrarse separadose mostrara mejor en pantallas grandes -->
+                        <li class="nav-item ms-3">
+                            <a href="login.html" class="featured-btn">Registrarse</a>
                         </li>
                     </ul>
                 </div>

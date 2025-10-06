@@ -1,11 +1,11 @@
 
 :root{
     --fondo-1: #FFE7D6;     /* color de fondo claro */
-    --fondo-2: #FAF9F9;   /* Seasalt */
-    --fondo-3: #BEE3DB;   /* Mint green */
-    --fondo-4: #89B0AE;   /* Cambidge blue */
+    --fondo-2: #FAF9F9;     /* Seasalt */
+    --fondo-3: #BEE3DB;     /* Mint green */
+    --fondo-4: #89B0AE;     /* Cambidge blue */
     --fondo-4dark: #677c7b;   
-    --fondo-5: #555B6E;      /* color para partes oscuras */
+    --fondo-5: #555B6E;     /* color para partes oscuras */
     --dark-text: #3E4251;
     --texto-principal: #6b240c;
     --light-text: #f8f9fa;
@@ -16,11 +16,18 @@ body {
     font-family: "Poppins",'Segoe UI', Tahoma, Verdana, sans-serif;
     color: var(--dark-text);
     background-color: var(--fondo-2);
+    padding-top: 80px;
+}
+
+/* eliminar subrayado de enlaces */
+a {     
+    text-decoration: none;
+    color: inherit;
 }
 
 /* Estilos del header */
 .bg-fondo-1 {
-  background-color: var(--fondo-claro) !important;
+  background-color: var(--fondo-claro);
 }
 
 .EspacioHeader{
@@ -30,22 +37,18 @@ body {
 }
 
 .EspacioHeader a {
-  color: var(--texto-principal) !important;
+  color: var(--texto-principal);
   font-weight: 550;
 }
 
-.EspacioHeader a:hover {
-  color: var(--dark-text) !important; 
-}
-
 .EspacioHeader .nav-link.active {
-  color: var(--dark-text, #ff6b6b) !important;
+  color: var(--dark-text, #ff6b6b);
 }
 
 .btn-buscar {
   background-color: var(--texto-principal);   /* color del botón */
-  color: var(--light-text);          /* color del texto */
-  border: none;                      /* sin borde */
+  color: var(--light-text);                   /* color del texto */
+  border: none;                               /* sin borde */
   padding: 0.5rem 1.2rem;
   border-radius: 6px;
   font-weight: 500;
@@ -57,14 +60,13 @@ body {
   color: var(--light-text);
 }
 
-/* Estilos de la sección LP 1 */
+/* Estilos de la sección LP 1 Seccion autor */
 .featured-author {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 4rem 6rem;
+  padding-bottom: 4rem;               /* la unidad rm se utiliza para definir un tamaño relativo al tamaño de la fuente en el elemento raíz */
   gap: 2rem;
-  background-color: var(--fondo-claro);
 }
 
 /* Texto */
@@ -107,7 +109,8 @@ body {
 
 .featured-btn:hover {
   background-color: var(--texto-principal);
-  color: #fff;
+  color: #ffffff;
+  outline: none;
 }
 
 /* Imagen */
@@ -240,6 +243,9 @@ body {
   font-size: 0.9rem;
   color: #ccc;
   margin-bottom: 1.2rem;
+}
+.price.fs-5.fw-bold {   /* clase para dar padding a el precio y separarlo del boton */
+  padding-right: 5%;
 }
 
 .buy-btn {

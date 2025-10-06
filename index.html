@@ -1,62 +1,79 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es"> 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+    <title>BookPort - Tu Librería Online</title>
+
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon"> 
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+
     <link rel="stylesheet" href="estilos.css">
-    <title>BookPort</title>
 </head>
 <body>
-
     <header>
-        <nav class="navbar navbar-expand-lg bg-fondo-1">
-            <div class="container-fluid EspacioHeader">
-                <a class="navbar-brand" href="#">
-                    <img src="img/logo.png" alt="Logo" width="50" height="50" class="d-inline-block align-text-top">
-                    Bookport
+        <nav class="navbar navbar-expand-lg bg-fondo-1 shadow-sm fixed-top"> 
+                <div class="container-fluid EspacioHeader"><!--container fluid para mejorar la responsividad--> 
+                <a class="navbar-brand d-flex align-items-center" href="index.html"> 
+                    <img src="img/logo.webp" alt="Logo BookPort" class="img-fluid me-2" style="height: 40px;">
+                    <span class="fw-bold fs-4">BookPort</span> <!-- negrita y tamaño de fuente -->
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Barra de búsqueda -->
-                    <br>
-                    <form class="d-flex mx-auto flex-grow-1" role="search" style="max-width: 600px">
-                        <input class="form-control me-2" type="search" placeholder="Buscar libros" aria-label="Search">
-                        <button class="btn btn-buscar" type="submit">Buscar</button>
+                <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent"> <!-- alineacion con justify-content-between -->
+                    <!-- barra de búsqueda -->
+                    <form class="d-flex mx-lg-auto my-2 my-lg-0" role="search" style="max-width: 450px; width: 100%;"> <!-- centrado en pantallas grandes y max-width para limitar tamaño -->
+                        <input class="form-control me-2" type="search" placeholder="Buscar libros por título o autor..." aria-label="Search">
+                        <button class="btn-buscar" type="submit">
+                            <i class="bi bi-search"></i> <!-- icono de busqueda -->
+                        </button>
                     </form>
-                    <br>
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+
+                    <!-- navegacion principal -->
+                    <ul class="navbar-nav mb-2 mb-lg-0 align-items-center"> <!-- alineado verticalmente -->
                         <li class="nav-item">
-                            <a class="nav-link active mx-3" aria-current="page" href="#"><i class="fa fa-home fa-2x" aria-hidden="true"></i></a>
+                            <!-- usamos bootstrap Icons para home -->
+                            <a class="nav-link active" aria-current="page" href="index.html" title="Inicio">
+                                <i class="bi bi-house-door-fill fs-4"></i>Home <!-- icono mas moderno y grande -->
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link mx-3" href="#">Productos</a>
+                            <a class="nav-link" href="producto.html" title="Todos los Productos"> <!-- enlace a pagina de productos -->
+                                <i class="bi bi-book-half fs-4 me-1"></i>Productos
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link mx-3" href="#"><i class="fa fa-shopping-cart fa-2x" aria-hidden="true"></i></a>
+                            <!-- se usa bootstrap Icons para el carrito -->
+                            <a class="nav-link" href="carrito.html" title="Carrito de compras"> <!-- enlace a pagina de carrito -->
+                                <i class="bi bi-cart-fill fs-4"></i>Carrito
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link mx-3" href="#"><i class="fa fa-heart fa-2x" aria-hidden="true"></i></a>
+                            <!-- usamos bootstrap Icons para favoritos -->
+                            <a class="nav-link" title="Favoritos"> <!-- enlace a pagina de favoritos -->
+                                <i class="bi bi-star-fill fs-4"></i>Favoritos
+                            </a>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle mx-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle fa-2x" aria-hidden="true"></i>
-                            Mi cuenta
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="Mi Cuenta">
+                                <i class="bi bi-person-circle fs-4 me-1"></i>Mi cuenta
                             </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Mi cuenta</a></li>
-                                <li><a class="dropdown-item" href="#">Seguimiento de pedido</a></li>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="login.html">Mi perfil</a></li> <!-- enlace a perfil -->
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="#">Cerrar Sesión</a></li>
+                                <li><a class="dropdown-item" href="login.html">Iniciar Sesión</a></li> <!-- enlace a login -->
+                                <li><a class="dropdown-item" href="login.html">Registrarse</a></li> <!-- enlace a registro -->
                             </ul>
                         </li>
-                        <br>
-                        <li class="nav-item">
-                            <button class="featured-btn">Registrarse</button>
+                        <!-- boton de registrarse separadose mostrara mejor en pantallas grandes -->
+                        <li class="nav-item ms-3">
+                            <a href="login.html" class="featured-btn">Registrarse</a>
                         </li>
                     </ul>
                 </div>
@@ -64,227 +81,246 @@
         </nav>
     </header>
 
-    <section class="featured-author">
-        <div class="featured-content">
-            <h4 class="featured-subtitle">AUTOR DEL MES</h4>
-            <h1 class="featured-title">Junja ito</h1>
-            <p class="featured-text">
-                Sit elit feugiat turpis sed integer integer accumsan turpis. Sed suspendisse nec lorem
-                mauris. Pharetra, eu imperdiet ipsum ultrices amet.
-            </p>
-            <button class="featured-btn">Ver más</button>
-        </div>
+    <main> <!-- contenido principal envuelto en <main> -->
+        <section class="featured-author mt-5 pt-5"> <!-- añadido margin-top para evitar solapamiento con navbar fija -->
+            <div class="container"> <!-- contenedor para centrar el contenido -->
+                <div class="row align-items-center g-4"> <!-- grid de Bootstrap para organizar flex -->
+                    <div class="col-lg-6 text-center text-lg-start"> <!-- columna para el texto -->
+                        <h4 class="featured-subtitle">AUTOR DEL MES</h4>
+                        <h1 class="featured-title">Junji Ito</h1> <!-- corregido nombre del autor -->
+                        <p class="featured-text">
+                            Sumérgete en el oscuro y fascinante mundo de Junji Ito, maestro del horror psicológico. Descubre sus obras maestras que te helarán la sangre.
+                        </p>
+                        <a href="autor_junji_ito.html" class="featured-btn">Explorar su obra</a>
+                    </div>
 
-        <div class="featured-image-container">
-            <div class="background-shape"></div>
-            <img src="img/LPimg.webp" alt="Producto destacado" class="featured-image" />
-        </div>      
-    </section>
-
-    <section class="featured-products">
-
-        <div class="products-header">
-            <h2>Productos destacados</h2>
-            <button class="signup-btn">Ver Todo</button>
-        </div>
-
-        <div class="products-grid">
-            
-            <div class="product-card">
-                <img src="img/book1.jpg" alt="Libro destacado 1">
-                <div class="card-content">
-                    <h3>Título del libro</h3>
-                    <p>Egestas elit dui scelerisque ut eu purus aliquam vitae habitasse.</p>
-                    <button class="buy-btn"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Comprar</button>
+                    <div class="col-lg-6"> <!-- columna para la imagen -->
+                        <div class="featured-image-container position-relative" style="padding-top: 2%;">
+                            <div class="background-shape"></div>
+                            <img src="img/LPimg.webp" alt="Ilustración de Junji Ito" class="featured-image img-fluid" /> <!-- img-fluid para responsividad -->
+                        </div>
+                    </div>
                 </div>
             </div>
+        </section>
 
-            <div class="product-card">
-                <img src="img/book2.jpg" alt="Libro destacado 2">
-                <div class="card-content">
-                    <h3>Título del libro</h3>
-                    <p>Egestas elit dui scelerisque ut eu purus aliquam vitae habitasse.</p>
-                    <button class="buy-btn"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Comprar</button>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <img src="img/book3.jpg" alt="Libro destacado 3">
-                <div class="card-content">
-                    <h3>Título del libro</h3>
-                    <p>Egestas elit dui scelerisque ut eu purus aliquam vitae habitasse.</p>
-                    <button class="buy-btn"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Comprar</button>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <img src="img/book4.jpg" alt="Libro destacado 4">
-                <div class="card-content">
-                    <h3>Título del libro</h3>
-                    <p>Egestas elit dui scelerisque ut eu purus aliquam vitae habitasse.</p>
-                    <button class="buy-btn"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Comprar</button>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <img src="img/book5.jpg" alt="Libro destacado 5">
-                <div class="card-content">
-                    <h3>Título del libro</h3>
-                    <p>Egestas elit dui scelerisque ut eu purus aliquam vitae habitasse.</p>
-                    <button class="buy-btn"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Comprar</button>
-                </div>
-            </div>
-
-            <!-- Segunda fila -->
-            <div class="product-card">
-                <img src="img/book6.jpg" alt="Libro destacado 6">
-                <div class="card-content">
-                    <h3>Título del libro</h3>
-                    <p>Egestas elit dui scelerisque ut eu purus aliquam vitae habitasse.</p>
-                    <button class="buy-btn"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Comprar</button>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <img src="img/book7.jpg" alt="Libro destacado 7">
-                <div class="card-content">
-                    <h3>Título del libro</h3>
-                    <p>Egestas elit dui scelerisque ut eu purus aliquam vitae habitasse.</p>
-                    <button class="buy-btn"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Comprar</button>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <img src="img/book8.jpg" alt="Libro destacado 8">
-                <div class="card-content">
-                    <h3>Título del libro</h3>
-                    <p>Egestas elit dui scelerisque ut eu purus aliquam vitae habitasse.</p>
-                    <button class="buy-btn"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Comprar</button>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <img src="img/book9.jpg" alt="Libro destacado 9">
-                <div class="card-content">
-                    <h3>Título del libro</h3>
-                    <p>Egestas elit dui scelerisque ut eu purus aliquam vitae habitasse.</p>
-                    <button class="buy-btn"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Comprar</button>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <img src="img/book10.jpg" alt="Libro destacado 10">
-                <div class="card-content">
-                    <h3>Título del libro</h3>
-                    <p>Egestas elit dui scelerisque ut eu purus aliquam vitae habitasse.</p>
-                    <button class="buy-btn"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Comprar</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="testimonial-section py-5">
-        <div class="container">
-            <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-                <!-- Indicadores -->
-                <div class="carousel-indicators">
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
-                    aria-current="true" aria-label="Slide 1"></button>
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
-                    aria-label="Slide 2"></button>
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
-                    aria-label="Slide 3"></button>
+        <section class="featured-products py-5"> <!-- py-5 para padding vertical -->
+            <div class="container"> <!-- contenedor para centrar -->
+                <div class="products-header mb-4 d-flex justify-content-between align-items-center">
+                    <h2>Novedades y Destacados</h2>
+                    <a href="productos.html" class="signup-btn">Ver Todos los Libros</a> <!-- enlace a pagina de productos -->
                 </div>
 
-                <!-- Contenido del carrusel -->
-                <div class="carousel-inner">
-
-                    <!-- Slide 1: Envíos -->
-                    <div class="carousel-item active">
-                        <div class="testimonial-slide d-flex flex-column flex-md-row align-items-center">
-                            <img src="img/publi1.png" class="testimonial-img rounded" alt="Envíos por Sudamérica">
-                            <div class="testimonial-text">
-                                <h6 class="subtitle">NUESTRA COBERTURA</h6>
-                                <p class="quote">Realizamos <strong>envíos a toda Sudamérica</strong> con entrega rápida y segura. 
-                                Tu libro favorito llega estés donde estés.</p>
-                                <p class="author">Equipo de Logística, <span>BookPort</span></p>
+                <div class="products-grid">
+                    <!-- ejemplo de estructura de un producto -->
+                    <div class="product-card">
+                        <img src="img/book1.jpg" alt="Portada de 'El Resplandor'">
+                        <div class="card-content">
+                            <h3 class="mb-2">El Resplandor</h3> <!-- titulo mas específico -->
+                            <p class="mb-3">Una obra maestra del terror de Stephen King sobre la locura y lo sobrenatural en un hotel aislado.</p> <!-- descripcion mas detallada -->
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="price fs-5 fw-bold">S./29.99</span>
+                                <button class="buy-btn"><i class="bi bi-cart-plus me-1"></i>Añadir</button> <!-- icono de añadir al carrito -->
                             </div>
                         </div>
                     </div>
 
-                    <!-- Slide 2: Publicidad 1 -->
-                    <div class="carousel-item">
-                        <div class="testimonial-slide d-flex flex-column flex-md-row align-items-center">
-                            <img src="img/publi2.png" class="testimonial-img rounded" alt="Promoción 1">
-                            <div class="testimonial-text">
-                                <h6 class="subtitle">PROMOCIÓN DESTACADA</h6>
-                                <p class="quote"> Obtén <strong>20% de descuento</strong> en libros de ficción seleccionados durante todo el mes. </p>
-                                <p class="author">Oferras especiales, <span>BookPort</span></p>
+                    <div class="product-card">
+                        <img src="img/book2.jpg" alt="Portada de 'Cien Años de Soledad'">
+                        <div class="card-content">
+                            <h3 class="mb-2">Cien Años de Soledad</h3>
+                            <p class="mb-3">La saga épica de la familia Buendía en el mítico pueblo de Macondo. Un clásico de Gabriel García Márquez.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="price fs-5 fw-bold" style="padding-right: 3%;">S./25.50</span>
+                                <button class="buy-btn"><i class="bi bi-cart-plus me-1"></i> Añadir</button>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Slide 3: Publicidad 2 -->
-                    <div class="carousel-item">
-                        <div class="testimonial-slide d-flex flex-column flex-md-row align-items-center">
-                            <img src="img/publi3.png" class="testimonial-img rounded" alt="Promoción 2">
-                            <div class="testimonial-text">
-                                <h6 class="subtitle">LECTURA Y CAFÉ </h6>
-                                <p class="quote">Por cada compra mayor a S/80 te regalamos un café en alianza con 
-                                <strong>Café Cultura</strong></p>
-                                <p class="author">Experiencias Literarias, <span>Bookport</span></p>
+                    <div class="product-card">
+                        <img src="img/book3.webp" alt="Portada de '1984'">
+                        <div class="card-content">
+                            <h3 class="mb-2">1984</h3>
+                            <p class="mb-3">La distopía clásica de George Orwell que explora el totalitarismo, la vigilancia y la manipulación de la verdad.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="price fs-5 fw-bold">S./22.00</span>
+                                <button class="buy-btn"><i class="bi bi-cart-plus me-1"></i> Añadir</button>
                             </div>
                         </div>
                     </div>
 
+                    <div class="product-card">
+                        <img src="img/book4.webp" alt="Portada de 'Dune'">
+                        <div class="card-content">
+                            <h3 class="mb-2">Dune</h3>
+                            <p class="mb-3">Una épica saga de ciencia ficción en el planeta desértico Arrakis, clave en la política galáctica.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="price fs-5 fw-bold">S./35.00</span>
+                                <button class="buy-btn"><i class="bi bi-cart-plus me-1"></i> Añadir</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="img/book5.webp" alt="Portada de 'El Principito'">
+                        <div class="card-content">
+                            <h3 class="mb-2">El Principito</h3>
+                            <p class="mb-3">Un cuento filosófico atemporal sobre la amistad, el amor y la pérdida de la inocencia en la adultez.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="price fs-5 fw-bold">S./18.75</span>
+                                <button class="buy-btn"><i class="bi bi-cart-plus me-1"></i> Añadir</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- añadimos más productos para una mejor visualización en el grid -->
+                    <div class="product-card">
+                        <img src="img/book6.webp" alt="Portada de 'Matar a un Ruiseñor'">
+                        <div class="card-content">
+                            <h3 class="mb-2">Matar a un Ruiseñor</h3>
+                            <p class="mb-3">La conmovedora historia de Scout Finch y su padre Atticus en el sur de Estados Unidos, abordando el racismo y la justicia.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="price fs-5 fw-bold">S./28.00</span>
+                                <button class="buy-btn"><i class="bi bi-cart-plus me-1"></i> Añadir</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="img/book7.webp" alt="Portada de 'El Señor de los Anillos'">
+                        <div class="card-content">
+                            <h3 class="mb-2">El Señor de los Anillos</h3>
+                            <p class="mb-3">La épica aventura de Frodo Bolsón y la Comunidad del Anillo para destruir el Anillo Único.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="price fs-5 fw-bold">S./45.00</span>
+                                <button class="buy-btn"><i class="bi bi-cart-plus me-1"></i> Añadir</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="img/book8.jpg" alt="Portada de 'Frankenstein'">
+                        <div class="card-content">
+                            <h3 class="mb-2">Frankenstein</h3>
+                            <p class="mb-3">La historia del doctor Victor Frankenstein y su ambiciosa creación, explorando la ética científica y la soledad.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="price fs-5 fw-bold">S./21.50</span>
+                                <button class="buy-btn"><i class="bi bi-cart-plus me-1"></i> Añadir</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="img/book9.webp" alt="Portada de 'Orgullo y Prejuicio'">
+                        <div class="card-content">
+                            <h3 class="mb-2">Orgullo y Prejuicio</h3>
+                            <p class="mb-3">La novela clásica de Jane Austen sobre las complejas relaciones sociales y románticas de la familia Bennet.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="price fs-5 fw-bold">S./19.99</span>
+                                <button class="buy-btn"><i class="bi bi-cart-plus me-1"></i> Añadir</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="img/book10.jpg" alt="Portada de 'Crimen y Castigo'">
+                        <div class="card-content">
+                            <h3 class="mb-2">Crimen y Castigo</h3>
+                            <p class="mb-3">La profunda exploración psicológica de Raskolnikov, un estudiante atormentado por su filosofía y sus acciones.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="price fs-5 fw-bold">S./27.00</span>
+                                <button class="buy-btn"><i class="bi bi-cart-plus me-1"></i> Añadir</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-                <!-- Controles -->
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Anterior</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Siguiente</span>
-                </button>
-
             </div>
-        </div>
-    </section>
+        </section>
+
+        <section class="testimonial-section py-5">
+            <div class="container">
+                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                    </div>
+
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <div class="testimonial-slide d-flex flex-column flex-md-row align-items-center">
+                                <img src="img/publi1.png" class="testimonial-img rounded-3 img-fluid" alt="Envíos por Sudamérica">
+                                <div class="testimonial-text ms-md-4 text-center text-md-start">
+                                    <h6 class="subtitle">NUESTRA COBERTURA</h6>
+                                    <p class="quote">Realizamos <strong>envíos a toda Sudamérica</strong> con entrega rápida y segura. Tu libro favorito llega estés donde estés.</p>
+                                    <p class="author">Equipo de Logística, <span>BookPort</span></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="carousel-item">
+                            <div class="testimonial-slide d-flex flex-column flex-md-row align-items-center">
+                                <img src="img/publi2.png" class="testimonial-img rounded-3 img-fluid" alt="Promoción 1">
+                                <div class="testimonial-text ms-md-4 text-center text-md-start">
+                                    <h6 class="subtitle">PROMOCIÓN DESTACADA</h6>
+                                    <p class="quote">Obtén <strong>20% de descuento</strong> en libros de ficción seleccionados durante todo el mes.</p>
+                                    <p class="author">Ofertas Especiales, <span>BookPort</span></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="carousel-item">
+                            <div class="testimonial-slide d-flex flex-column flex-md-row align-items-center">
+                                <img src="img/publi3.png" class="testimonial-img rounded-3 img-fluid" alt="Promoción 2">
+                                <div class="testimonial-text ms-md-4 text-center text-md-start">
+                                    <h6 class="subtitle">LECTURA Y CAFÉ</h6>
+                                    <p class="quote">Por cada compra mayor a S/80 te regalamos un café en alianza con <strong>Café Cultura</strong>.</p>
+                                    <p class="author">Experiencias Literarias, <span>Bookport</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Anterior</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Siguiente</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <footer class="custom-footer pt-5 pb-4 mt-5">
         <div class="container text-center text-md-start">
             <div class="row text-center text-md-start">
-            
-                <!-- Columna 1: Nombre o logo -->
                 <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
                     <h5 class="text-uppercase mb-4 fw-bold section-title">Bookport</h5>
                     <p>
-                    En Bookport nos dedicamos a ofrecer los mejores productos y servicios con envíos a toda Sudamérica. 
+                    En Bookport nos dedicamos a ofrecer los mejores productos y servicios con envíos a toda Sudamérica.
                     Tu satisfacción es nuestra prioridad.
                     </p>
                 </div>
 
-                <!-- Columna 2: Links -->
                 <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
                     <h5 class="text-uppercase mb-4 fw-bold section-title">Enlaces</h5>
-                    <p><a href="#" class="footer-link text-decoration-none">Inicio</a></p>
-                    <p><a href="#" class="footer-link text-decoration-none">Productos</a></p>
-                    <p><a href="#" class="footer-link text-decoration-none">Nosotros</a></p>
-                    <p><a href="#" class="footer-link text-decoration-none">Contacto</a></p>
+                    <p><a href="index.html" class="footer-link text-decoration-none">Inicio</a></p>
+                    <p><a href="productos.html" class="footer-link text-decoration-none">Productos</a></p>
+                    <p><a href="nosotros.html" class="footer-link text-decoration-none">Nosotros</a></p>
+                    <p><a href="contacto.html" class="footer-link text-decoration-none">Contacto</a></p>
                 </div>
 
-                <!-- Columna 3: Contacto -->
                 <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
                     <h5 class="text-uppercase mb-4 fw-bold section-title">Contacto</h5>
                     <p><i class="bi bi-house-door me-2"></i> Lima, Perú</p>
-                    <p><i class="bi bi-envelope me-2"></i> contacto@mitienda.com</p>
+                    <p><i class="bi bi-envelope me-2"></i> contacto@bookport.com</p> <!-- Email más realista -->
                     <p><i class="bi bi-phone me-2"></i> +51 987 654 321</p>
                     <p><i class="bi bi-clock me-2"></i> Lun - Vie: 9am - 6pm</p>
                 </div>
 
-                <!-- Columna 4: Redes sociales -->
                 <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
                     <h5 class="text-uppercase mb-4 fw-bold section-title">Síguenos</h5>
                     <a href="#" class="btn btn-outline-dark btn-floating m-1"><i class="bi bi-facebook"></i></a>
@@ -304,11 +340,14 @@
                 </div>
                 <div class="col-md-5 col-lg-4">
                     <p class="text-center text-md-end mb-0">
-                    Diseñado con ❤️ por tu equipo.
+                    Diseñado con <i class="bi bi-heart-fill text-danger"></i> por tu equipo.
                     </p>
                 </div>
             </div>
         </div>
     </footer>
-</body>     
+
+    <!-- scripts de Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</body>
 </html>
