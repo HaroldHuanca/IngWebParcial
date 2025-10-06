@@ -10,48 +10,48 @@
     <link rel="stylesheet" href="estilos.css">
     <title>Producto · BookPort</title>
 </head>
-<body>
+<body class="bg-fondo-1">
      <header>
         <nav class="navbar navbar-expand-lg bg-fondo-1 shadow-sm fixed-top"> 
-                <div class="container-fluid EspacioHeader"><!--container fluid para mejorar la responsividad--> 
+                <div class="container-fluid EspacioHeader"> 
                 <a class="navbar-brand d-flex align-items-center" href="index.html"> 
                     <img src="img/logo.webp" alt="Logo BookPort" class="img-fluid me-2" style="height: 40px;">
-                    <span class="fw-bold fs-4">BookPort</span> <!-- negrita y tamaño de fuente -->
+                    <span class="fw-bold fs-4">BookPort</span> 
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent"> <!-- alineacion con justify-content-between -->
+                <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent"> 
                     <!-- barra de búsqueda -->
-                    <form class="d-flex mx-lg-auto my-2 my-lg-0" role="search" style="max-width: 450px; width: 100%;"> <!-- centrado en pantallas grandes y max-width para limitar tamaño -->
+                    <form class="d-flex mx-lg-auto my-2 my-lg-0" role="search" style="max-width: 450px; width: 100%;"> 
                         <input class="form-control me-2" type="search" placeholder="Buscar libros por título o autor..." aria-label="Search">
                         <button class="btn-buscar" type="submit">
-                            <i class="bi bi-search"></i> <!-- icono de busqueda -->
+                            <i class="bi bi-search"></i> 
                         </button>
                     </form>
 
                     <!-- navegacion principal -->
-                    <ul class="navbar-nav mb-2 mb-lg-0 align-items-center"> <!-- alineado verticalmente -->
+                    <ul class="navbar-nav mb-2 mb-lg-0 align-items-center"> 
                         <li class="nav-item">
-                            <!-- usamos bootstrap Icons para home -->
+                            
                             <a class="nav-link active" aria-current="page" href="index.html" title="Inicio">
-                                <i class="bi bi-house-door-fill fs-4"></i>Home <!-- icono mas moderno y grande -->
+                                <i class="bi bi-house-door-fill fs-4"></i>Home 
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="producto.html" title="Todos los Productos"> <!-- enlace a pagina de productos -->
+                            <a class="nav-link" href="producto.html" title="Todos los Productos"> 
                                 <i class="bi bi-book-half fs-4 me-1"></i>Productos
                             </a>
                         </li>
                         <li class="nav-item">
-                            <!-- se usa bootstrap Icons para el carrito -->
-                            <a class="nav-link" href="carrito.html" title="Carrito de compras"> <!-- enlace a pagina de carrito -->
+                            
+                            <a class="nav-link" href="carrito.html" title="Carrito de compras"> 
                                 <i class="bi bi-cart-fill fs-4"></i>Carrito
                             </a>
                         </li>
                         <li class="nav-item">
-                            <!-- usamos bootstrap Icons para favoritos -->
-                            <a class="nav-link" title="Favoritos"> <!-- enlace a pagina de favoritos -->
+                            
+                            <a class="nav-link" title="Favoritos"> 
                                 <i class="bi bi-star-fill fs-4"></i>Favoritos
                             </a>
                         </li>
@@ -60,13 +60,13 @@
                                 <i class="bi bi-person-circle fs-4 me-1"></i>Mi cuenta
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="login.html">Mi perfil</a></li> <!-- enlace a perfil -->
+                                <li><a class="dropdown-item" href="login.html">Mi perfil</a></li> 
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="login.html">Iniciar Sesión</a></li> <!-- enlace a login -->
-                                <li><a class="dropdown-item" href="login.html">Registrarse</a></li> <!-- enlace a registro -->
+                                <li><a class="dropdown-item" href="login.html">Iniciar Sesión</a></li> 
+                                <li><a class="dropdown-item" href="login.html">Registrarse</a></li> 
                             </ul>
                         </li>
-                        <!-- boton de registrarse separadose mostrara mejor en pantallas grandes -->
+                        
                         <li class="nav-item ms-3">
                             <a href="login.html" class="featured-btn">Registrarse</a>
                         </li>
@@ -77,7 +77,7 @@
     </header>
 
     <!-- Producto -->
-    <main class="container my-5">
+    <main class="container my-5 bg-fondo-1">
         <div class="row">
             <div class="col-lg-6 d-flex align-items-center justify-content-center">
                 <div class="product-card">
@@ -104,8 +104,7 @@
                         <input type="number" id="quantity" name="quantity" class="form-control" value="1" min="1" style="width:100px">
                     </div>
                     <div class="col-12 mt-3">
-                        <button type="button" id="addToCartBtn" class="btn buy-btn me-2"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Añadir al carrito</button>
-                        <button type="button" id="buyNowBtn" class="btn featured-btn">Comprar ahora</button>
+                        <button type="button" id="addToCartBtn" class="btn featured-btn"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Añadir al carrito</button>
                     </div>
                 </form>
 
@@ -121,7 +120,7 @@
         </div>
     </main>
 
-    <!-- Footer (copiado de index.html) -->
+    <!-- Footer -->
     <footer class="custom-footer pt-5 pb-4 mt-5">
         <div class="container text-center text-md-start">
             <div class="row text-center text-md-start">
@@ -173,7 +172,7 @@
                 </div>
                 <div class="col-md-5 col-lg-4">
                     <p class="text-center text-md-end mb-0">
-                    Diseñado con ❤️ por tu equipo.
+                    Diseñado con <i class="bi bi-heart-fill text-danger"></i> por tu equipo.
                     </p>
                 </div>
             </div>
@@ -181,16 +180,10 @@
     </footer>
 
     <script>
-        // Manejo simple de agregar al carrito (solo UI)
+        // Manejo simple de agregar al carrito 
         document.getElementById('addToCartBtn').addEventListener('click', function () {
             const qty = parseInt(document.getElementById('quantity').value, 10) || 1;
             alert('Añadido ' + qty + ' unidad(es) al carrito.');
-        });
-
-        document.getElementById('buyNowBtn').addEventListener('click', function () {
-            const qty = parseInt(document.getElementById('quantity').value, 10) || 1;
-            // En una app real aquí se redirigiría al checkout
-            alert('Procediendo a la compra de ' + qty + ' unidad(es) — total: S/ ' + (59.90 * qty).toFixed(2));
         });
     </script>
 

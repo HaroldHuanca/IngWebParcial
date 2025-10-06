@@ -12,11 +12,11 @@
     --fondo-claro: #fdf8ed;         
 }
 
-body {
-    font-family: "Poppins",'Segoe UI', Tahoma, Verdana, sans-serif;
-    color: var(--dark-text);
-    background-color: var(--fondo-2);
-    padding-top: 80px;
+body{
+  font-family: "Poppins",'Segoe UI', Tahoma, Verdana, sans-serif;
+  color: var(--dark-text);
+  background-color: var(--fondo-claro);
+  padding-top: 80px;
 }
 
 /* eliminar subrayado de enlaces */
@@ -389,7 +389,7 @@ a {
   }
 }
 
-/* Footer personalizado */
+/* Footer */
 .custom-footer {
   background-color: var(--dark-text);
   color: var(--light-text);
@@ -423,4 +423,86 @@ a {
 .custom-footer .btn-outline-dark:hover {
   background-color: var(--texto-principal);
   color: var(--light-text);
+}
+
+/* Carrito */
+
+.featured-btn-eliminar {
+  background-color: transparent;
+  color: var(--fondo-4dark);
+  border: 2px solid var(--fondo-4dark);
+  padding: 5px 0.5rem;
+  border-radius: 5px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.featured-btn-eliminar:hover {
+  background-color: var(--fondo-4);
+  color: var(--light-text);
+  outline: none;
+}
+
+.carrito-tabla {
+  background-color: var(--fondo-3);
+  border-radius: 12px;
+  overflow: hidden; 
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+}
+
+.carrito-tabla table {
+  margin-bottom: 0; /* elimina margen inferior extra */
+  background-color: var(--fondo-3);
+  border-collapse: separate; /* permite los bordes redondeados */
+  border-spacing: 0;
+}
+
+  /* Encabezado */
+.carrito-tabla thead th {
+  background-color: var(--fondo-3); 
+  color: var(--fondo-5);
+  font-weight: 600;
+  border-bottom: 2px solid var(--fondo-4);
+}
+
+  /* Celdas del cuerpo */
+.carrito-tabla tbody td {
+  border-top: 1px solid var(--fondo-4);
+  background-color: var(--light-text);
+}
+
+  /* Última fila sin borde inferior fuerte */
+.carrito-tabla tbody tr:last-child td {
+  border-bottom: none;
+}
+
+  /* Suavizar hover en filas */
+.carrito-tabla tbody tr:hover {
+  background-color: var(--fondo-2);
+  transition: background-color 0.2s ease;
+}
+
+.card, .carrito-tabla {
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  background-color: var(--light-text);
+}
+
+/* Carrito */
+
+.catalogo-section{
+  background-color: var(--dark-text);
+  color: var(--light-text);
+  padding: 4rem;
+}
+
+/* Link temporal */
+.product-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.product-link:hover .product-card {
+  transform: translateY(-5px);
+  transition: 0.3s ease;
 }
