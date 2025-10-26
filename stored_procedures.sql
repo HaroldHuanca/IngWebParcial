@@ -55,6 +55,42 @@ BEGIN
     UPDATE users SET is_active = FALSE WHERE user_id = p_user_id;
 END //
 
+CREATE PROCEDURE sp_GetUserFavorites(
+    IN p_user_id INT
+)
+BEGIN
+    SELECT f.added_at, b.*
+    FROM favorites f
+    JOIN books b ON f.book_id = b.book_id
+    WHERE f.user_id = p_user_id
+    ORDER BY f.added_at DESC;
+END //
+
+CREATE PROCEDURE sp_AddFavorite(
+    IN p_user_id INT,
+    IN p_book_id INT
+)
+BEGIN
+    INSERT IGNORE INTO favorites (user_id, book_id) VALUES (p_user_id, p_book_id);
+END //
+
+CREATE PROCEDURE sp_RemoveFavorite(
+    IN p_user_id INT,
+    IN p_book_id INT
+)
+BEGIN
+    DELETE FROM favorites WHERE user_id = p_user_id AND book_id = p_book_id;
+END //
+
+CREATE PROCEDURE sp_GetOrdersByUser(
+    IN p_user_id INT
+)
+BEGIN
+    SELECT o.* FROM orders o
+    WHERE o.user_id = p_user_id
+    ORDER BY o.order_date DESC;
+END //
+
 -- =============================================
 -- Procedimientos para Books
 -- =============================================
