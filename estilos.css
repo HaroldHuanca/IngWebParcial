@@ -205,7 +205,7 @@ a {
   /* Grid principal */
 .products-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 2rem;
 }
 
@@ -505,4 +505,88 @@ a {
 .product-link:hover .product-card {
   transform: translateY(-5px);
   transition: 0.3s ease;
+}
+
+/* Sidebar */
+
+.sidebar-principal {
+  background-color: var(--fondo-1);
+  color: var(--dark-text);
+}
+
+/* Títulos y etiquetas dentro del sidebar */
+.sidebar-principal h4,
+.sidebar-principal .form-label {
+  color: var(dark-text); /* Blanco puro para los títulos y etiquetas */
+}
+
+/* Estilo de los inputs de texto y selectores */
+.sidebar-principal .form-control,
+.sidebar-principal .form-select {
+  background-color: rgba(0, 0, 0, 0.25); /* Fondo oscuro semitransparente */
+  color: var(--dark-text);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.sidebar-principal .form-control::placeholder {
+  color: rgba(255, 255, 255, 0.6); /* Placeholder más claro */
+}
+
+.sidebar-principal .form-control:focus,
+.sidebar-principal .form-select:focus {
+  background-color: rgba(0, 0, 0, 0.3);
+  color: var(--light-text);
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.15);
+}
+
+/* Estilo para el acordeón */
+.sidebar-principal .accordion-item {
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.sidebar-principal .accordion-button {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--light-text);
+  font-weight: 600;
+}
+
+.sidebar-principal .accordion-button:not(.collapsed) {
+  background-color: var(--fondo-claro); /* Fondo claro al abrir */
+  color: var(--texto-principal); /* Texto oscuro para contraste */
+}
+
+/* Cambiamos el color de la flecha del acordeón */
+.sidebar-principal .accordion-button::after {
+  filter: brightness(0) invert(1);
+}
+
+.sidebar-principal .accordion-button:not(.collapsed)::after {
+  filter: none;
+}
+
+/* Botón de búsqueda del sidebar */
+.sidebar-principal .btn-outline-secondary {
+  border-color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.sidebar-principal .btn-outline-secondary:hover {
+  background-color: var(--light-text);
+  color: var(--texto-principal);
+}
+
+/* Botón principal "Aplicar Filtros" */
+.sidebar-principal .btn-primary {
+  background-color: var(--fondo-4); /* Usamos tu color Cambridge Blue */
+  border-color: var(--fondo-4);
+  font-weight: 600;
+  padding: 0.6rem;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.sidebar-principal .btn-primary:hover {
+  background-color: var(--fondo-4dark); /* Versión más oscura al pasar el mouse */
+  border-color: var(--fondo-4dark);
 }
