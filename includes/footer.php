@@ -12,10 +12,10 @@
 
                 <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
                     <h5 class="text-uppercase mb-4 fw-bold section-title">Enlaces</h5>
-                    <p><a href="index.html" class="footer-link text-decoration-none">Inicio</a></p>
-                    <p><a href="productos.html" class="footer-link text-decoration-none">Productos</a></p>
-                    <p><a href="nosotros.html" class="footer-link text-decoration-none">Nosotros</a></p>
-                    <p><a href="contacto.html" class="footer-link text-decoration-none">Contacto</a></p>
+                    <p><a href="index.php" class="footer-link text-decoration-none">Inicio</a></p>
+                    <p><a href="productos.php" class="footer-link text-decoration-none">Productos</a></p>
+                    <p><a href="nosotros.php" class="footer-link text-decoration-none">Nosotros</a></p>
+                    <p><a href="contacto.php" class="footer-link text-decoration-none">Contacto</a></p>
                 </div>
 
                 <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
