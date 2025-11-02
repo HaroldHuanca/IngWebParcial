@@ -4,22 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BookPort - Tu Librería Online</title>
-
     <link rel="icon" href="img/favicon.ico" type="image/x-icon"> 
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-
     <link rel="stylesheet" href="estilos.css">
 </head>
+
+
 <body>
     <header>
         <nav class="navbar navbar-expand-lg bg-fondo-1 shadow-sm fixed-top"> 
                 <div class="container-fluid EspacioHeader"><!--container fluid para mejorar la responsividad--> 
-                <a class="navbar-brand d-flex align-items-center" href="index.html"> 
+                <a class="navbar-brand d-flex align-items-center" href="index.php"> 
                     <img src="img/logo.webp" alt="Logo BookPort" class="img-fluid me-2" style="height: 40px;">
                     <span class="fw-bold fs-4">BookPort</span> <!-- negrita y tamaño de fuente -->
                 </a>
@@ -39,7 +36,7 @@
                     <ul class="navbar-nav mb-2 mb-lg-0 align-items-center"> <!-- alineado verticalmente -->
                         <li class="nav-item">
                             <!-- usamos bootstrap Icons para home -->
-                            <a class="nav-link active" aria-current="page" href="index.html" title="Inicio">
+                            <a class="nav-link active" aria-current="page" href="index.php" title="Inicio">
                                 <i class="bi bi-house-door-fill fs-4"></i>Home <!-- icono mas moderno y grande -->
                             </a>
                         </li>
@@ -67,13 +64,13 @@
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" href="miPerfil.html">Mi perfil</a></li> <!-- enlace a perfil -->
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="login.html">Iniciar Sesión</a></li> <!-- enlace a login -->
-                                <li><a class="dropdown-item" href="login.html">Registrarse</a></li> <!-- enlace a registro -->
+                                <li><a class="dropdown-item" href="login.php">Iniciar Sesión</a></li> <!-- enlace a login -->
+                                <li><a class="dropdown-item" href="registro.php">Registrarse</a></li> <!-- enlace a registro -->
                             </ul>
                         </li>
                         <br>
                         <li class="nav-item ms-3">
-                            <a href="login.html" class="featured-btn">Registrarse</a>
+                            <a href="registro.php" class="featured-btn">Registrarse</a>
                         </li>
                     </ul>
                 </div>
