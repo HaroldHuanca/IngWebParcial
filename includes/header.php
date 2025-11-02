@@ -41,19 +41,19 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="Catalogo.html" title="Todos los Productos"> <!-- enlace a pagina de productos -->
+                            <a class="nav-link" href="Catalogo.php" title="Todos los Productos"> <!-- enlace a pagina de productos -->
                                 <i class="bi bi-book-half fs-4 me-1"></i>Productos
                             </a>
                         </li>
                         <li class="nav-item">
                             <!-- se usa bootstrap Icons para el carrito -->
-                            <a class="nav-link" href="carrito.html" title="Carrito de compras"> <!-- enlace a pagina de carrito -->
+                            <a class="nav-link" href="carrito.php" title="Carrito de compras"> <!-- enlace a pagina de carrito -->
                                 <i class="bi bi-cart-fill fs-4"></i>Carrito
                             </a>
                         </li>
                         <li class="nav-item">
                             <!-- usamos bootstrap Icons para favoritos -->
-                            <a class="nav-link" href="favoritos.html" title="Favoritos"> <!-- enlace a pagina de favoritos -->
+                            <a class="nav-link" href="favoritos.php" title="Favoritos"> <!-- enlace a pagina de favoritos -->
                                 <i class="bi bi-star-fill fs-4"></i>Favoritos
                             </a>
                         </li>
@@ -62,7 +62,7 @@
                                 <i class="bi bi-person-circle fs-4 me-1"></i>Mi cuenta
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="miPerfil.html">Mi perfil</a></li> <!-- enlace a perfil -->
+                                <li><a class="dropdown-item" href="miPerfil.php">Mi perfil</a></li> <!-- enlace a perfil -->
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="login.php">Iniciar Sesión</a></li> <!-- enlace a login -->
                                 <li><a class="dropdown-item" href="registro.php">Registrarse</a></li> <!-- enlace a registro -->

@@ -34,7 +34,7 @@
 
                 <div class="products-grid">
                     
-                    <a href="producto.html" class="product-link">
+                    <a href="producto.php" class="product-link">
                         <div class="product-card">
                             <img src="img/book1.jpg" alt="Portada de 'El Resplandor'">
                             <div class="card-content">
