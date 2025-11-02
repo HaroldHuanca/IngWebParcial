@@ -1,6 +1,7 @@
 
 
 <?php include 'includes/header.php'; ?>
+<?php include 'includes/conexion.php'; ?>
 
     <main> 
         <section class="featured-author mt-5 pt-5 bg-fondo-1"> 
@@ -29,132 +30,45 @@
             <div class="container"> 
                 <div class="products-header mb-4 d-flex justify-content-between align-items-center">
                     <h2>Novedades y Destacados</h2>
-                    <a href="productos.html" class="signup-btn">Ver Todos los Libros</a>
+                    <a href="Catalogo.php" class="signup-btn">Ver Todos los Libros</a>
                 </div>
 
                 <div class="products-grid">
-                    
-                    <a href="producto.html" class="product-link">
+        
+                    <?php
+                    $sql = "SELECT * FROM books ORDER BY created_at DESC LIMIT 8";
+                    $result = $con->query($sql);
+
+                    if ($result && $result->num_rows > 0):
+                        while ($book = $result->fetch_assoc()):
+                    ?>
                         <div class="product-card">
-                            <img src="img/book1.jpg" alt="Portada de 'El Resplandor'">
-                            <div class="card-content">
-                                <h3 class="mb-2">El Resplandor</h3> 
-                                <p class="mb-3">Una obra maestra del terror de Stephen King sobre la locura y lo sobrenatural en un hotel aislado.</p> 
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="price fs-5 fw-bold">S./29.99</span>
-                                    <button class="buy-btn"><i class="bi bi-cart-plus me-1"></i>Añadir</button> 
+                            <a href="producto.php?id=<?php echo $book['book_id']; ?>" style="text-decoration: none; color: inherit;">
+                                <img src="<?php echo htmlspecialchars($book['cover_image_url']); ?>" alt="Portada de '<?php echo htmlspecialchars($book['title']); ?>'">
+                                <div class="card-content">
+                                    <h3 class="mb-2"><?php echo htmlspecialchars($book['title']); ?></h3> 
+                                    <p class="mb-3">
+                                        <?php 
+                                        echo !empty($book['description']) 
+                                            ? htmlspecialchars(substr($book['description'], 0, 120)) . '...' 
+                                            : 'Sin descripción disponible.'; 
+                                        ?>
+                                    </p> 
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="price fs-5 fw-bold">
+                                            S./<?php echo number_format($book['price'], 2); ?>
+                                        </span>
+                                        <button class="buy-btn"><i class="bi bi-cart-plus me-1"></i>Añadir</button> 
+                                    </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
-                    </a>
-
-                    <div class="product-card">
-                        <img src="img/book2.jpg" alt="Portada de 'Cien Años de Soledad'">
-                        <div class="card-content">
-                            <h3 class="mb-2">Cien Años de Soledad</h3>
-                            <p class="mb-3">La saga épica de la familia Buendía en el mítico pueblo de Macondo. Un clásico de Gabriel García Márquez.</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span class="price fs-5 fw-bold" style="padding-right: 3%;">S./25.50</span>
-                                <button class="buy-btn"><i class="bi bi-cart-plus me-1"></i> Añadir</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="product-card">
-                        <img src="img/book3.webp" alt="Portada de '1984'">
-                        <div class="card-content">
-                            <h3 class="mb-2">1984</h3>
-                            <p class="mb-3">La distopía clásica de George Orwell que explora el totalitarismo, la vigilancia y la manipulación de la verdad.</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span class="price fs-5 fw-bold">S./22.00</span>
-                                <button class="buy-btn"><i class="bi bi-cart-plus me-1"></i> Añadir</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="product-card">
-                        <img src="img/book4.webp" alt="Portada de 'Dune'">
-                        <div class="card-content">
-                            <h3 class="mb-2">Dune</h3>
-                            <p class="mb-3">Una épica saga de ciencia ficción en el planeta desértico Arrakis, clave en la política galáctica.</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span class="price fs-5 fw-bold">S./35.00</span>
-                                <button class="buy-btn"><i class="bi bi-cart-plus me-1"></i> Añadir</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="product-card">
-                        <img src="img/book5.webp" alt="Portada de 'El Principito'">
-                        <div class="card-content">
-                            <h3 class="mb-2">El Principito</h3>
-                            <p class="mb-3">Un cuento filosófico atemporal sobre la amistad, el amor y la pérdida de la inocencia en la adultez.</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span class="price fs-5 fw-bold">S./18.75</span>
-                                <button class="buy-btn"><i class="bi bi-cart-plus me-1"></i> Añadir</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="product-card">
-                        <img src="img/book6.webp" alt="Portada de 'Matar a un Ruiseñor'">
-                        <div class="card-content">
-                            <h3 class="mb-2">Matar a un Ruiseñor</h3>
-                            <p class="mb-3">La conmovedora historia de Scout Finch y su padre Atticus en el sur de Estados Unidos, abordando el racismo y la justicia.</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span class="price fs-5 fw-bold">S./28.00</span>
-                                <button class="buy-btn"><i class="bi bi-cart-plus me-1"></i> Añadir</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="product-card">
-                        <img src="img/book7.webp" alt="Portada de 'El Señor de los Anillos'">
-                        <div class="card-content">
-                            <h3 class="mb-2">El Señor de los Anillos</h3>
-                            <p class="mb-3">La épica aventura de Frodo Bolsón y la Comunidad del Anillo para destruir el Anillo Único.</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span class="price fs-5 fw-bold">S./45.00</span>
-                                <button class="buy-btn"><i class="bi bi-cart-plus me-1"></i> Añadir</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="product-card">
-                        <img src="img/book8.jpg" alt="Portada de 'Frankenstein'">
-                        <div class="card-content">
-                            <h3 class="mb-2">Frankenstein</h3>
-                            <p class="mb-3">La historia del doctor Victor Frankenstein y su ambiciosa creación, explorando la ética científica y la soledad.</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span class="price fs-5 fw-bold">S./21.50</span>
-                                <button class="buy-btn"><i class="bi bi-cart-plus me-1"></i> Añadir</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="product-card">
-                        <img src="img/book9.webp" alt="Portada de 'Orgullo y Prejuicio'">
-                        <div class="card-content">
-                            <h3 class="mb-2">Orgullo y Prejuicio</h3>
-                            <p class="mb-3">La novela clásica de Jane Austen sobre las complejas relaciones sociales y románticas de la familia Bennet.</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span class="price fs-5 fw-bold">S./19.99</span>
-                                <button class="buy-btn"><i class="bi bi-cart-plus me-1"></i> Añadir</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="product-card">
-                        <img src="img/book10.jpg" alt="Portada de 'Crimen y Castigo'">
-                        <div class="card-content">
-                            <h3 class="mb-2">Crimen y Castigo</h3>
-                            <p class="mb-3">La profunda exploración psicológica de Raskolnikov, un estudiante atormentado por su filosofía y sus acciones.</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span class="price fs-5 fw-bold">S./27.00</span>
-                                <button class="buy-btn"><i class="bi bi-cart-plus me-1"></i> Añadir</button>
-                            </div>
-                        </div>
-                    </div>
+                    <?php
+                        endwhile;
+                    else:
+                    ?>
+                        <p class="text-center text-muted">No hay libros disponibles en este momento.</p>
+                    <?php endif; ?>
                 </div>
             </div>
         </section>
