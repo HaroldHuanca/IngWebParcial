@@ -4,10 +4,10 @@
 
 <body>
 
-<?php include 'includes/header.php'; ?>
+  <?php include 'includes/header.php'; ?>
 
-    <!-- CONTENIDO -->
-    <main>
+  <!-- CONTENIDO -->
+  <main>
     <div class="container-fluid px-4 py-5">
       <div class="row">
         <!-- SIDEBAR IZQUIERDA -->
@@ -107,7 +107,7 @@
 
         <!-- SECCIÓN CENTRAL -->
 
-        <section class="col-lg-8 col-md-6 catalogo-section">
+        <section class="col-lg-9 col-md-8 catalogo-section2">
           <div class="products-grid">
             <div class="product-card">
               <img src="img/book3.webp" alt="Portada de '1984'">
@@ -116,7 +116,7 @@
                 <p class="mb-3">Distopía clásica sobre el totalitarismo y la manipulación de la verdad.</p>
                 <div class="d-flex justify-content-between align-items-center">
                   <span class="price fs-5 fw-bold">S./22.00</span>
-                  <button class="buy-btn"><i class="bi bi-cart-plus me-1"></i>Comprar</button>
+                  <button class="buy-btn"><i class="bi bi-cart-plus me-1"></i>Añadir</button>
                 </div>
               </div>
             </div>
@@ -128,7 +128,7 @@
                 <p class="mb-3">La épica historia de la familia Buendía en el mítico pueblo de Macondo.</p>
                 <div class="d-flex justify-content-between align-items-center">
                   <span class="price fs-5 fw-bold">S./25.50</span>
-                  <button class="buy-btn"><i class="bi bi-cart-plus me-1"></i>Comprar</button>
+                  <button class="buy-btn"><i class="bi bi-cart-plus me-1"></i>Añadir</button>
                 </div>
               </div>
             </div>
@@ -140,7 +140,7 @@
                 <p class="mb-3">Un cuento filosófico sobre la amistad y la inocencia.</p>
                 <div class="d-flex justify-content-between align-items-center">
                   <span class="price fs-5 fw-bold">S./18.75</span>
-                  <button class="buy-btn"><i class="bi bi-cart-plus me-1"></i>Comprar</button>
+                  <button class="buy-btn"><i class="bi bi-cart-plus me-1"></i>Añadir</button>
                 </div>
               </div>
             </div>

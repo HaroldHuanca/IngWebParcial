@@ -26,8 +26,8 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="Catalogo.php" title="Todos los Productos"> <!-- enlace a pagina de productos -->
-                            <i class="bi bi-book-half fs-4 me-1"></i>Productos
+                        <a class="nav-link" href="Catalogo.php" title="Todos los Libros"> <!-- enlace a pagina de productos -->
+                            <i class="bi bi-book-half fs-4 me-1"></i>Catalogo
                         </a>
                     </li>
                     <li class="nav-item">
