@@ -7,7 +7,7 @@
     <!-- Carrito -->
     <main class="container my-5">
         <h2 class="mb-4">Tu carrito</h2>
-
+<section class="featured-products py-5">
         <div class="table-responsive carrito-tabla">
             <table class="table align-middle" id="cartTable">
                 <thead>
@@ -115,7 +115,7 @@
                 </div>
             </div>
         </div>
-
+</section>
     </main>
 
     <?php include 'includes/footer.php'; ?>

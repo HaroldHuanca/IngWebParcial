@@ -217,6 +217,20 @@ a {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+.product-img {
+  background-color: var(--fondo-4dark);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width:40%;
+}
+.product-img img {
+  width: 80%;
+  height: auto;
+  display: block;
+  margin: 0 auto; /* centrado */
+}
 
 .product-card:hover {
   transform: translateY(-6px);
