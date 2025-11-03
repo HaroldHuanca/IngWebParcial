@@ -56,18 +56,17 @@ if (!isset($_SESSION['usuario'])) {
                         </div>
                     <?php
                     endwhile;
+                endif;
                     ?>
             </div>
         </section>
         <!-- Mensaje cuando no hay favoritos -->
-    <?php else: ?>
         <div id="noFavorites" class="text-center py-5" style="display: none;">
             <i class="bi bi-star fs-1 text-muted"></i>
             <h3 class="mt-3">No tienes libros favoritos</h3>
             <p class="text-muted">Explora nuestro catálogo y marca los libros que te gusten</p>
             <a href="producto.html" class="featured-btn mt-3">Explorar Catálogo</a>
         </div>
-    <?php endif; ?>
     </main>
 
     <?php include 'includes/footer.php'; ?>

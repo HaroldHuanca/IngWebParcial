@@ -5,6 +5,17 @@
         header('Location: miPerfil.php');
         exit();
     }
+
+    $mensaje = "";
+
+    if(isset($_POST["btnEnviar"])){
+        $first_name = $_POST['first_name'];
+        $last_name = $_POST['last_name'];
+        $username = $_POST['username'];
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+
+    }
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -81,7 +92,7 @@
 
                             <!-- Botón -->
                             <div class="d-grid">
-                                <button class="btn featured-btn btn-lg" type="submit">Crear cuenta</button>
+                                <button name="btnEviar" class="btn featured-btn btn-lg" type="submit">Crear cuenta</button>
                             </div>
 
                             <hr class="my-4">
