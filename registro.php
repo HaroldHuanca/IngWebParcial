@@ -1,3 +1,7 @@
+<!DOCTYPE html>
+<html lang="es">
+<?php include 'includes/head.php'; ?>
+<body>
 <?php include 'includes/header.php'; ?>
 
 <main class="d-flex align-items-center py-5" style="margin-top: 20px;">

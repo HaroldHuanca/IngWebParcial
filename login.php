@@ -1,4 +1,8 @@
+<!DOCTYPE html>
+<html lang="es">
+<?php include 'includes/head.php'; ?>
 
+<body>
 <?php include 'includes/header.php'; ?>
 
     <!-- MAIN CONTENT: Formulario de Login -->

@@ -1,40 +1,43 @@
 
+<!DOCTYPE html>
+<html lang="es">
+<?php include 'includes/head.php'; ?>
+<body>
+    <?php include 'includes/conexion.php'; ?>
+    <?php include 'includes/header.php'; ?>
 
-<?php include 'includes/header.php'; ?>
-<?php include 'includes/conexion.php'; ?>
-
-    <main> 
-        <section class="featured-author mt-5 pt-5 bg-fondo-1"> 
-            <div class="container"> 
-                <div class="row align-items-center g-4"> 
-                    <div class="col-lg-6 text-center text-lg-start"> 
+    <main>
+        <section class="featured-author mt-5 pt-5 bg-fondo-1">
+            <div class="container">
+                <div class="row align-items-center g-4">
+                    <div class="col-lg-6 text-center text-lg-start">
                         <h4 class="featured-subtitle">AUTOR DEL MES</h4>
-                        <h1 class="featured-title">Junji Ito</h1> 
+                        <h1 class="featured-title">Junji Ito</h1>
                         <p class="featured-text">
                             Sumérgete en el oscuro y fascinante mundo de Junji Ito, maestro del horror psicológico. Descubre sus obras maestras que te helarán la sangre.
                         </p>
                         <a href="autor_junji_ito.html" class="featured-btn">Explorar su obra</a>
                     </div>
 
-                    <div class="col-lg-6"> 
+                    <div class="col-lg-6">
                         <div class="featured-image-container position-relative" style="padding-top: 2%;">
                             <div class="background-shape"></div>
-                            <img src="img/LPimg.webp" alt="Ilustración de Junji Ito" class="featured-image img-fluid" /> 
+                            <img src="img/LPimg.webp" alt="Ilustración de Junji Ito" class="featured-image img-fluid" />
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="featured-products py-5"> 
-            <div class="container"> 
+        <section class="featured-products py-5">
+            <div class="container">
                 <div class="products-header mb-4 d-flex justify-content-between align-items-center">
                     <h2>Novedades y Destacados</h2>
                     <a href="Catalogo.php" class="signup-btn">Ver Todos los Libros</a>
                 </div>
 
                 <div class="products-grid">
-        
+
                     <?php
                     $sql = "SELECT * FROM books ORDER BY created_at DESC LIMIT 8";
                     $result = $con->query($sql);
@@ -42,31 +45,31 @@
                     if ($result && $result->num_rows > 0):
                         while ($book = $result->fetch_assoc()):
                     ?>
-                        <div class="product-card">
-                            <a href="producto.php?id=<?php echo $book['book_id']; ?>" style="text-decoration: none; color: inherit;">
-                                <img src="<?php echo htmlspecialchars($book['cover_image_url']); ?>" alt="Portada de '<?php echo htmlspecialchars($book['title']); ?>'">
-                                <div class="card-content">
-                                    <h3 class="mb-2"><?php echo htmlspecialchars($book['title']); ?></h3> 
-                                    <p class="mb-3">
-                                        <?php 
-                                        echo !empty($book['description']) 
-                                            ? htmlspecialchars(substr($book['description'], 0, 120)) . '...' 
-                                            : 'Sin descripción disponible.'; 
-                                        ?>
-                                    </p> 
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="price fs-5 fw-bold">
-                                            S./<?php echo number_format($book['price'], 2); ?>
-                                        </span>
-                                        <button class="buy-btn"><i class="bi bi-cart-plus me-1"></i>Añadir</button> 
+                            <div class="product-card">
+                                <a href="producto.php?id=<?php echo $book['book_id']; ?>" style="text-decoration: none; color: inherit;">
+                                    <img src="<?php echo htmlspecialchars($book['cover_image_url']); ?>" alt="Portada de '<?php echo htmlspecialchars($book['title']); ?>'">
+                                    <div class="card-content">
+                                        <h3 class="mb-2"><?php echo htmlspecialchars($book['title']); ?></h3>
+                                        <p class="mb-3">
+                                            <?php
+                                            echo !empty($book['description'])
+                                                ? htmlspecialchars(substr($book['description'], 0, 120)) . '...'
+                                                : 'Sin descripción disponible.';
+                                            ?>
+                                        </p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="price fs-5 fw-bold">
+                                                S./<?php echo number_format($book['price'], 2); ?>
+                                            </span>
+                                            <button class="buy-btn"><i class="bi bi-cart-plus me-1"></i>Añadir</button>
+                                        </div>
                                     </div>
-                                </div>
-                            </a>
-                        </div>
-                    <?php
+                                </a>
+                            </div>
+                        <?php
                         endwhile;
                     else:
-                    ?>
+                        ?>
                         <p class="text-center text-muted">No hay libros disponibles en este momento.</p>
                     <?php endif; ?>
                 </div>
@@ -129,5 +132,6 @@
             </div>
         </section>
     </main>
+</body>
 
-    <?php include 'includes/footer.php'; ?>
+<?php include 'includes/footer.php'; ?>
