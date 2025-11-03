@@ -1,3 +1,12 @@
+<?php
+session_start();
+include 'includes/conexion.php';
+if (!isset($_SESSION['usuario'])) {
+    header('Location: login.php');
+    exit();
+}
+
+?>
 <!DOCTYPE html>
 <html lang="es">
 <?php include 'includes/head.php'; ?>
@@ -18,45 +27,47 @@
             <!-- Grid de libros favoritos -->
             <div class="products-grid">
                 <!-- Ejemplo de libro favorito -->
-                <div class="product-card">
-                    <img src="img/book1.jpg" alt="Portada de 'El Resplandor'">
-                    <div class="card-content">
-                        <h3 class="mb-2">El Resplandor</h3>
-                        <p class="mb-3">Una obra maestra del terror de Stephen King sobre la locura y lo sobrenatural en un hotel aislado.</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="price fs-5 fw-bold">S./29.99</span>
-                            <div class="d-flex gap-2">
-                                <button class="buy-btn"><i class="bi bi-cart-plus"></i></button>
-                                <button class="featured-btn-eliminar"><i class="bi bi-star-fill"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <?php
+                $sql = "SELECT b.* 
+                            FROM books b, favorites f 
+                            WHERE f.user_id = '{$_SESSION['user_id']}' 
+                            AND b.book_id = f.book_id 
+                            ORDER BY b.created_at DESC";
 
-                <!-- Otro ejemplo de libro favorito -->
-                <div class="product-card">
-                    <img src="img/book4.webp" alt="Portada de 'Dune'">
-                    <div class="card-content">
-                        <h3 class="mb-2">Dune</h3>
-                        <p class="mb-3">Una épica saga de ciencia ficción en el planeta desértico Arrakis, clave en la política galáctica.</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="price fs-5 fw-bold">S./35.00</span>
-                            <div class="d-flex gap-2">
-                                <button class="buy-btn"><i class="bi bi-cart-plus"></i></button>
-                                <button class="featured-btn-eliminar"><i class="bi bi-star-fill"></i></button>
-                            </div>
+                $result = $con->query($sql);
+
+                if ($result && $result->num_rows > 0):
+                    while ($book = $result->fetch_assoc()):
+                ?>
+                        <div class="product-card">
+                            <a href="producto.php?id=<?php echo $book['book_id']; ?>" style="text-decoration: none; color: inherit;">
+                                <img src="<?php echo htmlspecialchars($book['cover_image_url']); ?>" alt="Portada de '<?php echo htmlspecialchars($book['title']); ?>'">
+                                <div class="card-content">
+                                    <h3 class="mb-2"><?php echo htmlspecialchars($book['title']); ?></h3>
+                                    <p class="mb-3">
+                                        <?php
+                                        echo !empty($book['description'])
+                                            ? htmlspecialchars(substr($book['description'], 0, 120)) . '...'
+                                            : 'Sin descripción disponible.';
+                                        ?>
+                                    </p>
+                                </div>
+                            </a>
                         </div>
-                    </div>
-                </div>
+                    <?php
+                    endwhile;
+                    ?>
             </div>
         </section>
         <!-- Mensaje cuando no hay favoritos -->
+    <?php else: ?>
         <div id="noFavorites" class="text-center py-5" style="display: none;">
             <i class="bi bi-star fs-1 text-muted"></i>
             <h3 class="mt-3">No tienes libros favoritos</h3>
             <p class="text-muted">Explora nuestro catálogo y marca los libros que te gusten</p>
             <a href="producto.html" class="featured-btn mt-3">Explorar Catálogo</a>
         </div>
+    <?php endif; ?>
     </main>
 
     <?php include 'includes/footer.php'; ?>

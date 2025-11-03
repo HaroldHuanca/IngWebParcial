@@ -1,3 +1,12 @@
+<?php 
+    session_start();
+    include 'includes/conexion.php';
+    if(!isset($_SESSION['usuario'])) {
+        header('Location: login.php');
+        exit();
+    }
+
+?>
 <!DOCTYPE html>
 <html lang="es">
 <?php include 'includes/head.php'; ?>
@@ -6,6 +15,7 @@
 <?php include 'includes/header.php'; ?>
 
     <main class="container my-5">
+        <?php echo "Bienvenido, " . htmlspecialchars($_SESSION['user_id']) . "!"; ?>
         <div class="row">
             <!-- Información del perfil -->
             <div class="col-lg-4 mb-4">
@@ -62,49 +72,44 @@
                             <div class="tab-pane fade show active" id="favorites">
                                 <div class="row g-4">
                                     <!-- Libro favorito 1 -->
+                                     <?php
+                                        $sql = "SELECT b.* 
+                                                    FROM books b, favorites f 
+                                                    WHERE f.user_id = '{$_SESSION['user_id']}' 
+                                                    AND b.book_id = f.book_id 
+                                                    ORDER BY b.created_at DESC limit 2";
+
+                                        $result = $con->query($sql);
+
+                                        if ($result && $result->num_rows > 0):
+                                            while ($book = $result->fetch_assoc()):
+                                    ?>
                                     <div class="col-md-6">
                                         <div class="card h-100">
                                             <div class="row g-0">
                                                 <div class="col-4">
-                                                    <img src="img/book1.jpg" class="img-fluid rounded-start" alt="El Resplandor" style="height: 100%; object-fit: cover;">
+                                                    <img src="<?php echo htmlspecialchars($book['cover_image_url']); ?>" class="img-fluid rounded-start" alt="Portada de '<?php echo htmlspecialchars($book['title']); ?>'" style="height: 100%; object-fit: cover;">
                                                 </div>
                                                 <div class="col-8">
                                                     <div class="card-body">
-                                                        <h5 class="card-title">El Resplandor</h5>
-                                                        <p class="card-text small">Stephen King</p>
-                                                        <div class="d-flex justify-content-between align-items-center">
-                                                            <span class="price">S/29.99</span>
-                                                            <button class="buy-btn"><i class="bi bi-cart-plus"></i></button>
-                                                        </div>
+                                                        <h5 class="card-title"><?php echo htmlspecialchars($book['title']); ?></h5>
+                                                        <p class="mb-3">
+                                                        <?php
+                                                        echo !empty($book['description'])
+                                                            ? htmlspecialchars(substr($book['description'], 0, 120)) . '...'
+                                                            : 'Sin descripción disponible.';
+                                                        ?>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <!-- Libro favorito 2 -->
-                                    <div class="col-md-6">
-                                        <div class="card h-100">
-                                            <div class="row g-0">
-                                                <div class="col-4">
-                                                    <img src="img/book4.webp" class="img-fluid rounded-start" alt="Dune" style="height: 100%; object-fit: cover;">
-                                                </div>
-                                                <div class="col-8">
-                                                    <div class="card-body">
-                                                        <h5 class="card-title">Dune</h5>
-                                                        <p class="card-text small">Frank Herbert</p>
-                                                        <div class="d-flex justify-content-between align-items-center">
-                                                            <span class="price">S/35.00</span>
-                                                            <button class="buy-btn"><i class="bi bi-cart-plus"></i></button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
+                                    <?php
+                                    endwhile;
+                                    endif;
+                                    ?>
                                     <div class="col-12 text-center mt-3">
-                                        <a href="favoritos.html" class="featured-btn">Ver todos mis favoritos</a>
+                                        <a href="favoritos.php" class="featured-btn">Ver todos mis favoritos</a>
                                     </div>
                                 </div>
                             </div>
@@ -147,5 +152,6 @@
             </div>
         </div>
     </main>
-
     <?php include 'includes/footer.php'; ?>
+</body>
+</html>

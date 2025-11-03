@@ -52,7 +52,17 @@
                                 <hr class="dropdown-divider">
                             </li>
                             <li><a class="dropdown-item" href="login.php">Iniciar Sesión</a></li> <!-- enlace a login -->
-                            <li><a class="dropdown-item" href="registro.php">Registrarse</a></li> <!-- enlace a registro -->
+                            <?php
+                            if (!isset($_SESSION['usuario'])):?>
+                                <li><a class="dropdown-item" href="registro.php">Registrarse</a></li> <!-- enlace a registro -->
+                            <?php
+                            
+                            else:?>
+                                <li><a class="dropdown-item" href="logout.php">Cerrar Sesión</a></li> <!-- enlace a logout -->
+                            <?php endif;                 
+
+                            ?>
+                            
                         </ul>
                     </li>
                     <br>

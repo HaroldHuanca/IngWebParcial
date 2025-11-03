@@ -1,3 +1,31 @@
+<?php 
+    session_start();
+    include 'includes/conexion.php';
+    if(isset($_SESSION['usuario'])) {
+        header('Location: miPerfil.php');
+        exit();
+    }
+    $mensaje = "";
+    if(isset($_POST['btnEnviar'])) {
+        // Aquí iría la lógica de autenticación (verificar usuario y contraseña)
+        // Por simplicidad, asumimos que el login es exitoso si el email es "
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+        $sql = "SELECT * FROM users WHERE email = '$email' and password_hash = '$password';";
+        $resultado = $con->query($sql);
+        if($resultado && $resultado->num_rows > 0) {
+            $fila = $resultado->fetch_assoc();
+            $_SESSION['usuario'] = $email;
+            $_SESSION['user_id'] = $fila['user_id'];
+            header('Location: miPerfil.php');
+            exit();
+        } else {
+            $mensaje = "Correo o contraseña incorrectos.";
+        }
+    }
+?>
+
+
 <!DOCTYPE html>
 <html lang="es">
 <?php include 'includes/head.php'; ?>
@@ -23,16 +51,16 @@
                             </div>
 
                             <!-- Formulario -->
-                            <form>
+                            <form method="post">
                                 <!-- Campo de Email con etiqueta flotante -->
                                 <div class="form-floating mb-3">
-                                    <input type="email" class="form-control" id="floatingInput" placeholder="nombre@ejemplo.com" required>
+                                    <input name="email" type="email" class="form-control" id="floatingInput" placeholder="nombre@ejemplo.com" required>
                                     <label for="floatingInput">Correo Electrónico</label>
                                 </div>
                                 
                                 <!-- Campo de Contraseña con etiqueta flotante -->
                                 <div class="form-floating mb-3">
-                                    <input type="password" class="form-control" id="floatingPassword" placeholder="Contraseña" required>
+                                    <input name="password" class="form-control" id="floatingPassword" placeholder="Contraseña" required>
                                     <label for="floatingPassword">Contraseña</label>
                                 </div>
 
@@ -50,8 +78,13 @@
 
                                 <!-- Botón de Login (usando la clase .featured-btn existente) -->
                                 <div class="d-grid">
-                                    <button class="btn featured-btn btn-lg" type="submit">Ingresar</button>
+                                    <button class="btn featured-btn btn-lg" type="submit" name="btnEnviar">Ingresar</button>
                                 </div>
+                                <?php if($mensaje != ""): ?>
+                                    <div class="alert alert-danger mt-3" role="alert">
+                                        <?php echo $mensaje; ?>
+                                    </div>
+                                <?php endif; ?>
 
                                 <!-- Separador para login social -->
                                 <hr class="my-4">

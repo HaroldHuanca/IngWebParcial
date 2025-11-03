@@ -1,3 +1,11 @@
+<?php
+    session_start();
+    include 'includes/conexion.php';
+    if(isset($_SESSION['usuario'])) {
+        header('Location: miPerfil.php');
+        exit();
+    }
+?>
 <!DOCTYPE html>
 <html lang="es">
 <?php include 'includes/head.php'; ?>

@@ -2,16 +2,16 @@ USE bookport_db;
 
 -- Insertar usuarios de muestra (contraseña hash es 'password123' en todos los casos)
 INSERT INTO users (username, email, password_hash, first_name, last_name, phone, address) VALUES
-('juan_perez', 'juan.perez@email.com', '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewistE0ADpN0q/n6', 'Juan', 'Pérez', '999888777', 'Av. Lima 123'),
-('maria_garcia', 'maria.garcia@email.com', '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewistE0ADpN0q/n6', 'María', 'García', '999888776', 'Jr. Arequipa 456'),
-('carlos_rodriguez', 'carlos.rodriguez@email.com', '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewistE0ADpN0q/n6', 'Carlos', 'Rodríguez', '999888775', 'Calle Tacna 789'),
-('ana_martinez', 'ana.martinez@email.com', '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewistE0ADpN0q/n6', 'Ana', 'Martínez', '999888774', 'Av. Cusco 321'),
-('pedro_lopez', 'pedro.lopez@email.com', '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewistE0ADpN0q/n6', 'Pedro', 'López', '999888773', 'Jr. Puno 654'),
-('lucia_torres', 'lucia.torres@email.com', '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewistE0ADpN0q/n6', 'Lucía', 'Torres', '999888772', 'Av. Trujillo 987'),
-('diego_flores', 'diego.flores@email.com', '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewistE0ADpN0q/n6', 'Diego', 'Flores', '999888771', 'Calle Piura 147'),
-('sofia_diaz', 'sofia.diaz@email.com', '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewistE0ADpN0q/n6', 'Sofía', 'Díaz', '999888770', 'Jr. Ica 258'),
-('miguel_castro', 'miguel.castro@email.com', '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewistE0ADpN0q/n6', 'Miguel', 'Castro', '999888769', 'Av. Callao 369'),
-('carmen_ruiz', 'carmen.ruiz@email.com', '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewistE0ADpN0q/n6', 'Carmen', 'Ruiz', '999888768', 'Calle Tumbes 741');
+('juan_perez', 'juan.perez@email.com', '123456', 'Juan', 'Pérez', '999888777', 'Av. Lima 123'),
+('maria_garcia', 'maria.garcia@email.com', '123456', 'María', 'García', '999888776', 'Jr. Arequipa 456'),
+('carlos_rodriguez', 'carlos.rodriguez@email.com', '123456', 'Carlos', 'Rodríguez', '999888775', 'Calle Tacna 789'),
+('ana_martinez', 'ana.martinez@email.com', '123456', 'Ana', 'Martínez', '999888774', 'Av. Cusco 321'),
+('pedro_lopez', 'pedro.lopez@email.com', '123456', 'Pedro', 'López', '999888773', 'Jr. Puno 654'),
+('lucia_torres', 'lucia.torres@email.com', '123456', 'Lucía', 'Torres', '999888772', 'Av. Trujillo 987'),
+('diego_flores', 'diego.flores@email.com', '123456', 'Diego', 'Flores', '999888771', 'Calle Piura 147'),
+('sofia_diaz', 'sofia.diaz@email.com', '123456', 'Sofía', 'Díaz', '999888770', 'Jr. Ica 258'),
+('miguel_castro', 'miguel.castro@email.com', '123456', 'Miguel', 'Castro', '999888769', 'Av. Callao 369'),
+('carmen_ruiz', 'carmen.ruiz@email.com', '123456', 'Carmen', 'Ruiz', '999888768', 'Calle Tumbes 741');
 
 -- Insertar categorías
 INSERT INTO categories (name, description, parent_category_id) VALUES
