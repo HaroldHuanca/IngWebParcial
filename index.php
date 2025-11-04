@@ -1,4 +1,6 @@
-
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="es">
 <?php include 'includes/head.php'; ?>
@@ -16,7 +18,7 @@
                         <p class="featured-text">
                             Sumérgete en el oscuro y fascinante mundo de Junji Ito, maestro del horror psicológico. Descubre sus obras maestras que te helarán la sangre.
                         </p>
-                        <a href="autor_junji_ito.html" class="featured-btn">Explorar su obra</a>
+                        <a href="autor_junji_ito.php" class="featured-btn">Explorar su obra</a>
                     </div>
 
                     <div class="col-lg-6">

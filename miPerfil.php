@@ -18,12 +18,17 @@
         <?php echo "Bienvenido, " . htmlspecialchars($_SESSION['user_id']) . "!"; ?>
         <div class="row">
             <!-- Información del perfil -->
+             <?php
+                $sql = "SELECT * FROM users WHERE user_id = '{$_SESSION['user_id']}'";
+                $result = $con->query($sql);
+                $user = $result->fetch_assoc();
+              ?>
             <div class="col-lg-4 mb-4">
                 <div class="card shadow-sm" style="background-color: var(--fondo-2);">
                     <div class="card-body text-center">
                         <img src="img/default-avatar.png" alt="Foto de perfil" class="rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
-                        <h3 class="card-title mb-3">Juan Pérez</h3>
-                        <p class="text-muted">Miembro desde Octubre 2025</p>
+                        <h3 class="card-title mb-3"><?php echo $user['first_name']; echo $user['last_name'];?> </h3>
+                        <p class="text-muted">Miembro desde <?php echo $user['created_at'];?></p>
                         <button class="featured-btn mb-2 w-100">
                             <i class="bi bi-pencil-square me-2"></i>Editar Perfil
                         </button>
@@ -36,15 +41,15 @@
                         <h5 class="card-title mb-4">Información Personal</h5>
                         <div class="mb-3">
                             <label class="text-muted d-block">Email</label>
-                            <div>juan.perez@email.com</div>
+                            <div><?php echo $user['email'];?></div>
                         </div>
                         <div class="mb-3">
                             <label class="text-muted d-block">Teléfono</label>
-                            <div>+51 987 654 321</div>
+                            <div><?php echo $user['phone'];?></div>
                         </div>
                         <div class="mb-3">
                             <label class="text-muted d-block">Dirección</label>
-                            <div>Av. Ejercito 123, Arequipa</div>
+                            <div><?php echo $user['address'];?></div>
                         </div>
                     </div>
                 </div>

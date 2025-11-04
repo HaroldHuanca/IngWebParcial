@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="es">
 <?php include 'includes/head.php'; ?>
@@ -34,30 +37,16 @@
                 </h2>
                 <div id="collapseCategorias" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionCategorias">
                   <div class="accordion-body">
+                    <?php
+                      $sql = "SELECT * FROM categories";
+                      $result = $con->query($sql);
+                      while ($category = $result->fetch_assoc()):
+                    ?>
                     <div class="form-check mb-2">
-                      <input class="form-check-input" type="checkbox" id="accion">
-                      <label class="form-check-label" for="accion">Acción</label>
+                      <input name="categoria_<?php echo $category['name']?>" class="form-check-input" type="checkbox" id="accion">
+                      <label class="form-check-label" for="accion"><?php echo $category['name']?></label>
                     </div>
-                    <div class="form-check mb-2">
-                      <input class="form-check-input" type="checkbox" id="aventura">
-                      <label class="form-check-label" for="aventura">Aventura</label>
-                    </div>
-                    <div class="form-check mb-2">
-                      <input class="form-check-input" type="checkbox" id="historia">
-                      <label class="form-check-label" for="historia">Historia</label>
-                    </div>
-                    <div class="form-check mb-2">
-                      <input class="form-check-input" type="checkbox" id="ingenieria">
-                      <label class="form-check-label" for="ingenieria">Ingeniería</label>
-                    </div>
-                    <div class="form-check mb-2">
-                      <input class="form-check-input" type="checkbox" id="fantasia">
-                      <label class="form-check-label" for="fantasia">Fantasía</label>
-                    </div>
-                    <div class="form-check mb-2">
-                      <input class="form-check-input" type="checkbox" id="ciencia-ficcion">
-                      <label class="form-check-label" for="ciencia-ficcion">Ciencia Ficción</label>
-                    </div>
+                    <?php endwhile; ?>
                   </div>
                 </div>
               </div>
@@ -68,11 +57,13 @@
               <label for="selectAutor" class="form-label fw-semibold">Autores</label>
               <select class="form-select" id="selectAutor">
                 <option selected>Todos los autores</option>
-                <option value="1">Jane Austen</option>
-                <option value="2">Brandon Sanderson</option>
-                <option value="3">George Orwell</option>
-                <option value="4">Mary Shelley</option>
-                <option value="5">Gabriel García Márquez</option>
+                <?php 
+                  $sql = "SELECT * FROM authors";
+                  $result = $con->query($sql);
+                  while ($author = $result->fetch_assoc()):
+                ?>
+                    <option value="<?php echo $author['author_id']; ?>"><?php echo $author['first_name']." ".$author['last_name']; ?></option>
+                <?php endwhile; ?>
               </select>
             </div>
 
@@ -81,8 +72,13 @@
               <label for="priceRange" class="form-label fw-semibold">Rango de Precio</label>
               <input type="range" class="form-range" min="0" max="100" step="5" id="priceRange">
               <div class="d-flex justify-content-between">
-                <span class="small">S./0</span>
-                <span class="small">S./100</span>
+                <?php 
+                  $sql = "SELECT MIN(price) AS min_price, MAX(price) AS max_price FROM books";
+                  $result = $con->query($sql);
+                  $prices = $result->fetch_assoc(); 
+                 ?>
+                <span class="small">S./<?php echo $prices['min_price']?></span>
+                <span class="small">S./<?php echo $prices['max_price']?></span>
               </div>
             </div>
 

@@ -104,7 +104,7 @@
                             
                             <!-- Enlace para Registrarse -->
                             <div class="text-center mt-4">
-                                <p class="mb-0">¿No tienes una cuenta? <a href="registro.html" class="fw-bold text-decoration-none" style="color: var(--texto-principal);">Regístrate aquí</a></p>
+                                <p class="mb-0">¿No tienes una cuenta? <a href="registro.php" class="fw-bold text-decoration-none" style="color: var(--texto-principal);">Regístrate aquí</a></p>
                             </div>
 
                         </div>
