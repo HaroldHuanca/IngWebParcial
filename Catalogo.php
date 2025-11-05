@@ -135,7 +135,9 @@ session_start();
             // Filtro por autor
             if (!empty($_GET['filtro_autor'])) {
               $autor_id = intval($_GET['filtro_autor']);
-              $sql .= " AND ba.author_id = $autor_id";
+              if ($autor_id > 0){
+                $sql .= " AND ba.author_id = $autor_id";
+              }
             }
             echo "<pre>$sql</pre>";
             // Opcional: otros filtros (autor, precio, etc.) pueden agregarse aquí
