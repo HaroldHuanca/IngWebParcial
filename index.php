@@ -4,6 +4,7 @@ session_start();
 <!DOCTYPE html>
 <html lang="es">
 <?php include 'includes/head.php'; ?>
+
 <body>
     <?php include 'includes/conexion.php'; ?>
     <?php include 'includes/header.php'; ?>
@@ -63,7 +64,9 @@ session_start();
                                             <span class="price fs-5 fw-bold">
                                                 S./<?php echo number_format($book['price'], 2); ?>
                                             </span>
-                                            <button class="buy-btn"><i class="bi bi-cart-plus me-1"></i>Añadir</button>
+                                            <a href="añadir.php?id=<?php echo $book['book_id']; ?>&envio='index.php'" class="buy-btn text-decoration-none">
+                                                <i class="bi bi-cart-plus me-1"></i>Añadir
+                                            </a>
                                         </div>
                                     </div>
                                 </a>
@@ -134,6 +137,28 @@ session_start();
             </div>
         </section>
     </main>
+
+
+    <?php include 'includes/footer.php'; ?>
+
+    <?php if (isset($_SESSION['show_alert']) && $_SESSION['show_alert']): ?>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Producto añadido!',
+                    text: 'El libro se ha añadido al carrito correctamente',
+                    confirmButtonText: 'Continuar comprando',
+                    confirmButtonColor: '#3085d6',
+                    timer: 3000,
+                    timerProgressBar: true
+                });
+
+                // Limpiar la bandera de sesión
+                <?php unset($_SESSION['show_alert']); ?>
+            });
+        </script>
+    <?php endif; ?>
 </body>
 
-<?php include 'includes/footer.php'; ?>
+</html>

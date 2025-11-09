@@ -7,7 +7,7 @@ $database = "bookport_db";
 //$port = 3307
 
 // Crear conexión
-$con = new mysqli($servername, $username, $password, $database, $port);
+$con = new mysqli($servername, $username, $password, $database);
 
 // Verificar conexión
 if ($con->connect_error) {

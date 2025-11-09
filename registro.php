@@ -137,9 +137,7 @@ if (isset($_POST["btnEnviar"])) {
         </div>
     </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <?php include 'includes/footer.php'; ?>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         // Recibimos el mensaje desde PHP
         const mensaje = "<?php echo $mensaje; ?>";
