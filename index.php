@@ -69,16 +69,17 @@ session_start();
                                                 : 'Sin descripción disponible.';
                                             ?>
                                         </p>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <span class="price fs-5 fw-bold">
-                                                S./<?php echo number_format($book['price'], 2); ?>
-                                            </span>
-                                            <a href="añadir.php?id=<?php echo $book['book_id']; ?>&precio=<?php echo $book['price'];?>&envio='index.php'" class="buy-btn text-decoration-none">
-                                                <i class="bi bi-cart-plus me-1"></i>Añadir
-                                            </a>
-                                        </div>
                                     </div>
                                 </a>
+                                <div class="card-footer d-flex justify-content-between align-items-center p-3">
+                                    <span class="price fs-5 fw-bold">
+                                        S./<?php echo number_format($book['price'], 2); ?>
+                                    </span>
+                                    <a href="añadir.php?id=<?php echo $book['book_id']; ?>&precio=<?php echo $book['price'];?>&envio=index.php"
+                                        class="buy-btn d-inline-flex align-items-center gap-1"><i class="bi bi-cart-plus"></i> Añadir
+                                    </a>
+                                </div>
+
                             </div>
                         <?php
                         endwhile;

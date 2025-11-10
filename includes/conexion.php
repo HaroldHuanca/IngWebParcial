@@ -4,10 +4,10 @@ $servername = "localhost";
 $username = "root";
 $password = "";
 $database = "bookport_db";
-//$port = 3307
+$port = 3307;
 
 // Crear conexión
-$con = new mysqli($servername, $username, $password, $database);
+$con = new mysqli($servername, $username, $password, $database,$port);
 
 // Verificar conexión
 if ($con->connect_error) {
