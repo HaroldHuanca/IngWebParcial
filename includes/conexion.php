@@ -14,4 +14,6 @@ if ($con->connect_error) {
     echo "<h1>¡Error al conectar con la base de datos!</h1>";
     //die("Error de conexión a la base de datos: " . $con->connect_error);
 }
+
+$con->set_charset("utf8mb4");
 ?>
