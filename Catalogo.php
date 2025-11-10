@@ -28,7 +28,7 @@ session_start();
 
                 <div class="input-group">
                   <input name="filtro_nombre" type="text" class="form-control" id="sidebar-search"
-                    placeholder="Nombre del libro..."
+                    placeholder="Nombre del libro o autor"
                     value="<?php echo isset($_GET['filtro_nombre']) ? htmlspecialchars($_GET['filtro_nombre']) : ''; ?>">
                 </div>
               </div>
@@ -146,7 +146,7 @@ session_start();
               // Filtro por nombre
               if (!empty($_GET['filtro_nombre'])) {
                 $nombre = $con->real_escape_string($_GET['filtro_nombre']);
-                $sql .= " AND b.title LIKE '%$nombre%'";
+                $sql .= " AND (b.title LIKE '%$nombre%' OR a.first_name LIKE '%$nombre%' OR a.last_name LIKE '%$nombre%')";
               }
 
               // Filtro por categorías
@@ -202,7 +202,7 @@ session_start();
               }
             }
 
-            //echo "<pre>$sql</pre>";
+            echo "<pre>$sql</pre>";
             // Opcional: otros filtros (autor, precio, etc.) pueden agregarse aquí
 
             // Ejecutar

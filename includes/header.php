@@ -48,12 +48,32 @@
                             <i class="bi bi-cart-fill fs-4"></i>Carrito
                         </a>
                     </li>
+                    <?php
+                    if (isset($_SESSION['usuario'])):
+                     ?>
                     <li class="nav-item">
                         <!-- usamos bootstrap Icons para favoritos -->
                         <a class="nav-link" href="favoritos.php" title="Favoritos"> <!-- enlace a pagina de favoritos -->
                             <i class="bi bi-star-fill fs-4"></i>Favoritos
                         </a>
                     </li>
+                    <?php
+                    endif;
+                    ?>
+                    <?php
+                    if (!isset($_SESSION['usuario'])):
+                    ?>
+                    <li class="nav_item">
+                        <a class="nav-link" href="login.php" title="Login">
+                            <i class="bi bi-person-circle fs-4 me-1"></i>Login
+                        </a>
+                    </li>
+                    <?php
+                    endif;
+                    ?>
+                    <?php
+                        if(isset($_SESSION['usuario'])):
+                    ?>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="Mi Cuenta">
                             <i class="bi bi-person-circle fs-4 me-1"></i>Mi cuenta
@@ -63,24 +83,21 @@
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="login.php">Iniciar Sesión</a></li> <!-- enlace a login -->
-                            <?php
-                            if (!isset($_SESSION['usuario'])): ?>
-                                <li><a class="dropdown-item" href="registro.php">Registrarse</a></li> <!-- enlace a registro -->
-                            <?php
-
-                            else: ?>
-                                <li><a class="dropdown-item" href="logout.php">Cerrar Sesión</a></li> <!-- enlace a logout -->
-                            <?php endif;
-
-                            ?>
-
+                             <!-- enlace a login -->
+                            <li><a class="dropdown-item" href="logout.php">Cerrar Sesión</a></li> <!-- enlace a logout -->
                         </ul>
                     </li>
+                    <?php endif; ?>
                     <br>
+                    <?php
+                    if (!isset($_SESSION['usuario'])):
+                    ?>
                     <li class="nav-item ms-3">
                         <a href="registro.php" class="featured-btn">Registrarse</a>
                     </li>
+                    <?php
+                    endif;
+                    ?>
                 </ul>
             </div>
         </div>

@@ -135,20 +135,24 @@ if (!isset($_SESSION['usuario'])) {
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php
+                                            if(isset($_SESSION['user_id'])):
+                                                $user_id = $_SESSION['user_id'];
+                                                $sql = "Select * from orders where order_id = $user_id";
+                                                $result = $con->query($sql);
+                                                while($order = $result->fetch_assoc()):
+                                            ?>
                                             <tr>
-                                                <td>#001</td>
-                                                <td>15/10/2025</td>
-                                                <td><span class="badge bg-success">Entregado</span></td>
-                                                <td>S/64.99</td>
+                                                <td>#<?php echo $order['order_id'];?></td>
+                                                <td><?php echo $order['order_date'];?></td>
+                                                <td><span class="badge bg-success"><?php echo $order['status'];?></span></td>
+                                                <td><?php echo $order['total_amount'];?></td>
                                                 <td><button class="btn btn-sm btn-outline-primary">Ver detalles</button></td>
                                             </tr>
-                                            <tr>
-                                                <td>#002</td>
-                                                <td>17/10/2025</td>
-                                                <td><span class="badge bg-warning">En camino</span></td>
-                                                <td>S/35.00</td>
-                                                <td><button class="btn btn-sm btn-outline-primary">Ver detalles</button></td>
-                                            </tr>
+                                            <?php
+                                                endwhile;
+                                            endif;
+                                            ?>
                                         </tbody>
                                     </table>
                                 </div>

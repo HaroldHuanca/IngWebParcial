@@ -20,24 +20,38 @@ if (isset($_POST['btnEnviar'])) {
         $_SESSION['usuario'] = $email;
         $_SESSION['user_id'] = $fila['user_id'];
 
-        //Arreglar este codigo
-        
+        //Cargar los datos del carrito        
         $user_id = $_SESSION['user_id'];
         $sql = "SELECT ci.* FROM cart_items ci
         JOIN shopping_carts sc ON ci.cart_id = sc.cart_id
         WHERE sc.user_id = $user_id;";
         $result = $con->query($sql);
         if($result->num_rows == 0){
-            unset($_SESSION['cart']);
+            if(isset($_SESSION['cart']) && !empty($_SESSION['cart']) ){
+                $cart = $_SESSION['cart'];
+                $sqlInsert = "INSERT INTO shopping_carts (cart_id, user_id, created_at) VALUES ($user_id, $user_id, NOW());";
+                $con->query($sqlInsert);
+                foreach ($cart as $book_id => $item):
+                    $quantity = $item['quantity'];
+                    $price_at_time = $item['price_at_time'];
+                    $sqlInsertItems = "INSERT INTO cart_items (cart_id, book_id, quantity, price_at_time) 
+                    VALUES ($user_id, $book_id, $quantity, $price_at_time);";
+                    $con->query($sqlInsertItems);
+                endforeach;
+            }
+            else{
+                unset($_SESSION['cart']);
+            }
         }
         else{
             $_SESSION['cart'] = array();
-        }
-        while ($row = $result->fetch_assoc()) {
+            while ($row = $result->fetch_assoc()) {
             $book_id = $row['book_id'];
             $_SESSION['cart'][$book_id]['quantity'] = $row['quantity'];
             $_SESSION['cart'][$book_id]['price_at_time'] = $row['price_at_time'];
+            }
         }
+        
 
         // Redirigir al perfil del usuario después del login exitoso
         header('Location: miPerfil.php');
