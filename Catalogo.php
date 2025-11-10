@@ -222,7 +222,7 @@ session_start();
                         <span class="price fs-5 fw-bold">
                           S./<?php echo number_format($book['price'], 2); ?>
                         </span>
-                        <a href="añadir.php?id=<?php echo $book['book_id']; ?>&envio='Catalogo.php'" class="buy-btn text-decoration-none">
+                        <a href="añadir.php?id=<?php echo $book['book_id']; ?>&precio=<?php echo $book['price'];?>&envio='Catalogo.php'" class="buy-btn text-decoration-none">
                           <i class="bi bi-cart-plus me-1"></i>Añadir
                         </a>
                       </div>

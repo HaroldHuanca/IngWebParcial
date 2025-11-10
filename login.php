@@ -1,28 +1,46 @@
-<?php 
-    session_start();
-    include 'includes/conexion.php';
-    if(isset($_SESSION['usuario'])) {
+<?php
+session_start();
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+include 'includes/conexion.php';
+if (isset($_SESSION['usuario'])) {
+    header('Location: miPerfil.php');
+    exit();
+}
+$mensaje = "";
+if (isset($_POST['btnEnviar'])) {
+    // Aquí iría la lógica de autenticación (verificar usuario y contraseña)
+    // Por simplicidad, asumimos que el login es exitoso si el email es "
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $sql = "SELECT * FROM users WHERE email = '$email' and password_hash = '$password';";
+    $resultado = $con->query($sql);
+    if ($resultado && $resultado->num_rows > 0) {
+        $fila = $resultado->fetch_assoc();
+        $_SESSION['usuario'] = $email;
+        $_SESSION['user_id'] = $fila['user_id'];
+
+        //Arreglar este codigo
+        
+        $user_id = $_SESSION['user_id'];
+        $sql = "SELECT ci.* FROM cart_items ci
+        JOIN shopping_carts sc ON ci.cart_id = sc.cart_id
+        WHERE sc.user_id = $user_id;";
+        $result = $con->query($sql);
+        $_SESSION['cart'] = array();
+        while ($row = $result->fetch_assoc()) {
+            $book_id = $row['book_id'];
+            $_SESSION['cart'][$book_id]['quantity'] = $row['quantity'];
+            $_SESSION['cart'][$book_id]['price_at_time'] = $row['price_at_time'];
+        }
+
+        // Redirigir al perfil del usuario después del login exitoso
         header('Location: miPerfil.php');
         exit();
+    } else {
+        $mensaje = "Correo o contraseña incorrectos.";
     }
-    $mensaje = "";
-    if(isset($_POST['btnEnviar'])) {
-        // Aquí iría la lógica de autenticación (verificar usuario y contraseña)
-        // Por simplicidad, asumimos que el login es exitoso si el email es "
-        $email = $_POST['email'];
-        $password = $_POST['password'];
-        $sql = "SELECT * FROM users WHERE email = '$email' and password_hash = '$password';";
-        $resultado = $con->query($sql);
-        if($resultado && $resultado->num_rows > 0) {
-            $fila = $resultado->fetch_assoc();
-            $_SESSION['usuario'] = $email;
-            $_SESSION['user_id'] = $fila['user_id'];
-            header('Location: miPerfil.php');
-            exit();
-        } else {
-            $mensaje = "Correo o contraseña incorrectos.";
-        }
-    }
+}
 ?>
 
 
@@ -31,18 +49,18 @@
 <?php include 'includes/head.php'; ?>
 
 <body>
-<?php include 'includes/header.php'; ?>
+    <?php include 'includes/header.php'; ?>
 
     <!-- MAIN CONTENT: Formulario de Login -->
     <main class="d-flex align-items-center py-5 vh-100" style="padding-top: 100px !important;">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-                    
+
                     <!-- Tarjeta con sombra. Usamos un fondo blanco de Bootstrap. -->
                     <div class="card shadow-lg rounded-4 border-0" style="background-color: var(--fondo-2);">
                         <div class="card-body p-4 p-sm-5">
-                            
+
                             <!-- Logo y Título -->
                             <div class="text-center mb-4">
                                 <img src="img/logo.webp" alt="Logo BookPort" class="mb-3" style="height: 50px;">
@@ -57,7 +75,7 @@
                                     <input name="email" type="email" class="form-control" id="floatingInput" placeholder="nombre@ejemplo.com" required>
                                     <label for="floatingInput">Correo Electrónico</label>
                                 </div>
-                                
+
                                 <!-- Campo de Contraseña con etiqueta flotante -->
                                 <div class="form-floating mb-3">
                                     <input name="password" class="form-control" id="floatingPassword" placeholder="Contraseña" required>
@@ -80,7 +98,7 @@
                                 <div class="d-grid">
                                     <button class="btn featured-btn btn-lg" type="submit" name="btnEnviar">Ingresar</button>
                                 </div>
-                                <?php if($mensaje != ""): ?>
+                                <?php if ($mensaje != ""): ?>
                                     <div class="alert alert-danger mt-3" role="alert">
                                         <?php echo $mensaje; ?>
                                     </div>
@@ -101,7 +119,7 @@
                                 </div>
 
                             </form>
-                            
+
                             <!-- Enlace para Registrarse -->
                             <div class="text-center mt-4">
                                 <p class="mb-0">¿No tienes una cuenta? <a href="registro.php" class="fw-bold text-decoration-none" style="color: var(--texto-principal);">Regístrate aquí</a></p>
@@ -113,7 +131,8 @@
             </div>
         </div>
     </main>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>
+
 </html>
