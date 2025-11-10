@@ -7,8 +7,7 @@ require 'includes/conexion.php';
 $book_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 $precio = isset($_GET['precio']) ? floatval($_GET['precio']) : 0;
 $user_id = $_SESSION['user_id'] ?? null;
-
-if ($book_id > 0 && $precio > 0) {
+if ($book_id > 0) {
     // Inicializar el carrito si no existe
     if (!isset($_SESSION['cart'])) {
         $_SESSION['cart'] = array();
@@ -16,7 +15,8 @@ if ($book_id > 0 && $precio > 0) {
             $sql = "select * from shopping_carts where cart_id = $user_id;";
             $result = $con->query($sql);
             if($result && $result->num_rows == 0){
-                $sql = "INSERT INTO shopping_carts (cart_id,user_id created_at) VALUES ($user_id, $user_id, NOW());";
+                $sql = "INSERT INTO shopping_carts (cart_id, user_id, created_at) VALUES ($user_id, $user_id, NOW());";
+                $con->query($sql);
             }
         }
     }
@@ -37,12 +37,12 @@ if ($book_id > 0 && $precio > 0) {
         // Si no existe, agregarlo con cantidad 1
         $_SESSION['cart'][$book_id] = array(
             'quantity' => 1,
-            'price_at_time' => $precio // Opcional: para saber cuándo se añadió
+            'price_at_time' => $precio
         );
         if($user_id){
             $sql = "INSERT INTO cart_items (cart_id, book_id, quantity, price_at_time)
             VALUES (
-                (SELECT cart_id FROM shopping_carts WHERE user_id = $user_id and book_id = $book_id),
+                (SELECT cart_id FROM shopping_carts WHERE user_id = $user_id),
                 $book_id,
                 1,
                 $precio

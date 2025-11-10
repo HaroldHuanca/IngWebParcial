@@ -46,7 +46,15 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 
             <div class="col-lg-6">
                 <h2 class="mt-3"><?php echo htmlspecialchars($book['title']); ?></h2>
-                <p class="text-muted">Autor: <?php echo htmlspecialchars($book['author']); ?></p>
+                <?php
+                    $sql = "SELECT a.first_name, a.last_name 
+                            FROM authors a
+                            JOIN book_authors ba ON a.author_id = ba.author_id
+                            WHERE ba.book_id = {$book['book_id']}";
+                    $result = $con->query($sql);
+                    $author = $result->fetch_assoc();
+                ?>
+                <p class="text-muted">Autor: <?php echo htmlspecialchars($author['first_name']." ".$author['last_name']); ?></p>
 
                 <div class="mb-3">
                     <span class="h4 fw-bold">S/ <?php echo number_format($book['price'], 2); ?></span>

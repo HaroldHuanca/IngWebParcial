@@ -10,10 +10,22 @@
             </button>
             <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent"> <!-- alineacion con justify-content-between -->
                 <!-- barra de búsqueda -->
-                <form class="d-flex mx-lg-auto my-2 my-lg-0" role="search" style="max-width: 450px; width: 100%;"> <!-- centrado en pantallas grandes y max-width para limitar tamaño -->
-                    <input class="form-control me-2" type="search" placeholder="Buscar libros por título o autor..." aria-label="Search">
+                <form class="d-flex mx-lg-auto my-2 my-lg-0"
+                    role="search"
+                    style="max-width: 450px; width: 100%;"
+                    action="Catalogo.php"
+                    method="GET">
+
+                    <input class="form-control me-2"
+                        type="search"
+                        name="filtro"
+                        placeholder="Buscar libros por título o autor..."
+                        aria-label="Search"
+                        value="<?php echo isset($_GET['filtro']) ? htmlspecialchars($_GET['filtro']) : ''; ?>"
+                        >
+
                     <button class="btn-buscar" type="submit">
-                        <i class="bi bi-search"></i> <!-- icono de busqueda -->
+                        <i class="bi bi-search"></i>
                     </button>
                 </form>
 
@@ -53,16 +65,16 @@
                             </li>
                             <li><a class="dropdown-item" href="login.php">Iniciar Sesión</a></li> <!-- enlace a login -->
                             <?php
-                            if (!isset($_SESSION['usuario'])):?>
+                            if (!isset($_SESSION['usuario'])): ?>
                                 <li><a class="dropdown-item" href="registro.php">Registrarse</a></li> <!-- enlace a registro -->
                             <?php
-                            
-                            else:?>
+
+                            else: ?>
                                 <li><a class="dropdown-item" href="logout.php">Cerrar Sesión</a></li> <!-- enlace a logout -->
-                            <?php endif;                 
+                            <?php endif;
 
                             ?>
-                            
+
                         </ul>
                     </li>
                     <br>

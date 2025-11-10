@@ -53,6 +53,15 @@ session_start();
                                     <img src="<?php echo htmlspecialchars($book['cover_image_url']); ?>" alt="Portada de '<?php echo htmlspecialchars($book['title']); ?>'">
                                     <div class="card-content">
                                         <h3 class="mb-2"><?php echo htmlspecialchars($book['title']); ?></h3>
+                                        <?php
+                                            $sql = "SELECT a.first_name, a.last_name 
+                                                    FROM authors a
+                                                    JOIN book_authors ba ON a.author_id = ba.author_id
+                                                    WHERE ba.book_id = {$book['book_id']}";
+                                            $resultadazo = $con->query($sql);
+                                            $author = $resultadazo->fetch_assoc();
+                                        ?>
+                                        <h5 class="mb-2"><?php echo htmlspecialchars($author['first_name']." ".$author['last_name']); ?></h5>
                                         <p class="mb-3">
                                             <?php
                                             echo !empty($book['description'])

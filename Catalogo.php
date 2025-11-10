@@ -136,65 +136,70 @@ session_start();
   FROM books b
   JOIN book_categories bc ON b.book_id = bc.book_id
   JOIN book_authors ba ON b.book_id = ba.book_id
+  JOIN authors a ON ba.author_id = a.author_id
   WHERE 1=1
 ";
-
-            // Filtro por nombre
-            if (!empty($_GET['filtro_nombre'])) {
-              $nombre = $con->real_escape_string($_GET['filtro_nombre']);
-              $sql .= " AND b.title LIKE '%$nombre%'";
-            }
-
-            // Filtro por categorías
-            if (!empty($_GET['categories'])) {
-              $categorias = array_map('intval', $_GET['categories']); // sanitiza
-              $sql .= " AND bc.category_id IN (" . implode(',', $categorias) . ")";
-            }
-
-            // Filtro por autor
-            if (!empty($_GET['filtro_autor'])) {
-              $autor_id = intval($_GET['filtro_autor']);
-              if ($autor_id > 0) {
-                $sql .= " AND ba.author_id = $autor_id";
-              }
-            }
-
-            if (!empty($_GET['filtro_precio']) && $_GET['filtro_precio'] != '0') {
-              switch ($_GET['filtro_precio']) {
-                case '1':
-                  $sql .= " AND b.price < 20";
-                  break;
-                case '2':
-                  $sql .= " AND b.price BETWEEN 20 AND 40";
-                  break;
-                case '3':
-                  $sql .= " AND b.price BETWEEN 40 AND 60";
-                  break;
-                case '4':
-                  $sql .= " AND b.price > 80";
-                  break;
-              }
-            }
-
-            // --- Ordenamiento ---
-            if (!empty($_GET['filtro_orden']) && $_GET['filtro_orden'] != '0') {
-              switch ($_GET['filtro_orden']) {
-                case '1':
-                  $sql .= " ORDER BY b.price ASC";
-                  break;
-                case '2':
-                  $sql .= " ORDER BY b.price DESC";
-                  break;
-                case '3':
-                  $sql .= " ORDER BY b.title ASC";
-                  break;
-                case '4':
-                  $sql .= " ORDER BY b.title DESC";
-                  break;
-              }
+            $filtro = isset($_GET['filtro']) ? $con->real_escape_string($_GET['filtro']) : '';
+            if (isset($filtro) && $filtro != "") {
+              $sql .= " AND (b.title LIKE '%$filtro%' OR a.first_name LIKE '%$filtro%' OR a.last_name LIKE '%$filtro%')";
             } else {
-              // Por defecto, podrías ordenar por título o relevancia
-              $sql .= " ORDER BY b.book_id DESC";
+              // Filtro por nombre
+              if (!empty($_GET['filtro_nombre'])) {
+                $nombre = $con->real_escape_string($_GET['filtro_nombre']);
+                $sql .= " AND b.title LIKE '%$nombre%'";
+              }
+
+              // Filtro por categorías
+              if (!empty($_GET['categories'])) {
+                $categorias = array_map('intval', $_GET['categories']); // sanitiza
+                $sql .= " AND bc.category_id IN (" . implode(',', $categorias) . ")";
+              }
+
+              // Filtro por autor
+              if (!empty($_GET['filtro_autor'])) {
+                $autor_id = intval($_GET['filtro_autor']);
+                if ($autor_id > 0) {
+                  $sql .= " AND ba.author_id = $autor_id";
+                }
+              }
+
+              if (!empty($_GET['filtro_precio']) && $_GET['filtro_precio'] != '0') {
+                switch ($_GET['filtro_precio']) {
+                  case '1':
+                    $sql .= " AND b.price < 20";
+                    break;
+                  case '2':
+                    $sql .= " AND b.price BETWEEN 20 AND 40";
+                    break;
+                  case '3':
+                    $sql .= " AND b.price BETWEEN 40 AND 60";
+                    break;
+                  case '4':
+                    $sql .= " AND b.price > 80";
+                    break;
+                }
+              }
+
+              // --- Ordenamiento ---
+              if (!empty($_GET['filtro_orden']) && $_GET['filtro_orden'] != '0') {
+                switch ($_GET['filtro_orden']) {
+                  case '1':
+                    $sql .= " ORDER BY b.price ASC";
+                    break;
+                  case '2':
+                    $sql .= " ORDER BY b.price DESC";
+                    break;
+                  case '3':
+                    $sql .= " ORDER BY b.title ASC";
+                    break;
+                  case '4':
+                    $sql .= " ORDER BY b.title DESC";
+                    break;
+                }
+              } else {
+                // Por defecto, podrías ordenar por título o relevancia
+                $sql .= " ORDER BY b.book_id DESC";
+              }
             }
 
             //echo "<pre>$sql</pre>";
@@ -211,6 +216,15 @@ session_start();
                     <img src="<?php echo htmlspecialchars($book['cover_image_url']); ?>" alt="Portada de '<?php echo htmlspecialchars($book['title']); ?>'">
                     <div class="card-content">
                       <h3 class="mb-2"><?php echo htmlspecialchars($book['title']); ?></h3>
+                      <?php
+                                            $sql = "SELECT a.first_name, a.last_name 
+                                                    FROM authors a
+                                                    JOIN book_authors ba ON a.author_id = ba.author_id
+                                                    WHERE ba.book_id = {$book['book_id']}";
+                                            $resultadazo = $con->query($sql);
+                                            $author = $resultadazo->fetch_assoc();
+                                        ?>
+                                        <h5 class="mb-2"><?php echo htmlspecialchars($author['first_name']." ".$author['last_name']); ?></h5>
                       <p class="mb-3">
                         <?php
                         echo !empty($book['description'])
@@ -222,7 +236,7 @@ session_start();
                         <span class="price fs-5 fw-bold">
                           S./<?php echo number_format($book['price'], 2); ?>
                         </span>
-                        <a href="añadir.php?id=<?php echo $book['book_id']; ?>&precio=<?php echo $book['price'];?>&envio='Catalogo.php'" class="buy-btn text-decoration-none">
+                        <a href="añadir.php?id=<?php echo $book['book_id']; ?>&precio=<?php echo $book['price']; ?>&envio='Catalogo.php'" class="buy-btn text-decoration-none">
                           <i class="bi bi-cart-plus me-1"></i>Añadir
                         </a>
                       </div>
@@ -241,22 +255,23 @@ session_start();
 
   <?php include 'includes/footer.php'; ?>
   <?php if (isset($_SESSION['show_alert']) && $_SESSION['show_alert']): ?>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    Swal.fire({
-        icon: 'success',
-        title: '¡Producto añadido!',
-        text: 'El libro se ha añadido al carrito correctamente',
-        confirmButtonText: 'Continuar comprando',
-        confirmButtonColor: '#3085d6',
-        timer: 3000,
-        timerProgressBar: true
-    });
-    
-    // Limpiar la bandera de sesión
-    <?php unset($_SESSION['show_alert']); ?>
-});
-</script>
-<?php endif; ?>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        Swal.fire({
+          icon: 'success',
+          title: '¡Producto añadido!',
+          text: 'El libro se ha añadido al carrito correctamente',
+          confirmButtonText: 'Continuar comprando',
+          confirmButtonColor: '#3085d6',
+          timer: 3000,
+          timerProgressBar: true
+        });
+
+        // Limpiar la bandera de sesión
+        <?php unset($_SESSION['show_alert']); ?>
+      });
+    </script>
+  <?php endif; ?>
 </body>
+
 </html>

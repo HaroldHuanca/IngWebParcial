@@ -65,7 +65,7 @@ if (!isset($_SESSION['usuario'])) {
             <i class="bi bi-star fs-1 text-muted"></i>
             <h3 class="mt-3">No tienes libros favoritos</h3>
             <p class="text-muted">Explora nuestro catálogo y marca los libros que te gusten</p>
-            <a href="producto.php" class="featured-btn mt-3">Explorar Catálogo</a>
+            <a href="Catalogo.php" class="featured-btn mt-3">Explorar Catálogo</a>
         </div>
     </main>
 

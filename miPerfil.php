@@ -29,8 +29,7 @@ if (!isset($_SESSION['usuario'])) {
                 <div class="card shadow-sm" style="background-color: var(--fondo-2);">
                     <div class="card-body text-center">
                         <img src="img/default-avatar.png" alt="Foto de perfil" class="rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
-                        <h3 class="card-title mb-3"><?php echo $user['first_name'];
-                                                    echo $user['last_name']; ?> </h3>
+                        <h3 class="card-title mb-3"><?php echo $user['first_name']." ".$user['last_name']; ?> </h3>
                         <p class="text-muted">Miembro desde <?php echo $user['created_at']; ?></p>
                         <button class="featured-btn mb-2 w-100">
                             <i class="bi bi-pencil-square me-2"></i>Editar Perfil

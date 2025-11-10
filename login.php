@@ -27,7 +27,12 @@ if (isset($_POST['btnEnviar'])) {
         JOIN shopping_carts sc ON ci.cart_id = sc.cart_id
         WHERE sc.user_id = $user_id;";
         $result = $con->query($sql);
-        $_SESSION['cart'] = array();
+        if($result->num_rows == 0){
+            unset($_SESSION['cart']);
+        }
+        else{
+            $_SESSION['cart'] = array();
+        }
         while ($row = $result->fetch_assoc()) {
             $book_id = $row['book_id'];
             $_SESSION['cart'][$book_id]['quantity'] = $row['quantity'];
