@@ -178,10 +178,15 @@ a {
 .featured-login {
   background-color: var(--dark-text);
   color: var(--light-text);
-  padding: 2rem 2rem;
+  padding: 1rem 1rem;
   border-radius: 15px;
 }
-
+.featured-perfil{
+  background-color: var(--dark-text);
+  color: var(--light-text);
+  padding: 3rem 3rem;
+  border-radius: 15px;
+}
 .products-header {
   display: flex;
   justify-content: space-between;
@@ -222,6 +227,20 @@ a {
   background-color: var(--fondo-4dark);
   border-radius: 12px;
   overflow: hidden;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.login-card {
+  background-color: var(--fondo-4dark);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.perfil-card {
+  background-color: var(--fondo-4dark);
+  border-radius: 8px;
+  padding: 8px 8px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -554,6 +573,7 @@ a {
   background-color: var(--dark-text);
   color: var(--light-text);
   padding: 4rem;
+  border-radius: 15px;
 }
 
 /* Link temporal */
@@ -649,4 +669,26 @@ a {
 .sidebar-principal .btn-primary:hover {
   background-color: var(--fondo-4dark); /* Versión más oscura al pasar el mouse */
   border-color: var(--fondo-4dark);
+}
+
+/* Color para pestañas no seleccionadas */
+.nav-tabs .nav-link {
+  color: var(--texto-principal); /* o el color que uses para texto */
+  background-color: transparent; /* fondo limpio */
+  border: none;
+}
+
+/* Color al pasar el mouse */
+.nav-tabs .nav-link:hover {
+  color: var(--light-text); /* define este color o pon uno como #444 */
+  background-color: rgba(0, 0, 0, 0.05); /* sutil sombreado al pasar */
+  border: none;
+}
+
+/* Color para pestaña activa */
+.nav-tabs .nav-link.active {
+  color: var(--dark-text); /* el color de la pestaña activa */
+  background-color: var(--fondo-2); /* puedes usar el mismo que tu card */
+  border: none;
+  border-bottom: 2px solid var(--dark-text); /* línea de énfasis opcional */
 }

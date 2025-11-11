@@ -41,7 +41,7 @@ if (isset($_POST["btnEnviar"])) {
                 <div class="col-12 col-md-8 col-lg-6 col-xl-5">
 
                     <!-- Tarjeta -->
-                    <div class="card shadow-lg rounded-4 border-0" style="background-color: var(--fondo-2);">
+                    <div class="login-card shadow-lg rounded-4 border-0">
                         <div class="card-body p-4 p-sm-5">
 
                             <!-- Logo y título -->
@@ -112,10 +112,10 @@ if (isset($_POST["btnEnviar"])) {
                                 <!-- Botones sociales -->
                                 <p class="text-center text-muted small">O regístrate con</p>
                                 <div class="d-grid gap-2">
-                                    <button class="btn btn-outline-secondary" type="button">
+                                    <button class="btn btn-secondary" type="button">
                                         <i class="bi bi-google me-2"></i> Google
                                     </button>
-                                    <button class="btn btn-outline-secondary" type="button">
+                                    <button class="btn btn-secondary" type="button">
                                         <i class="bi bi-facebook me-2"></i> Facebook
                                     </button>
                                 </div>

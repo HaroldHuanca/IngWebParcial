@@ -16,7 +16,7 @@ if (!isset($_SESSION['usuario'])) {
 <body>
     <?php include 'includes/header.php'; ?>
 
-    <main class="container my-5">
+    <main class="container featured-perfil">
         <?php echo "Bienvenido, " . htmlspecialchars($_SESSION['user_id']) . "!"; ?>
         <div class="row">
             <!-- Información del perfil -->
@@ -26,7 +26,7 @@ if (!isset($_SESSION['usuario'])) {
             $user = $result->fetch_assoc();
             ?>
             <div class="col-lg-4 mb-4">
-                <div class="card shadow-sm" style="background-color: var(--fondo-2);">
+                <div class="perfil-card shadow-sm">
                     <div class="card-body text-center">
                         <img src="img/default-avatar.png" alt="Foto de perfil" class="rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
                         <h3 class="card-title mb-3"><?php echo $user['first_name']." ".$user['last_name']; ?> </h3>
@@ -38,7 +38,7 @@ if (!isset($_SESSION['usuario'])) {
                 </div>
 
                 <!-- Detalles del usuario -->
-                <div class="card mt-4 shadow-sm" style="background-color: var(--fondo-2);">
+                <div class="perfil-card mt-4 shadow-sm">
                     <div class="card-body">
                         <h5 class="card-title mb-4">Información Personal</h5>
                         <div class="mb-3">
@@ -59,7 +59,7 @@ if (!isset($_SESSION['usuario'])) {
 
             <!-- Sección derecha con pestañas -->
             <div class="col-lg-8">
-                <div class="card shadow-sm" style="background-color: var(--fondo-2);">
+                <div class="perfil-card shadow-sm">
                     <div class="card-body">
                         <ul class="nav nav-tabs" id="profileTabs" role="tablist">
                             <li class="nav-item" role="presentation">

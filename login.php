@@ -72,12 +72,12 @@ if (isset($_POST['btnEnviar'])) {
 
     <!-- MAIN CONTENT: Formulario de Login -->
     <main class="d-flex align-items-center py-5 vh-100" style="padding-top: 100px !important;">
-        <div class="container">
-            <div class="row justify-content-center featured-login">
+        <div class="container featured-login">
+            <div class="row justify-content-center ">
                 <div class="col-12 col-md-8 col-lg-6 col-xl-5">
 
                     <!-- Tarjeta con sombra. Usamos un fondo blanco de Bootstrap. -->
-                    <div class="card shadow-lg rounded-4 border-0" style="background-color: var(--fondo-2);">
+                    <div class="login-card shadow-lg rounded-4 border-0" >
                         <div class="card-body p-4 p-sm-5">
 
                             <!-- Logo y Título -->
@@ -129,10 +129,10 @@ if (isset($_POST['btnEnviar'])) {
 
                                 <!-- Botones de Login Social (usando clases de Bootstrap existentes) -->
                                 <div class="d-grid gap-2">
-                                    <button class="btn btn-outline-secondary" type="button">
+                                    <button class="btn btn-secondary" type="button">
                                         <i class="bi bi-google me-2"></i> Continuar con Google
                                     </button>
-                                    <button class="btn btn-outline-secondary" type="button">
+                                    <button class="btn btn-secondary" type="button">
                                         <i class="bi bi-facebook me-2"></i> Continuar con Facebook
                                     </button>
                                 </div>
