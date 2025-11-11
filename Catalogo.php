@@ -117,10 +117,19 @@ session_start();
 
               </div>
 
-              <!-- Botón de Aplicar Filtros -->
-              <div class="d-grid">
-                <button name="filtro" class="btn btn-primary" type="submit">Aplicar Filtros</button>
+              <!-- Botones de acción -->
+              <div class="d-grid gap-2">
+                <!-- Botón de aplicar filtros -->
+                <button name="filtro" class="btn btn-primary" type="submit">
+                  <i class="bi bi-funnel me-1"></i> Aplicar Filtros
+                </button>
+
+                <!-- Botón de borrar filtros -->
+                <a href="Catalogo.php" class="btn btn-primary">
+                  <i class="bi bi-x-circle me-1"></i> Borrar Filtros
+                </a>
               </div>
+
             </div>
           </form>
         </aside>
@@ -217,14 +226,14 @@ session_start();
                     <div class="card-content">
                       <h3 class="mb-2"><?php echo htmlspecialchars($book['title']); ?></h3>
                       <?php
-                                            $sql = "SELECT a.first_name, a.last_name 
+                      $sql = "SELECT a.first_name, a.last_name 
                                                     FROM authors a
                                                     JOIN book_authors ba ON a.author_id = ba.author_id
                                                     WHERE ba.book_id = {$book['book_id']}";
-                                            $resultadazo = $con->query($sql);
-                                            $author = $resultadazo->fetch_assoc();
-                                        ?>
-                                        <h5 class="mb-2"><?php echo htmlspecialchars($author['first_name']." ".$author['last_name']); ?></h5>
+                      $resultadazo = $con->query($sql);
+                      $author = $resultadazo->fetch_assoc();
+                      ?>
+                      <h5 class="mb-2"><?php echo htmlspecialchars($author['first_name'] . " " . $author['last_name']); ?></h5>
                       <p class="mb-3">
                         <?php
                         echo !empty($book['description'])

@@ -172,6 +172,14 @@ a {
   background-color: var(--dark-text);
   color: var(--light-text);
   padding: 4rem 6rem;
+  border-radius: 15px;
+}
+
+.featured-login {
+  background-color: var(--dark-text);
+  color: var(--light-text);
+  padding: 2rem 2rem;
+  border-radius: 15px;
 }
 
 .products-header {
