@@ -524,7 +524,7 @@ a {
 }
 
 .carrito-tabla {
-  background-color: var(--fondo-3);
+  background-color: var(--fondo-4);
   border-radius: 12px;
   overflow: hidden; 
   box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
@@ -691,4 +691,25 @@ a {
   background-color: var(--fondo-2); /* puedes usar el mismo que tu card */
   border: none;
   border-bottom: 2px solid var(--dark-text); /* línea de énfasis opcional */
+}
+
+
+/* Cambio para el contenido de los SweetAlterts*/
+.swal2-popup {
+  background-color: var(--fondo-1) !important;
+  color: var(--dark-text) !important;
+}
+.swal2-title {
+  color: var(--dark-text) !important;
+}
+.swal2-content {
+  color: var(--dark-text) !important;
+}
+.swal2-styled.swal2-confirm {
+  background-color: var(--texto-principal) !important;
+  color: var(--light-text) !important;
+}
+.swal2-styled.swal2-cancel {
+  background-color: var(--fondo-5) !important;
+  color: var(--light-text) !important;
 }

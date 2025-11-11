@@ -71,9 +71,9 @@ if (isset($_POST['btnEnviar'])) {
     <?php include 'includes/header.php'; ?>
 
     <!-- MAIN CONTENT: Formulario de Login -->
-    <main class="d-flex align-items-center py-5 vh-100" style="padding-top: 100px !important;">
-        <div class="container featured-login">
-            <div class="row justify-content-center ">
+    <main class="d-flex align-items-center py-5 my-5" style="margin-top: 20px;">
+        <div class="container">
+            <div class="row justify-content-center featured-login">
                 <div class="col-12 col-md-8 col-lg-6 col-xl-5">
 
                     <!-- Tarjeta con sombra. Usamos un fondo blanco de Bootstrap. -->
