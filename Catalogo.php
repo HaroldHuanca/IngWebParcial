@@ -138,7 +138,7 @@ session_start();
 
         <section class="col-lg-9 col-md-8 catalogo-section
         ">
-          <div class="products-grid">
+          <div class="products-grid2">
             <?php
             $sql = "
   SELECT DISTINCT b.*
@@ -211,7 +211,7 @@ session_start();
               }
             }
 
-            echo "<pre>$sql</pre>";
+            //echo "<pre>$sql</pre>";
             // Opcional: otros filtros (autor, precio, etc.) pueden agregarse aquí
 
             // Ejecutar
@@ -248,6 +248,17 @@ session_start();
                         <a href="añadir.php?id=<?php echo $book['book_id']; ?>&precio=<?php echo $book['price']; ?>&envio='Catalogo.php'" class="buy-btn text-decoration-none">
                           <i class="bi bi-cart-plus me-1"></i>Añadir
                         </a>
+                        <?php
+                          if(isset($_SESSION['user_id'])):
+                            $user_id=$_SESSION['user_id'];
+                            $book_id=$book['book_id'];
+                            $sqlFav = "SELECT * from favorites where user_id = $user_id and book_id = $book_id;";
+                            $resultFav = $con->query($sqlFav);
+                          ?>
+                          <a href="alternar.php?user=<?php echo $user_id;?>&book=<?php echo $book_id?>&eliminar=<?php echo ($resultFav->num_rows > 0);?>&envio='Catalogo.php'">
+                            <i class="bi bi-star<?php echo ($resultFav->num_rows > 0 ? '-fill text-warning' : ''); ?> fs-3"></i>
+                          </a>
+                          <?php endif;?>
                       </div>
                     </div>
                   </a>

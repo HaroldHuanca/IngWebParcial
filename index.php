@@ -54,14 +54,14 @@ session_start();
                                     <div class="card-content">
                                         <h3 class="mb-2"><?php echo htmlspecialchars($book['title']); ?></h3>
                                         <?php
-                                            $sql = "SELECT a.first_name, a.last_name 
+                                        $sql = "SELECT a.first_name, a.last_name 
                                                     FROM authors a
                                                     JOIN book_authors ba ON a.author_id = ba.author_id
                                                     WHERE ba.book_id = {$book['book_id']}";
-                                            $resultadazo = $con->query($sql);
-                                            $author = $resultadazo->fetch_assoc();
+                                        $resultadazo = $con->query($sql);
+                                        $author = $resultadazo->fetch_assoc();
                                         ?>
-                                        <h5 class="mb-2"><?php echo htmlspecialchars($author['first_name']." ".$author['last_name']); ?></h5>
+                                        <h5 class="mb-2"><?php echo htmlspecialchars($author['first_name'] . " " . $author['last_name']); ?></h5>
                                         <p class="mb-3">
                                             <?php
                                             echo !empty($book['description'])
@@ -75,9 +75,20 @@ session_start();
                                     <span class="price fs-5 fw-bold">
                                         S./<?php echo number_format($book['price'], 2); ?>
                                     </span>
-                                    <a href="añadir.php?id=<?php echo $book['book_id']; ?>&precio=<?php echo $book['price'];?>&envio=index.php"
+                                    <a href="añadir.php?id=<?php echo $book['book_id']; ?>&precio=<?php echo $book['price']; ?>&envio=index.php"
                                         class="buy-btn d-inline-flex align-items-center gap-1"><i class="bi bi-cart-plus"></i> Añadir
                                     </a>
+                                    <?php
+                                    if (isset($_SESSION['user_id'])):
+                                        $user_id = $_SESSION['user_id'];
+                                        $book_id = $book['book_id'];
+                                        $sqlFav = "SELECT * from favorites where user_id = $user_id and book_id = $book_id;";
+                                        $resultFav = $con->query($sqlFav);
+                                    ?>
+                                        <a href="alternar.php?user=<?php echo $user_id; ?>&book=<?php echo $book_id ?>&eliminar=<?php echo ($resultFav->num_rows > 0);?>&envio='index.php'">
+                                            <i class="bi bi-star<?php echo ($resultFav->num_rows > 0 ? '-fill text-warning' : ''); ?> fs-3"></i>
+                                        </a>
+                                    <?php endif; ?>
                                 </div>
 
                             </div>
