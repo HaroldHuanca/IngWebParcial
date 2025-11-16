@@ -150,12 +150,28 @@ session_start();
 ";
             $filtro = isset($_GET['filtro']) ? $con->real_escape_string($_GET['filtro']) : '';
             if (isset($filtro) && $filtro != "") {
-              $sql .= " AND (b.title LIKE '%$filtro%' OR a.first_name LIKE '%$filtro%' OR a.last_name LIKE '%$filtro%')";
+              $sql .= "
+      AND (
+        b.title LIKE '%$filtro%'
+        OR a.first_name LIKE '%$filtro%'
+        OR a.last_name LIKE '%$filtro%'
+        OR CONCAT(a.first_name, ' ', a.last_name) LIKE '%$filtro%'
+        OR CONCAT(a.last_name, ' ', a.first_name) LIKE '%$filtro%'
+      )
+    ";
             } else {
               // Filtro por nombre
               if (!empty($_GET['filtro_nombre'])) {
                 $nombre = $con->real_escape_string($_GET['filtro_nombre']);
-                $sql .= " AND (b.title LIKE '%$nombre%' OR a.first_name LIKE '%$nombre%' OR a.last_name LIKE '%$nombre%')";
+                $sql .= "
+      AND (
+        b.title LIKE '%$nombre%'
+        OR a.first_name LIKE '%$nombre%'
+        OR a.last_name LIKE '%$nombre%'
+        OR CONCAT(a.first_name, ' ', a.last_name) LIKE '%$nombre%'
+        OR CONCAT(a.last_name, ' ', a.first_name) LIKE '%$nombre%'
+      )
+    ";
               }
 
               // Filtro por categorías

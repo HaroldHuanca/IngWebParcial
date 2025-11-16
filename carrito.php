@@ -78,7 +78,7 @@ require 'includes/conexion.php';
                                 </td>
                                 <td class="text-center">S/ <span class="item-subtotal"><?php echo number_format($subtotal, 2); ?></span></td>
                                 <td class="text-end">
-                                    <button class="featured-btn-eliminar remove-item" data-id="<?php echo $book_id; ?>">Eliminar</button>
+                                    <a href="eliminar.php?book_id=<?php echo $book_id;?> "class="featured-btn-eliminar">Eliminar</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
