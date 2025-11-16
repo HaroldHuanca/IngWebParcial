@@ -33,6 +33,7 @@ require 'includes/conexion.php';
                         } else {
                             $cart = array();
                         }
+                        $total = 0;
                         foreach ($cart as $book_id => $item):
 
                             // Obtener el título del libro
@@ -62,6 +63,7 @@ require 'includes/conexion.php';
                             $quantity = $item['quantity'];
                             $price = $item['price_at_time'];
                             $subtotal = $quantity * $price;
+                            $total += $subtotal;
                         ?>
                             <!-- Item del carrito -->
                             <tr class="cart-item" data-price="<?php echo $price; ?>">
@@ -78,7 +80,7 @@ require 'includes/conexion.php';
                                 </td>
                                 <td class="text-center">S/ <span class="item-subtotal"><?php echo number_format($subtotal, 2); ?></span></td>
                                 <td class="text-end">
-                                    <a href="eliminar.php?book_id=<?php echo $book_id;?> "class="featured-btn-eliminar">Eliminar</a>
+                                    <a href="carrito.php?eliminar=<?php echo $book_id; ?>" class="featured-btn-eliminar">Eliminar</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -110,7 +112,7 @@ require 'includes/conexion.php';
                         <h5>Resumen del pedido</h5>
                         <div class="d-flex justify-content-between my-2">
                             <div>Subtotal</div>
-                            <div>S/ <span id="subtotalValue">219.90</span></div>
+                            <div>S/ <span id="subtotalValue"><?php echo $total; ?></span></div>
                         </div>
                         <div class="d-flex justify-content-between my-2">
                             <div>Envío</div>
@@ -119,7 +121,7 @@ require 'includes/conexion.php';
                         <hr>
                         <div class="d-flex justify-content-between fw-bold fs-5">
                             <div>Total</div>
-                            <div>S/ <span id="totalValue">229.90</span></div>
+                            <div>S/ <span id="totalValue"><?php echo ($total + 10); ?></span></div>
                         </div>
                         <div class="mt-3 text-end">
                             <button id="checkoutBtn" class="btn featured-btn">Realizar pedido</button>
@@ -131,69 +133,56 @@ require 'includes/conexion.php';
     </main>
 
     <?php include 'includes/footer.php'; ?>
+    <?php if (isset($_SESSION['eliminado']) && $_SESSION['eliminado']): ?>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Producto Eliminado!',
+                    text: 'Se han quitado los libros del carrito exitosamente.',
+                    confirmButtonText: 'Sigue personalizando tu carrito',
+                    confirmButtonColor: '#3085d6',
+                    timer: 3000,
+                    timerProgressBar: true
+                });
 
-    <script>
-        // Actualiza subtotales y totales
-        function updateTotals() {
-            const rows = document.querySelectorAll('.cart-item');
-            let subtotal = 0;
-            rows.forEach(row => {
-                if (row.style.display === 'none') return;
-                const price = parseFloat(row.dataset.price) || 0;
-                const qtyInput = row.querySelector('.quantity-input');
-                const qty = Math.max(1, parseInt(qtyInput.value, 10) || 1);
-                const itemSubtotal = price * qty;
-                row.querySelector('.item-subtotal').textContent = itemSubtotal.toFixed(2);
-                subtotal += itemSubtotal;
+                // Limpiar la bandera de sesión
+                <?php unset($_SESSION['eliminado']); ?>
             });
+        </script>
+    <?php endif; ?>
+    <?php if (isset($_GET['eliminar']) && $_GET['eliminar']):
+                $book_id = $_GET['eliminar'] ?>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
 
-            const shipping = subtotal > 0 ? 10.00 : 0.00; // tarifa fija de ejemplo
-            const total = subtotal + shipping;
+                Swal.fire({
+                    title: '¿Estás seguro?',
+                    text: "¿Deseas eliminar este producto del carrito?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText: 'No, cancelar',
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Redirige a la página PHP
+                        window.location.href = "eliminar.php?book_id=<?php echo $book_id; ?> ";
+                    } else {
+                        // Si presiona "No"
+                        Swal.fire({
+                            title: 'Operación cancelada',
+                            icon: 'info',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    }
+                });
 
-            document.getElementById('subtotalValue').textContent = subtotal.toFixed(2);
-            document.getElementById('shippingValue').textContent = shipping.toFixed(2);
-            document.getElementById('totalValue').textContent = total.toFixed(2);
-        }
-
-        // Inicializa controladores
-        document.querySelectorAll('.quantity-input').forEach(input => {
-            input.addEventListener('change', () => {
-                if (parseInt(input.value, 10) < 1 || isNaN(parseInt(input.value, 10))) input.value = 1;
-                updateTotals();
             });
-        });
-
-        document.querySelectorAll('.remove-item').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const row = e.target.closest('tr');
-                row.style.display = 'none';
-                updateTotals();
-            });
-        });
-
-        document.getElementById('checkoutBtn').addEventListener('click', () => {
-            const subtotal = parseFloat(document.getElementById('subtotalValue').textContent) || 0;
-            if (subtotal <= 0) {
-                alert('Tu carrito está vacío. Agrega productos antes de realizar el pedido.');
-                return;
-            }
-
-            const form = document.getElementById('orderForm');
-            if (!form.reportValidity()) return;
-
-            const name = document.getElementById('name').value;
-            const address = document.getElementById('address').value;
-            const phone = document.getElementById('phone').value;
-            const total = document.getElementById('totalValue').textContent;
-
-            // En una app real aquí enviaríamos los datos al servidor.
-            alert(`Pedido realizado\n\nCliente: ${name}\nDirección: ${address}\nTel: ${phone}\nTotal: S/ ${total}`);
-        });
-
-        // Calcular totales al cargar
-        updateTotals();
-    </script>
-
+        </script>
+    <?php endif; ?>
 </body>
 
 </html>
