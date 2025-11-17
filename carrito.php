@@ -90,23 +90,9 @@ require 'includes/conexion.php';
 
             <div class="row mt-4">
                 <div class="col-md-6">
-                    <h5>Datos para el pedido</h5>
-                    <form id="orderForm">
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Nombre completo</label>
-                            <input type="text" id="name" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="address" class="form-label">Dirección de envío</label>
-                            <input type="text" id="address" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="phone" class="form-label">Teléfono</label>
-                            <input type="tel" id="phone" class="form-control" required>
-                        </div>
-                    </form>
-                </div>
 
+                </div>
+                <?php if(isset($_SESSION['cart'])&& count($_SESSION['cart'])>0): ?>
                 <div class="col-md-6">
                     <div class="card p-3">
                         <h5>Resumen del pedido</h5>
@@ -123,16 +109,71 @@ require 'includes/conexion.php';
                             <div>Total</div>
                             <div>S/ <span id="totalValue"><?php echo ($total + 10); ?></span></div>
                         </div>
+                        <?php
+                        if ($total <= 0) {
+                            // Carrito vacío → enviar al catálogo
+                            $url = 'Catalogo.php?compra=true';
+                        } elseif (isset($_SESSION['user_id']) && $_SESSION['user_id']) {
+                            // Usuario logueado → pasar a pedido
+                            $url = 'pedido.php?total_amount=' . ($total + 10);
+                        } else {
+                            // Usuario no logueado → mandar al carrito con mensaje
+                            $url = 'carrito.php?mensaje=true';
+                        }
+                        ?>
                         <div class="mt-3 text-end">
-                            <button id="checkoutBtn" class="btn featured-btn">Realizar pedido</button>
+                            <a href="<?= $url ?>" id="checkoutBtn" class="btn featured-btn">
+                                Realizar pedido
+                            </a>
                         </div>
                     </div>
                 </div>
+                <?php endif; ?>
             </div>
         </section>
+        <!-- Mensaje cuando el carrito está vacío -->
+        <div id="noCartItems" class="text-center py-5" style="display: none;">
+            <i class="bi bi-cart-x fs-1 text-muted"></i>
+            <h3 class="mt-3">Tu carrito está vacío</h3>
+            <p class="text-muted">Agrega libros desde nuestro catálogo para continuar con tu compra.</p>
+            <a href="Catalogo.php" class="featured-btn mt-3">Explorar Catálogo</a>
+        </div>
     </main>
 
     <?php include 'includes/footer.php'; ?>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const cartTableBody = document.querySelector("#cartTable tbody");
+            const noCartMessage = document.getElementById("noCartItems");
+            const cartTable = document.querySelector(".carrito-tabla");
+
+            function updateCartView() {
+                const hasItems = cartTableBody.querySelectorAll(".cart-item").length > 0;
+
+                if (hasItems) {
+                    cartTable.style.display = "block";
+                    noCartMessage.style.display = "none";
+                } else {
+                    cartTable.style.display = "none";
+                    noCartMessage.style.display = "block";
+                }
+            }
+
+            // Cuando se elimina un item por el botón "Eliminar"
+            document.querySelectorAll(".featured-btn-eliminar").forEach(btn => {
+                btn.addEventListener("click", function(e) {
+                    // No prevenimos la navegación porque tu botón elimina vía GET (PHP)
+                    // Pero igualmente actualizamos la vista antes de recargar
+                    const row = this.closest(".cart-item");
+                    row.remove();
+                    updateCartView();
+                });
+            });
+
+            // Verificar estado inicial al cargar la página
+            updateCartView();
+        });
+    </script>
     <?php if (isset($_SESSION['eliminado']) && $_SESSION['eliminado']): ?>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
@@ -152,7 +193,7 @@ require 'includes/conexion.php';
         </script>
     <?php endif; ?>
     <?php if (isset($_GET['eliminar']) && $_GET['eliminar']):
-                $book_id = $_GET['eliminar'] ?>
+        $book_id = $_GET['eliminar'] ?>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
 
@@ -169,6 +210,37 @@ require 'includes/conexion.php';
                     if (result.isConfirmed) {
                         // Redirige a la página PHP
                         window.location.href = "eliminar.php?book_id=<?php echo $book_id; ?> ";
+                    } else {
+                        // Si presiona "No"
+                        Swal.fire({
+                            title: 'Operación cancelada',
+                            icon: 'info',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    }
+                });
+
+            });
+        </script>
+    <?php endif; ?>
+    <?php if (isset($_GET['mensaje']) && $_GET['mensaje']): ?>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+
+                Swal.fire({
+                    title: 'Importante',
+                    text: "Para completar tu pedido, por favor crea una cuenta.\nEsto nos permite brindarte un mejor seguimiento y seguridad en tus compras.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Sí, crea una cuenta',
+                    cancelButtonText: 'No, cancelar',
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Redirige a la página PHP
+                        window.location.href = "registro.php";
                     } else {
                         // Si presiona "No"
                         Swal.fire({

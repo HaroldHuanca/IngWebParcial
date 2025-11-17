@@ -28,7 +28,7 @@ if (!isset($_SESSION['usuario'])) {
             <div class="col-lg-4 mb-4">
                 <div class="perfil-card shadow-sm">
                     <div class="card-body text-center">
-                        <img src="img/default-avatar.png" alt="Foto de perfil" class="rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                        <img src="img/user-default.jpg" alt="Foto de perfil" class="rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
                         <h3 class="card-title mb-3"><?php echo $user['first_name']." ".$user['last_name']; ?> </h3>
                         <p class="text-muted">Miembro desde <?php echo $user['created_at']; ?></p>
                         <button class="featured-btn mb-2 w-100">
@@ -138,7 +138,7 @@ if (!isset($_SESSION['usuario'])) {
                                             <?php
                                             if(isset($_SESSION['user_id'])):
                                                 $user_id = $_SESSION['user_id'];
-                                                $sql = "Select * from orders where order_id = $user_id";
+                                                $sql = "Select * from orders where user_id = $user_id";
                                                 $result = $con->query($sql);
                                                 while($order = $result->fetch_assoc()):
                                             ?>
@@ -164,6 +164,23 @@ if (!isset($_SESSION['usuario'])) {
         </div>
     </main>
     <?php include 'includes/footer.php'; ?>
+    <?php if (isset($_GET['order']) && $_GET['order']): ?>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Pedido Generado!',
+                    text: 'Se ha generado su pedido exitosamente.',
+                    confirmButtonText: '¡Gracias por su compra!',
+                    confirmButtonColor: '#3085d6',
+                    timer: 3000,
+                    timerProgressBar: true
+                });
+
+                // Limpiar la bandera de sesión
+            });
+        </script>
+    <?php endif; ?>
 </body>
 
 </html>

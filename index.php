@@ -180,6 +180,24 @@ session_start();
             });
         </script>
     <?php endif; ?>
+    <?php if (isset($_GET['msg']) && $_GET['msg']): 
+            $msg = $_GET['msg'];?>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Cambio Producido!',
+                    text: '<?php echo htmlspecialchars($msg); ?>',
+                    confirmButtonText: 'Continuar comprando',
+                    confirmButtonColor: '#3085d6',
+                    timer: 3000,
+                    timerProgressBar: true
+                });
+
+                // Limpiar la bandera de sesión
+            });
+        </script>
+    <?php endif; ?>
 </body>
 
 </html>

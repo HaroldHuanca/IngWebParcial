@@ -4,6 +4,21 @@ include 'includes/conexion.php';
 if (!isset($_SESSION['usuario'])) {
     header('Location: login.php');
     exit();
+               
+}
+$result = null;
+if(isset($_GET['confirmar_limpiar']) && $_GET['confirmar_limpiar']){
+    $user_id = $_SESSION['user_id'];
+    $sql = "DELETE FROM favorites WHERE user_id = $user_id";
+    $con->query($sql);
+}else{
+ $sql = "SELECT b.* 
+            FROM books b, favorites f 
+            WHERE f.user_id = '{$_SESSION['user_id']}' 
+            AND b.book_id = f.book_id 
+            ORDER BY b.created_at DESC";
+
+$result = $con->query($sql);
 }
 
 ?>
@@ -17,25 +32,21 @@ if (!isset($_SESSION['usuario'])) {
     <main class="container my-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2>Mis Libros Favoritos</h2>
+            <?php
+                if ($result && $result->num_rows > 0):?>
             <div class="d-flex gap-2">
-                <button class="featured-btn" id="clearFavorites">
+                <a href="favoritos.php?limpiar=true" class="featured-btn" id="clearFavorites">
                     <i class="bi bi-trash3"></i> Limpiar favoritos
-                </button>
+                </a>
             </div>
+            <?php endif; ?>
         </div>
         <section class="featured-products py-5">
             <!-- Grid de libros favoritos -->
             <div class="products-grid">
                 <!-- Ejemplo de libro favorito -->
+                
                 <?php
-                $sql = "SELECT b.* 
-                            FROM books b, favorites f 
-                            WHERE f.user_id = '{$_SESSION['user_id']}' 
-                            AND b.book_id = f.book_id 
-                            ORDER BY b.created_at DESC";
-
-                $result = $con->query($sql);
-
                 if ($result && $result->num_rows > 0):
                     while ($book = $result->fetch_assoc()):
                 ?>
@@ -53,6 +64,20 @@ if (!isset($_SESSION['usuario'])) {
                                     </p>
                                 </div>
                             </a>
+                            <div class="card-footer d-flex justify-content-between align-items-center p-3">
+                                    <?php
+                                    if (isset($_SESSION['user_id'])):
+                                        $user_id = $_SESSION['user_id'];
+                                        $book_id = $book['book_id'];
+                                        $sqlFav = "SELECT * from favorites where user_id = $user_id and book_id = $book_id;";
+                                        $resultFav = $con->query($sqlFav);
+                                    ?>
+                                        <a href="favoritos.php?userDel=<?php echo $user_id; ?>&bookDel=<?php echo $book_id ?>" 
+                                        class="buy-btn d-flex align-items-center gap-1">
+                                            <i class="bi bi-star<?php echo ($resultFav->num_rows > 0 ? '-fill text-warning' : ''); ?> fs-3"></i>Quitar
+                                        </a>
+                                    <?php endif; ?>
+                            </div>
                         </div>
                     <?php
                     endwhile;
@@ -95,17 +120,108 @@ if (!isset($_SESSION['usuario'])) {
             });
         });
 
-        // Limpiar todos los favoritos
-        document.getElementById('clearFavorites').addEventListener('click', function() {
-            if (confirm('¿Estás seguro de que deseas eliminar todos tus favoritos?')) {
-                productGrid.innerHTML = '';
-                updateFavoritesView();
-            }
-        });
-
         // Verificar estado inicial
         updateFavoritesView();
     </script>
+    <?php if (isset($_GET['msg']) && $_GET['msg']): 
+            $msg = $_GET['msg'];?>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Cambio Producido!',
+                    text: '<?php echo htmlspecialchars($msg); ?>',
+                    confirmButtonText: 'Continuar comprando',
+                    confirmButtonColor: '#3085d6',
+                    timer: 3000,
+                    timerProgressBar: true
+                });
+
+                // Limpiar la bandera de sesión
+            });
+        </script>
+    <?php endif; ?>
+    <?php if (isset($_GET['bookDel']) && $_GET['bookDel']&&isset($_GET['userDel']) && $_GET['userDel']): 
+            $bookDel = $_GET['bookDel'];
+            $userDel = $_GET['userDel'];?>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+
+                Swal.fire({
+                    title: '¿Deseas eliminar este libro de tus favoritos?',
+                    text: "Se eliminara el libro de tus favoritos.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText: 'No, cancelar',
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Redirige a la página PHP
+                        window.location.href = "alternar.php?user=<?php echo $userDel; ?>&book=<?php echo $bookDel; ?>&eliminar=1&envio='favoritos.php'";
+                    } else {
+                        // Si presiona "No"
+                        Swal.fire({
+                            title: 'Operación cancelada',
+                            icon: 'info',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    }
+                });
+
+            });
+        </script>
+    <?php endif; ?>
+    <?php if (isset($_GET['limpiar']) && $_GET['limpiar']):?>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+
+                Swal.fire({
+                    title: '¿Deseas eliminar todos los libro de tus favoritos?',
+                    text: "Se eliminaran todos lo libros de tus favoritos.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText: 'No, cancelar',
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Redirige a la página PHP
+                        window.location.href = "favoritos.php?confirmar_limpiar=1";
+                    } else {
+                        // Si presiona "No"
+                        Swal.fire({
+                            title: 'Operación cancelada',
+                            icon: 'info',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    }
+                });
+
+            });
+        </script>
+    <?php endif; ?>
+    <?php if (isset($_GET['confirmar_limpiar']) && $_GET['confirmar_limpiar']): ?>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Cambio Producido!',
+                    text: 'Tus favoritos han sido limpiados.',
+                    confirmButtonText: 'Continuar comprando',
+                    confirmButtonColor: '#3085d6',
+                    timer: 3000,
+                    timerProgressBar: true
+                });
+
+                // Limpiar la bandera de sesión
+            });
+        </script>
+    <?php endif; ?>
 </body>
 
 </html>

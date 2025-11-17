@@ -20,7 +20,7 @@ if (isset($_GET['book_id'])) {
 }
 if(isset($_SESSION['user_id'])){
     $user_id = $_SESSION['user_id'];
-    $sql = "DELETE from cart_items WHERE user_id = $user_id AND book_id = $book_id;";
+    $sql = "DELETE from cart_items WHERE cart_id = $user_id AND book_id = $book_id;";
     $con->query($sql);
 }
 
