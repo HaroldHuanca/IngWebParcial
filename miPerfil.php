@@ -31,9 +31,9 @@ if (!isset($_SESSION['usuario'])) {
                         <img src="img/user-default.jpg" alt="Foto de perfil" class="rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
                         <h3 class="card-title mb-3"><?php echo $user['first_name']." ".$user['last_name']; ?> </h3>
                         <p class="text-muted">Miembro desde <?php echo $user['created_at']; ?></p>
-                        <button class="featured-btn mb-2 w-100">
+                        <a href="editarPerfil.php" class="featured-btn mb-2 w-100">
                             <i class="bi bi-pencil-square me-2"></i>Editar Perfil
-                        </button>
+                        </a>
                     </div>
                 </div>
 
@@ -147,7 +147,7 @@ if (!isset($_SESSION['usuario'])) {
                                                 <td><?php echo $order['order_date'];?></td>
                                                 <td><span class="badge bg-success"><?php echo $order['status'];?></span></td>
                                                 <td><?php echo $order['total_amount'];?></td>
-                                                <td><button class="btn btn-sm btn-outline-primary">Ver detalles</button></td>
+                                                <td><a href="detallePedido.php?order_id=<?php echo $order['order_id'];?>"class="btn btn-sm btn-outline-primary">Ver detalles</a></td>
                                             </tr>
                                             <?php
                                                 endwhile;
