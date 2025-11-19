@@ -32,9 +32,9 @@ if (isset($_POST['btnEnviar'])) {
                 $sqlCheckCart = "SELECT * FROM shopping_carts WHERE user_id = $user_id;";
                 $resCheck = $con->query($sqlCheckCart);
                 if($resCheck->num_rows ==0){
-                $sqlInsert = "INSERT INTO shopping_carts (cart_id, user_id, created_at) VALUES ($user_id, $user_id, NOW());";
+                    $sqlInsert = "INSERT INTO shopping_carts (cart_id, user_id, created_at) VALUES ($user_id, $user_id, NOW());";
+                    $con->query($sqlInsert);
                 }
-                $con->query($sqlInsert);
                 foreach ($cart as $book_id => $item):
                     $quantity = $item['quantity'];
                     $price_at_time = $item['price_at_time'];

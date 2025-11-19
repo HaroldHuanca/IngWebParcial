@@ -4,6 +4,29 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 require 'includes/conexion.php';
+
+if(isset($_GET['book_id']) && isset($_GET['quantity'])) {
+    $book_id = intval($_GET['book_id']);
+    $quantity = intval($_GET['quantity']);
+    $user_id = $_SESSION['user_id'] ?? null;
+
+    if (isset($_SESSION['cart'][$book_id])) {
+        // Actualizar la cantidad en la sesión
+        $_SESSION['cart'][$book_id]['quantity'] = $quantity;
+
+        if ($user_id) {
+            // Actualizar la cantidad en la base de datos
+            $sql = "UPDATE cart_items ci
+                    JOIN shopping_carts sc ON ci.cart_id = sc.cart_id
+                    SET ci.quantity = $quantity
+                    WHERE sc.user_id = $user_id AND ci.book_id = $book_id;";
+            $con->query($sql);
+        }
+    }
+    // Redirigir de vuelta al carrito
+    header('Location: carrito.php');
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -66,7 +89,7 @@ require 'includes/conexion.php';
                             $total += $subtotal;
                         ?>
                             <!-- Item del carrito -->
-                            <tr class="cart-item" data-price="<?php echo $price; ?>">
+                            <tr class="cart-item" data-book-id="<?php echo $book_id; ?>" data-price="<?php echo $price; ?>">
                                 <td class="d-flex align-items-center">
                                     <img src="<?php echo $cover; ?>" alt="<?php echo htmlspecialchars($title); ?>" width="80" class="me-3">
                                     <div>
@@ -92,42 +115,42 @@ require 'includes/conexion.php';
                 <div class="col-md-6">
 
                 </div>
-                <?php if(isset($_SESSION['cart'])&& count($_SESSION['cart'])>0): ?>
-                <div class="col-md-6">
-                    <div class="card p-3">
-                        <h5>Resumen del pedido</h5>
-                        <div class="d-flex justify-content-between my-2">
-                            <div>Subtotal</div>
-                            <div>S/ <span id="subtotalValue"><?php echo $total; ?></span></div>
-                        </div>
-                        <div class="d-flex justify-content-between my-2">
-                            <div>Envío</div>
-                            <div>S/ <span id="shippingValue">10.00</span></div>
-                        </div>
-                        <hr>
-                        <div class="d-flex justify-content-between fw-bold fs-5">
-                            <div>Total</div>
-                            <div>S/ <span id="totalValue"><?php echo ($total + 10); ?></span></div>
-                        </div>
-                        <?php
-                        if ($total <= 0) {
-                            // Carrito vacío → enviar al catálogo
-                            $url = 'Catalogo.php?compra=true';
-                        } elseif (isset($_SESSION['user_id']) && $_SESSION['user_id']) {
-                            // Usuario logueado → pasar a pedido
-                            $url = 'pedido.php?total_amount=' . ($total + 10);
-                        } else {
-                            // Usuario no logueado → mandar al carrito con mensaje
-                            $url = 'carrito.php?mensaje=true';
-                        }
-                        ?>
-                        <div class="mt-3 text-end">
-                            <a href="<?= $url ?>" id="checkoutBtn" class="btn featured-btn">
-                                Realizar pedido
-                            </a>
+                <?php if (isset($_SESSION['cart']) && count($_SESSION['cart']) > 0): ?>
+                    <div class="col-md-6">
+                        <div class="card p-3">
+                            <h5>Resumen del pedido</h5>
+                            <div class="d-flex justify-content-between my-2">
+                                <div>Subtotal</div>
+                                <div>S/ <span id="subtotalValue"><?php echo $total; ?></span></div>
+                            </div>
+                            <div class="d-flex justify-content-between my-2">
+                                <div>Envío</div>
+                                <div>S/ <span id="shippingValue">10.00</span></div>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between fw-bold fs-5">
+                                <div>Total</div>
+                                <div>S/ <span id="totalValue"><?php echo ($total + 10); ?></span></div>
+                            </div>
+                            <?php
+                            if ($total <= 0) {
+                                // Carrito vacío → enviar al catálogo
+                                $url = 'Catalogo.php?compra=true';
+                            } elseif (isset($_SESSION['user_id']) && $_SESSION['user_id']) {
+                                // Usuario logueado → pasar a pedido
+                                $url = 'pedido.php?total_amount=' . ($total + 10);
+                            } else {
+                                // Usuario no logueado → mandar al carrito con mensaje
+                                $url = 'carrito.php?mensaje=true';
+                            }
+                            ?>
+                            <div class="mt-3 text-end">
+                                <a href="<?= $url ?>" id="checkoutBtn" class="btn featured-btn">
+                                    Realizar pedido
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
                 <?php endif; ?>
             </div>
         </section>
@@ -172,6 +195,18 @@ require 'includes/conexion.php';
 
             // Verificar estado inicial al cargar la página
             updateCartView();
+        });
+    </script>
+    <script>
+        document.querySelectorAll('.quantity-input').forEach(input => {
+            input.addEventListener('change', function() {
+                const row = this.closest('.cart-item');
+                const bookId = row.getAttribute('data-book-id');
+                const quantity = this.value;
+
+                // Redirigir con GET
+                window.location.href = `carrito.php?book_id=${bookId}&quantity=${quantity}`;
+            });
         });
     </script>
     <?php if (isset($_SESSION['eliminado']) && $_SESSION['eliminado']): ?>
