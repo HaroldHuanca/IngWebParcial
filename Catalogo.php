@@ -148,28 +148,30 @@ session_start();
   JOIN authors a ON ba.author_id = a.author_id
   WHERE 1=1
 ";
-            $filtro = isset($_GET['filtro']) ? $con->real_escape_string($_GET['filtro']) : '';
+            $filtro = isset($_GET['filtro']) ? trim($_GET['filtro']) : '';
             if (isset($filtro) && $filtro != "") {
+              $filtro_escaped = '%' . $con->real_escape_string($filtro) . '%';
               $sql .= "
       AND (
-        b.title LIKE '%$filtro%'
-        OR a.first_name LIKE '%$filtro%'
-        OR a.last_name LIKE '%$filtro%'
-        OR CONCAT(a.first_name, ' ', a.last_name) LIKE '%$filtro%'
-        OR CONCAT(a.last_name, ' ', a.first_name) LIKE '%$filtro%'
+        b.title LIKE '$filtro_escaped'
+        OR a.first_name LIKE '$filtro_escaped'
+        OR a.last_name LIKE '$filtro_escaped'
+        OR CONCAT(a.first_name, ' ', a.last_name) LIKE '$filtro_escaped'
+        OR CONCAT(a.last_name, ' ', a.first_name) LIKE '$filtro_escaped'
       )
     ";
             } else {
               // Filtro por nombre
               if (!empty($_GET['filtro_nombre'])) {
-                $nombre = $con->real_escape_string($_GET['filtro_nombre']);
+                $nombre = trim($_GET['filtro_nombre']);
+                $nombre_escaped = '%' . $con->real_escape_string($nombre) . '%';
                 $sql .= "
       AND (
-        b.title LIKE '%$nombre%'
-        OR a.first_name LIKE '%$nombre%'
-        OR a.last_name LIKE '%$nombre%'
-        OR CONCAT(a.first_name, ' ', a.last_name) LIKE '%$nombre%'
-        OR CONCAT(a.last_name, ' ', a.first_name) LIKE '%$nombre%'
+        b.title LIKE '$nombre_escaped'
+        OR a.first_name LIKE '$nombre_escaped'
+        OR a.last_name LIKE '$nombre_escaped'
+        OR CONCAT(a.first_name, ' ', a.last_name) LIKE '$nombre_escaped'
+        OR CONCAT(a.last_name, ' ', a.first_name) LIKE '$nombre_escaped'
       )
     ";
               }

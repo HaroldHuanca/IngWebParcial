@@ -21,16 +21,20 @@ if (!isset($_SESSION['usuario'])) {
         <div class="row">
             <!-- Información del perfil -->
             <?php
-            $sql = "SELECT * FROM users WHERE user_id = '{$_SESSION['user_id']}'";
-            $result = $con->query($sql);
+            $user_id = intval($_SESSION['user_id']);
+            $sql = "SELECT * FROM users WHERE user_id = ?";
+            $stmt = $con->prepare($sql);
+            $stmt->bind_param("i", $user_id);
+            $stmt->execute();
+            $result = $stmt->get_result();
             $user = $result->fetch_assoc();
             ?>
             <div class="col-lg-4 mb-4">
                 <div class="perfil-card shadow-sm">
                     <div class="card-body text-center">
                         <img src="img/user-default.jpg" alt="Foto de perfil" class="rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
-                        <h3 class="card-title mb-3"><?php echo $user['first_name']." ".$user['last_name']; ?> </h3>
-                        <p class="text-muted">Miembro desde <?php echo $user['created_at']; ?></p>
+                        <h3 class="card-title mb-3"><?php echo htmlspecialchars($user['first_name'])." ".htmlspecialchars($user['last_name']); ?> </h3>
+                        <p class="text-muted">Miembro desde <?php echo htmlspecialchars($user['created_at']); ?></p>
                         <a href="editarPerfil.php" class="featured-btn mb-2 w-100">
                             <i class="bi bi-pencil-square me-2"></i>Editar Perfil
                         </a>
@@ -43,15 +47,15 @@ if (!isset($_SESSION['usuario'])) {
                         <h5 class="card-title mb-4">Información Personal</h5>
                         <div class="mb-3">
                             <label class="text-muted d-block">Email</label>
-                            <div><?php echo $user['email']; ?></div>
+                            <div><?php echo htmlspecialchars($user['email']); ?></div>
                         </div>
                         <div class="mb-3">
                             <label class="text-muted d-block">Teléfono</label>
-                            <div><?php echo $user['phone']; ?></div>
+                            <div><?php echo htmlspecialchars($user['phone']); ?></div>
                         </div>
                         <div class="mb-3">
                             <label class="text-muted d-block">Dirección</label>
-                            <div><?php echo $user['address']; ?></div>
+                            <div><?php echo htmlspecialchars($user['address']); ?></div>
                         </div>
                     </div>
                 </div>
@@ -80,13 +84,16 @@ if (!isset($_SESSION['usuario'])) {
                                 <div class="row g-4">
                                     <!-- Libro favorito 1 -->
                                     <?php
+                                    $user_id = intval($_SESSION['user_id']);
                                     $sql = "SELECT b.* 
                                                     FROM books b, favorites f 
-                                                    WHERE f.user_id = '{$_SESSION['user_id']}' 
+                                                    WHERE f.user_id = ? 
                                                     AND b.book_id = f.book_id 
                                                     ORDER BY b.created_at DESC limit 2";
-
-                                    $result = $con->query($sql);
+                                    $stmt = $con->prepare($sql);
+                                    $stmt->bind_param("i", $user_id);
+                                    $stmt->execute();
+                                    $result = $stmt->get_result();
 
                                     if ($result && $result->num_rows > 0):
                                         while ($book = $result->fetch_assoc()):
@@ -137,17 +144,20 @@ if (!isset($_SESSION['usuario'])) {
                                         <tbody>
                                             <?php
                                             if(isset($_SESSION['user_id'])):
-                                                $user_id = $_SESSION['user_id'];
-                                                $sql = "Select * from orders where user_id = $user_id";
-                                                $result = $con->query($sql);
+                                                $user_id = intval($_SESSION['user_id']);
+                                                $sql = "Select * from orders where user_id = ?";
+                                                $stmt = $con->prepare($sql);
+                                                $stmt->bind_param("i", $user_id);
+                                                $stmt->execute();
+                                                $result = $stmt->get_result();
                                                 while($order = $result->fetch_assoc()):
                                             ?>
                                             <tr>
-                                                <td>#<?php echo $order['order_id'];?></td>
-                                                <td><?php echo $order['order_date'];?></td>
-                                                <td><span class="badge bg-success"><?php echo $order['status'];?></span></td>
-                                                <td><?php echo $order['total_amount'];?></td>
-                                                <td><a href="detallePedido.php?order_id=<?php echo $order['order_id'];?>"class="btn btn-sm btn-outline-primary">Ver detalles</a></td>
+                                                <td>#<?php echo htmlspecialchars($order['order_id']);?></td>
+                                                <td><?php echo htmlspecialchars($order['order_date']);?></td>
+                                                <td><span class="badge bg-success"><?php echo htmlspecialchars($order['status']);?></span></td>
+                                                <td><?php echo htmlspecialchars($order['total_amount']);?></td>
+                                                <td><a href="detallePedido.php?order_id=<?php echo htmlspecialchars($order['order_id']);?>"class="btn btn-sm btn-outline-primary">Ver detalles</a></td>
                                             </tr>
                                             <?php
                                                 endwhile;

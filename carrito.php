@@ -58,17 +58,23 @@ if(isset($_GET['book_id']) && isset($_GET['quantity'])) {
                         }
                         $total = 0;
                         foreach ($cart as $book_id => $item):
+                            $book_id = intval($book_id);
 
                             // Obtener el título del libro
-                            $sqlTitle = "SELECT title FROM books WHERE book_id = $book_id;";
-                            echo $sqlTitle;
-                            $resultTitle = $con->query($sqlTitle);
+                            $sqlTitle = "SELECT title FROM books WHERE book_id = ?;";
+                            $stmtTitle = $con->prepare($sqlTitle);
+                            $stmtTitle->bind_param("i", $book_id);
+                            $stmtTitle->execute();
+                            $resultTitle = $stmtTitle->get_result();
                             $title = ($resultTitle && $resultTitle->num_rows > 0)
                                 ? $resultTitle->fetch_assoc()['title']
                                 : "Título desconocido";
                             // Obtener la direccion de la portada del libro
-                            $sqlTitle = "SELECT cover_image_url FROM books WHERE book_id = $book_id;";
-                            $resultCover = $con->query($sqlTitle);
+                            $sqlCover = "SELECT cover_image_url FROM books WHERE book_id = ?;";
+                            $stmtCover = $con->prepare($sqlCover);
+                            $stmtCover->bind_param("i", $book_id);
+                            $stmtCover->execute();
+                            $resultCover = $stmtCover->get_result();
                             $cover = ($resultCover && $resultCover->num_rows > 0)
                                 ? $resultCover->fetch_assoc()['cover_image_url']
                                 : "Imagen desconocido";
@@ -76,8 +82,11 @@ if(isset($_GET['book_id']) && isset($_GET['quantity'])) {
                             $sqlAuthor = "SELECT CONCAT(a.first_name, ' ', a.last_name) AS author_name
                                             FROM authors a
                                             JOIN book_authors ba ON a.author_id = ba.author_id
-                                            WHERE ba.book_id = $book_id";
-                            $resultAuthor = $con->query($sqlAuthor);
+                                            WHERE ba.book_id = ?";
+                            $stmtAuthor = $con->prepare($sqlAuthor);
+                            $stmtAuthor->bind_param("i", $book_id);
+                            $stmtAuthor->execute();
+                            $resultAuthor = $stmtAuthor->get_result();
                             $author = ($resultAuthor && $resultAuthor->num_rows > 0)
                                 ? $resultAuthor->fetch_assoc()['author_name']
                                 : "Autor desconocido";
@@ -91,7 +100,7 @@ if(isset($_GET['book_id']) && isset($_GET['quantity'])) {
                             <!-- Item del carrito -->
                             <tr class="cart-item" data-book-id="<?php echo $book_id; ?>" data-price="<?php echo $price; ?>">
                                 <td class="d-flex align-items-center">
-                                    <img src="<?php echo $cover; ?>" alt="<?php echo htmlspecialchars($title); ?>" width="80" class="me-3">
+                                    <img src="<?php echo htmlspecialchars($cover); ?>" alt="<?php echo htmlspecialchars($title); ?>" width="80" class="me-3">
                                     <div>
                                         <strong><?php echo htmlspecialchars($title); ?></strong>
                                         <div class="text-muted">Autor: <?php echo htmlspecialchars($author); ?></div>

@@ -9,22 +9,33 @@ if (isset($_SESSION['usuario'])) {
 $mensaje = "";
 
 if (isset($_POST["btnEnviar"])) {
-    $first_name = $_POST['first_name'];
-    $last_name = $_POST['last_name'];
-    $username = $_POST['username'];
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+    $first_name = trim($_POST['first_name'] ?? '');
+    $last_name = trim($_POST['last_name'] ?? '');
+    $username = trim($_POST['username'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+    $password = $_POST['password'] ?? '';
     $created_at = date('Y-m-d H:i:s');
-    $phone = $_POST['phone'];
-    $address = $_POST['address'];
+    $phone = trim($_POST['phone'] ?? '');
+    $address = trim($_POST['address'] ?? '');
     
-    $sql = "insert into users (first_name, last_name, username, email, phone, address, password_hash, created_at, last_login, is_active) 
-                values ('$first_name', '$last_name', '$username', '$email', '$phone', '$address', '$password', '$created_at', NULL, 1)";
-    $resultado = $con->query($sql);
-    if ($resultado) {
-        $mensaje = "Registro exitoso. Ahora puedes iniciar sesión.";
+    // Validaciones básicas
+    if (empty($first_name) || empty($last_name) || empty($username) || empty($email) || empty($password)) {
+        $mensaje = "Por favor, completa todos los campos obligatorios.";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $mensaje = "El correo electrónico no es válido.";
     } else {
-        $mensaje = "Error en el registro. Por favor, intenta de nuevo.";
+        // Usar prepared statements para evitar SQL Injection
+        $sql = "insert into users (first_name, last_name, username, email, phone, address, password_hash, created_at, last_login, is_active) 
+                    values (?, ?, ?, ?, ?, ?, ?, ?, NULL, 1)";
+        $stmt = $con->prepare($sql);
+        $stmt->bind_param("sssssss", $first_name, $last_name, $username, $email, $phone, $address, $password);
+        $resultado = $stmt->execute();
+        if ($resultado) {
+            $mensaje = "Registro exitoso. Ahora puedes iniciar sesión.";
+        } else {
+            $mensaje = "Error en el registro. Por favor, intenta de nuevo.";
+        }
+        $stmt->close();
     }
 }
 ?>
@@ -140,7 +151,7 @@ if (isset($_POST["btnEnviar"])) {
     <?php include 'includes/footer.php'; ?>
     <script>
         // Recibimos el mensaje desde PHP
-        const mensaje = "<?php echo $mensaje; ?>";
+        const mensaje = "<?php echo htmlspecialchars($mensaje); ?>";
 
         // Verificamos el tipo de mensaje
         if (mensaje === "") {

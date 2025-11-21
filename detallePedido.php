@@ -11,7 +11,7 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-$user_id = $_SESSION['user_id'];
+$user_id = intval($_SESSION['user_id']);
 
 // Obtener el order_id de la URL
 if (!isset($_GET['order_id']) || empty($_GET['order_id'])) {
@@ -22,8 +22,11 @@ if (!isset($_GET['order_id']) || empty($_GET['order_id'])) {
 $order_id = intval($_GET['order_id']);
 
 // Obtener información del pedido
-$sql_order = "SELECT * FROM orders WHERE order_id = $order_id AND user_id = $user_id";
-$result_order = $con->query($sql_order);
+$sql_order = "SELECT * FROM orders WHERE order_id = ? AND user_id = ?";
+$stmt = $con->prepare($sql_order);
+$stmt->bind_param("ii", $order_id, $user_id);
+$stmt->execute();
+$result_order = $stmt->get_result();
 
 if (!$result_order || $result_order->num_rows === 0) {
     header('Location: miPerfil.php');
@@ -36,8 +39,11 @@ $order = $result_order->fetch_assoc();
 $sql_items = "SELECT oi.*, b.title, b.cover_image_url 
               FROM order_items oi
               JOIN books b ON oi.book_id = b.book_id
-              WHERE oi.order_id = $order_id";
-$result_items = $con->query($sql_items);
+              WHERE oi.order_id = ?";
+$stmt = $con->prepare($sql_items);
+$stmt->bind_param("i", $order_id);
+$stmt->execute();
+$result_items = $stmt->get_result();
 $items = [];
 $total_items = 0;
 
@@ -51,12 +57,15 @@ if ($result_items && $result_items->num_rows > 0) {
 // Obtener autor de cada libro
 $authors = [];
 foreach ($items as $item) {
-    $book_id = $item['book_id'];
+    $book_id = intval($item['book_id']);
     $sql_author = "SELECT CONCAT(a.first_name, ' ', a.last_name) AS author_name
                    FROM authors a
                    JOIN book_authors ba ON a.author_id = ba.author_id
-                   WHERE ba.book_id = $book_id";
-    $result_author = $con->query($sql_author);
+                   WHERE ba.book_id = ?";
+    $stmt = $con->prepare($sql_author);
+    $stmt->bind_param("i", $book_id);
+    $stmt->execute();
+    $result_author = $stmt->get_result();
     $authors[$book_id] = ($result_author && $result_author->num_rows > 0)
         ? $result_author->fetch_assoc()['author_name']
         : "Autor desconocido";
@@ -86,10 +95,10 @@ foreach ($items as $item) {
                 <div class="card p-3">
                     <h5 class="card-title">Información del Pedido</h5>
                     <div class="mb-2">
-                        <strong>Número de Pedido:</strong> #<?php echo $order_id; ?>
+                        <strong>Número de Pedido:</strong> #<?php echo htmlspecialchars($order_id); ?>
                     </div>
                     <div class="mb-2">
-                        <strong>Fecha:</strong> <?php echo date('d/m/Y H:i', strtotime($order['order_date'])); ?>
+                        <strong>Fecha:</strong> <?php echo htmlspecialchars(date('d/m/Y H:i', strtotime($order['order_date']))); ?>
                     </div>
                     <div class="mb-2">
                         <strong>Estado:</strong>
@@ -98,7 +107,7 @@ foreach ($items as $item) {
                                  (($order['status'] === 'completed') ? 'success' : 
                                   (($order['status'] === 'cancelled') ? 'danger' : 'info'));
                         ?>">
-                            <?php echo ucfirst($order['status']); ?>
+                            <?php echo htmlspecialchars(ucfirst($order['status'])); ?>
                         </span>
                     </div>
                     <div class="mb-2">
@@ -108,7 +117,7 @@ foreach ($items as $item) {
                                  (($order['payment_status'] === 'completed') ? 'success' : 
                                   (($order['payment_status'] === 'failed') ? 'danger' : 'info'));
                         ?>">
-                            <?php echo ucfirst($order['payment_status']); ?>
+                            <?php echo htmlspecialchars(ucfirst($order['payment_status'])); ?>
                         </span>
                     </div>
                 </div>
@@ -143,12 +152,12 @@ foreach ($items as $item) {
                                     <img src="<?php echo htmlspecialchars($item['cover_image_url']); ?>" alt="<?php echo htmlspecialchars($item['title']); ?>" width="80" class="me-3">
                                     <div>
                                         <strong><?php echo htmlspecialchars($item['title']); ?></strong>
-                                        <div class="text-muted">Autor: <?php echo htmlspecialchars($authors[$item['book_id']]); ?></div>
+                                        <div class="text-muted">Autor: <?php echo htmlspecialchars($authors[intval($item['book_id'])]); ?></div>
                                     </div>
                                 </td>
-                                <td class="text-center">S/ <?php echo number_format($item['price_at_time'], 2); ?></td>
-                                <td class="text-center"><?php echo $item['quantity']; ?></td>
-                                <td class="text-center">S/ <?php echo number_format($item['quantity'] * $item['price_at_time'], 2); ?></td>
+                                <td class="text-center">S/ <?php echo htmlspecialchars(number_format($item['price_at_time'], 2)); ?></td>
+                                <td class="text-center"><?php echo htmlspecialchars($item['quantity']); ?></td>
+                                <td class="text-center">S/ <?php echo htmlspecialchars(number_format($item['quantity'] * $item['price_at_time'], 2)); ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -162,19 +171,19 @@ foreach ($items as $item) {
                         <h5>Resumen del Pedido</h5>
                         <div class="d-flex justify-content-between my-2">
                             <div>Subtotal</div>
-                            <div>S/ <span><?php echo number_format($order['total_amount'] - $order['shipping_cost'], 2); ?></span></div>
+                            <div>S/ <span><?php echo htmlspecialchars(number_format($order['total_amount'] - $order['shipping_cost'], 2)); ?></span></div>
                         </div>
                         <div class="d-flex justify-content-between my-2">
                             <div>Envío</div>
-                            <div>S/ <span><?php echo number_format($order['shipping_cost'], 2); ?></span></div>
+                            <div>S/ <span><?php echo htmlspecialchars(number_format($order['shipping_cost'], 2)); ?></span></div>
                         </div>
                         <hr>
                         <div class="d-flex justify-content-between fw-bold fs-5">
                             <div>Total</div>
-                            <div>S/ <span><?php echo number_format($order['total_amount'], 2); ?></span></div>
+                            <div>S/ <span><?php echo htmlspecialchars(number_format($order['total_amount'], 2)); ?></span></div>
                         </div>
                         <div class="mt-3">
-                            <small class="text-muted">Total de artículos: <?php echo $total_items; ?></small>
+                            <small class="text-muted">Total de artículos: <?php echo htmlspecialchars($total_items); ?></small>
                         </div>
                     </div>
                 </div>

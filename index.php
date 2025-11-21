@@ -182,7 +182,7 @@ session_start();
         </script>
     <?php endif; ?>
     <?php if (isset($_GET['msg']) && $_GET['msg']): 
-            $msg = $_GET['msg'];?>
+            $msg = isset($_GET['msg']) ? $_GET['msg'] : '';?>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 Swal.fire({

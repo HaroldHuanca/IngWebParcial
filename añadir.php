@@ -6,17 +6,22 @@ require 'includes/conexion.php';
 
 $book_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 $precio = isset($_GET['precio']) ? floatval($_GET['precio']) : 0;
-$user_id = $_SESSION['user_id'] ?? null;
+$user_id = isset($_SESSION['user_id']) ? intval($_SESSION['user_id']) : null;
 if ($book_id > 0) {
     // Inicializar el carrito si no existe
     if (!isset($_SESSION['cart'])) {
         $_SESSION['cart'] = array();
         if($user_id){
-            $sql = "select * from shopping_carts where cart_id = $user_id;";
-            $result = $con->query($sql);
+            $sql = "select * from shopping_carts where cart_id = ?;";
+            $stmt = $con->prepare($sql);
+            $stmt->bind_param("i", $user_id);
+            $stmt->execute();
+            $result = $stmt->get_result();
             if($result && $result->num_rows == 0){
-                $sql = "INSERT INTO shopping_carts (cart_id, user_id, created_at) VALUES ($user_id, $user_id, NOW());";
-                $con->query($sql);
+                $sql = "INSERT INTO shopping_carts (cart_id, user_id, created_at) VALUES (?, ?, NOW());";
+                $stmt = $con->prepare($sql);
+                $stmt->bind_param("ii", $user_id, $user_id);
+                $stmt->execute();
             }
         }
     }
@@ -29,9 +34,11 @@ if ($book_id > 0) {
         if($user_id){
             $sql = "UPDATE cart_items ci
             JOIN shopping_carts sc ON ci.cart_id = sc.cart_id
-            SET ci.quantity = ci.quantity + 1, ci.price_at_time = $precio
-            WHERE sc.user_id = $user_id AND ci.book_id = $book_id;";
-            $con->query($sql);
+            SET ci.quantity = ci.quantity + 1, ci.price_at_time = ?
+            WHERE sc.user_id = ? AND ci.book_id = ?;";
+            $stmt = $con->prepare($sql);
+            $stmt->bind_param("dii", $precio, $user_id, $book_id);
+            $stmt->execute();
         }
     } else {
         // Si no existe, agregarlo con cantidad 1
@@ -42,12 +49,14 @@ if ($book_id > 0) {
         if($user_id){
             $sql = "INSERT INTO cart_items (cart_id, book_id, quantity, price_at_time)
             VALUES (
-                (SELECT cart_id FROM shopping_carts WHERE user_id = $user_id),
-                $book_id,
+                (SELECT cart_id FROM shopping_carts WHERE user_id = ?),
+                ?,
                 1,
-                $precio
+                ?
             );";
-            $con->query($sql);
+            $stmt = $con->prepare($sql);
+            $stmt->bind_param("iid", $user_id, $book_id, $precio);
+            $stmt->execute();
         }
     }
 

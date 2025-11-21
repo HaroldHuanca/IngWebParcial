@@ -162,7 +162,7 @@ if (isset($_POST["btnActualizar"])) {
     <?php include 'includes/footer.php'; ?>
     <script>
         // Recibimos el mensaje desde PHP
-        const mensaje = "<?php echo $mensaje; ?>";
+        const mensaje = "<?php echo htmlspecialchars($mensaje); ?>";
 
         // Verificamos el tipo de mensaje
         if (mensaje === "") {

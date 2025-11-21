@@ -8,17 +8,22 @@ if (!isset($_SESSION['usuario'])) {
 }
 $result = null;
 if(isset($_GET['confirmar_limpiar']) && $_GET['confirmar_limpiar']){
-    $user_id = $_SESSION['user_id'];
-    $sql = "DELETE FROM favorites WHERE user_id = $user_id";
-    $con->query($sql);
+    $user_id = intval($_SESSION['user_id']);
+    $sql = "DELETE FROM favorites WHERE user_id = ?";
+    $stmt = $con->prepare($sql);
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
 }else{
+ $user_id = intval($_SESSION['user_id']);
  $sql = "SELECT b.* 
             FROM books b, favorites f 
-            WHERE f.user_id = '{$_SESSION['user_id']}' 
+            WHERE f.user_id = ? 
             AND b.book_id = f.book_id 
             ORDER BY b.created_at DESC";
-
-$result = $con->query($sql);
+ $stmt = $con->prepare($sql);
+ $stmt->bind_param("i", $user_id);
+ $stmt->execute();
+ $result = $stmt->get_result();
 }
 
 ?>
@@ -67,10 +72,13 @@ $result = $con->query($sql);
                             <div class="card-footer d-flex justify-content-between align-items-center p-3">
                                     <?php
                                     if (isset($_SESSION['user_id'])):
-                                        $user_id = $_SESSION['user_id'];
-                                        $book_id = $book['book_id'];
-                                        $sqlFav = "SELECT * from favorites where user_id = $user_id and book_id = $book_id;";
-                                        $resultFav = $con->query($sqlFav);
+                                        $user_id = intval($_SESSION['user_id']);
+                                        $book_id = intval($book['book_id']);
+                                        $sqlFav = "SELECT * from favorites where user_id = ? and book_id = ?;";
+                                        $stmtFav = $con->prepare($sqlFav);
+                                        $stmtFav->bind_param("ii", $user_id, $book_id);
+                                        $stmtFav->execute();
+                                        $resultFav = $stmtFav->get_result();
                                     ?>
                                         <a href="favoritos.php?userDel=<?php echo $user_id; ?>&bookDel=<?php echo $book_id ?>" 
                                         class="buy-btn d-flex align-items-center gap-1">
@@ -124,7 +132,7 @@ $result = $con->query($sql);
         updateFavoritesView();
     </script>
     <?php if (isset($_GET['msg']) && $_GET['msg']): 
-            $msg = $_GET['msg'];?>
+            $msg = isset($_GET['msg']) ? $_GET['msg'] : '';?>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 Swal.fire({
