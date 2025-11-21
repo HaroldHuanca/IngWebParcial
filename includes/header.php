@@ -58,6 +58,29 @@
                         </a>
                     </li>
                     <?php
+                    // Verificar si hay órdenes pendientes de pago
+                    if (isset($_SESSION['user_id'])) {
+                        include 'conexion.php';
+                        $user_id = intval($_SESSION['user_id']);
+                        $sql_check = "SELECT COUNT(*) as pending_count FROM orders WHERE user_id = ? AND payment_status = 'pending'";
+                        $stmt = $con->prepare($sql_check);
+                        $stmt->bind_param("i", $user_id);
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+                        $row = $result->fetch_assoc();
+                        $pending_count = $row['pending_count'];
+                        
+                        if ($pending_count > 0):
+                    ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pagos.php" title="Pagos Pendientes">
+                            <i class="bi bi-credit-card fs-4"></i>Pagos
+                            <span class="badge bg-danger ms-1"><?php echo htmlspecialchars($pending_count); ?></span>
+                        </a>
+                    </li>
+                    <?php
+                        endif;
+                    }
                     endif;
                     ?>
                     <?php

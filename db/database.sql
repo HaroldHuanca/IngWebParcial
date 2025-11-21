@@ -136,9 +136,27 @@ CREATE TABLE reviews (
     FOREIGN KEY (book_id) REFERENCES books(book_id)
 );
 
+-- Tabla de transacciones de pagos
+CREATE TABLE payment_transactions (
+    transaction_id INT PRIMARY KEY AUTO_INCREMENT,
+    order_id INT NOT NULL,
+    user_id INT NOT NULL,
+    payment_method VARCHAR(50) NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    status VARCHAR(20) NOT NULL DEFAULT 'pending',
+    transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    payment_reference VARCHAR(255),
+    notes TEXT,
+    FOREIGN KEY (order_id) REFERENCES orders(order_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
 -- Índices para optimizar búsquedas comunes
 CREATE INDEX idx_books_title ON books(title);
 CREATE INDEX idx_books_isbn ON books(isbn);
 CREATE INDEX idx_users_email ON users(email);
 CREATE INDEX idx_orders_user ON orders(user_id);
 CREATE INDEX idx_orders_status ON orders(status);
+CREATE INDEX idx_payment_order ON payment_transactions(order_id);
+CREATE INDEX idx_payment_user ON payment_transactions(user_id);
+CREATE INDEX idx_payment_status ON payment_transactions(status);
