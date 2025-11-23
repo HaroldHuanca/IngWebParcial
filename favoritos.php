@@ -1,31 +1,30 @@
 <?php
 session_start();
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 include 'includes/conexion.php';
-if (!isset($_SESSION['usuario'])) {
-    header('Location: login.php');
-    exit();
-               
-}
+$user_id = intval($_SESSION['user_id']);
 $result = null;
+
 if(isset($_GET['confirmar_limpiar']) && $_GET['confirmar_limpiar']){
-    $user_id = intval($_SESSION['user_id']);
     $sql = "DELETE FROM favorites WHERE user_id = ?";
     $stmt = $con->prepare($sql);
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
-}else{
- $user_id = intval($_SESSION['user_id']);
- $sql = "SELECT b.* 
-            FROM books b, favorites f 
-            WHERE f.user_id = ? 
-            AND b.book_id = f.book_id 
-            ORDER BY b.created_at DESC";
- $stmt = $con->prepare($sql);
- $stmt->bind_param("i", $user_id);
- $stmt->execute();
- $result = $stmt->get_result();
+    $stmt->close();
 }
 
+// Obtener la lista de favoritos
+$sql = "SELECT b.* 
+        FROM books b, favorites f 
+        WHERE f.user_id = ? 
+        AND b.book_id = f.book_id 
+        ORDER BY b.created_at DESC";
+$stmt = $con->prepare($sql);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$favorites = $result->fetch_all(MYSQLI_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -38,7 +37,8 @@ if(isset($_GET['confirmar_limpiar']) && $_GET['confirmar_limpiar']){
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2>Mis Libros Favoritos</h2>
             <?php
-                if ($result && $result->num_rows > 0):?>
+                if (!empty($favorites)):
+                    ?>      
             <div class="d-flex gap-2">
                 <a href="favoritos.php?limpiar=true" class="featured-btn" id="clearFavorites">
                     <i class="bi bi-trash3"></i> Limpiar favoritos
@@ -52,8 +52,8 @@ if(isset($_GET['confirmar_limpiar']) && $_GET['confirmar_limpiar']){
                 <!-- Ejemplo de libro favorito -->
                 
                 <?php
-                if ($result && $result->num_rows > 0):
-                    while ($book = $result->fetch_assoc()):
+                if (!empty($favorites)):
+                    foreach($favorites as $book):
                 ?>
                         <div class="product-card">
                             <a href="producto.php?id=<?php echo $book['book_id']; ?>" style="text-decoration: none; color: inherit;">
@@ -88,7 +88,7 @@ if(isset($_GET['confirmar_limpiar']) && $_GET['confirmar_limpiar']){
                             </div>
                         </div>
                     <?php
-                    endwhile;
+                    endforeach;
                 endif;
                     ?>
             </div>
@@ -207,6 +207,7 @@ if(isset($_GET['confirmar_limpiar']) && $_GET['confirmar_limpiar']){
                             timer: 2000,
                             showConfirmButton: false
                         });
+                        window.location.href = "favoritos.php?confirmar_limpiar=0";
                     }
                 });
 
@@ -225,7 +226,7 @@ if(isset($_GET['confirmar_limpiar']) && $_GET['confirmar_limpiar']){
                     timer: 3000,
                     timerProgressBar: true
                 });
-
+                window.location.href = "favoritos.php";
                 // Limpiar la bandera de sesión
             });
         </script>

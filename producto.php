@@ -65,17 +65,25 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 
                 <p><?php echo nl2br(htmlspecialchars($book['description'])); ?></p>
 
-                <form id="addToCartForm" class="row g-2 align-items-center">
-                    <div class="col-auto">
-                        <label for="quantity" class="col-form-label">Cantidad</label>
-                    </div>
-                    <div class="col-auto">
-                        <input type="number" id="quantity" name="quantity" class="form-control" value="1" min="1" max="<?php echo $book['stock']; ?>" style="width:100px">
-                    </div>
-                    <div class="col-12 mt-3">
-                        <button type="button" id="addToCartBtn" class="btn featured-btn"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Añadir al carrito</button>
-                    </div>
-                </form>
+                <div class="d-flex gap-2 align-items-center mt-4">
+                    <a href="añadir.php?id=<?php echo $book['book_id']; ?>&precio=<?php echo $book['price']; ?>&envio=producto.php?id=<?php echo $book['book_id']; ?>" class="btn featured-btn">
+                        <i class="fa fa-shopping-cart" aria-hidden="true"></i> Añadir al carrito
+                    </a>
+                    <?php
+                    if (isset($_SESSION['user_id'])):
+                        $user_id = $_SESSION['user_id'];
+                        $book_id = $book['book_id'];
+                        $sqlFav = "SELECT * from favorites where user_id = ? and book_id = ?;";
+                        $stmtFav = $con->prepare($sqlFav);
+                        $stmtFav->bind_param("ii", $user_id, $book_id);
+                        $stmtFav->execute();
+                        $resultFav = $stmtFav->get_result();
+                    ?>
+                        <a href="alternar.php?user=<?php echo $user_id; ?>&book=<?php echo $book_id ?>&eliminar=<?php echo ($resultFav->num_rows > 0);?>&envio='producto.php?id=<?php echo $book_id; ?>'" class="btn" style="border: 2px solid var(--texto-principal); background-color: transparent; padding: 0.5rem 1rem;">
+                            <i class="bi bi-star<?php echo ($resultFav->num_rows > 0 ? '-fill text-warning' : ''); ?> fs-4"></i>
+                        </a>
+                    <?php endif; ?>
+                </div>
 
                 <hr class="my-4">
 
@@ -91,13 +99,42 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 
     <?php include 'includes/footer.php'; ?>
 
-    <script>
-        // Manejo simple de agregar al carrito 
-        document.getElementById('addToCartBtn').addEventListener('click', function () {
-            const qty = parseInt(document.getElementById('quantity').value, 10) || 1;
-            alert('Añadido ' + qty + ' unidad(es) al carrito.');
-        });
-    </script>
+    <?php if (isset($_SESSION['show_alert']) && $_SESSION['show_alert']): ?>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Producto añadido!',
+                    text: 'El libro se ha añadido al carrito correctamente',
+                    confirmButtonText: 'Continuar comprando',
+                    confirmButtonColor: '#3085d6',
+                    timer: 3000,
+                    timerProgressBar: true
+                });
+
+                // Limpiar la bandera de sesión
+                <?php unset($_SESSION['show_alert']); ?>
+            });
+        </script>
+    <?php endif; ?>
+    <?php if (isset($_GET['msg']) && $_GET['msg']): 
+            $msg = isset($_GET['msg']) ? $_GET['msg'] : '';?>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Cambio Producido!',
+                    text: '<?php echo htmlspecialchars($msg); ?>',
+                    confirmButtonText: 'Continuar comprando',
+                    confirmButtonColor: '#3085d6',
+                    timer: 3000,
+                    timerProgressBar: true
+                });
+
+                // Limpiar la bandera de sesión
+            });
+        </script>
+    <?php endif; ?>
 
 </body>
 </html>

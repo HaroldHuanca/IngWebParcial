@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['procesar_pago'])) {
                     $sql_transaction = "INSERT INTO payment_transactions (order_id, user_id, payment_method, amount, status, payment_reference, notes) 
                                        VALUES (?, ?, 'paypal', ?, 'completed', ?, ?)";
                     $stmt_trans = $con->prepare($sql_transaction);
-                    $notes = "Pago simulado en sandbox. Billetera: " . htmlspecialchars($paypal_email);
+                    $notes = "Pago simulado. Billetera: " . htmlspecialchars($paypal_email);
                     $stmt_trans->bind_param("iidss", $order_id, $user_id, $total_amount, $payment_reference, $notes);
                     $stmt_trans->execute();
                     
@@ -107,7 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['procesar_pago'])) {
                                        VALUES (?, ?, 'tarjeta_visa', ?, 'completed', ?, ?)";
                     $stmt_trans = $con->prepare($sql_transaction);
                     $ultimos_digitos = substr($numero_tarjeta, -4);
-                    $notes = "Pago simulado en sandbox. Tarjeta terminada en: " . htmlspecialchars($ultimos_digitos);
+                    $notes = "Pago simulado. Tarjeta terminada en: " . htmlspecialchars($ultimos_digitos);
                     $stmt_trans->bind_param("iidss", $order_id, $user_id, $total_amount, $payment_reference, $notes);
                     $stmt_trans->execute();
                     
@@ -135,9 +135,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['procesar_pago'])) {
 <body>
     <?php include 'includes/header.php'; ?>
 
-    <main class="container my-5">
+    <main class="container my-5 featured-perfil">
         <div class="row">
-            <div class="col-md-8 offset-md-2">
+            <!-- Progress Bar Vertical -->
+            <div class="col-md-2">
+                <div class="progress-bar-vertical">
+                    <div class="progress-step completed" id="step1">
+                        <div class="step-circle">
+                            <span>1</span>
+                        </div>
+                        <div class="step-label">Seleccionar Pedido</div>
+                    </div>
+                    <div class="progress-line"></div>
+                    <div class="progress-step" id="step2">
+                        <div class="step-circle">
+                            <span>2</span>
+                        </div>
+                        <div class="step-label">Método de Pago</div>
+                    </div>
+                    <div class="progress-line"></div>
+                    <div class="progress-step" id="step3">
+                        <div class="step-circle">
+                            <span>3</span>
+                        </div>
+                        <div class="step-label">Datos de Pago</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-8 offset-md-1">
                 <h2 class="mb-4" style="color: var(--texto-principal);">Procesamiento de Pagos</h2>
 
                 <?php if ($mensaje): ?>
@@ -240,12 +266,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['procesar_pago'])) {
                                 </div>
                                 <div class="card-body">
                                     <div class="mb-3">
-                                        <label for="paypal_email" class="form-label">Billetera Virtual (Sandbox)</label>
+                                        <label for="paypal_email" class="form-label">Billetera Virtual</label>
                                         <input type="text" class="form-control" id="paypal_email" name="paypal_email" 
                                                placeholder="Ingresa un valor numérico" 
                                                pattern="[0-9]+" 
                                                title="Solo se aceptan números">
-                                        <small class="text-muted">Ingresa solo números para simular el pago en sandbox</small>
+                                        <small class="text-muted">Solo se permiten números</small>
                                     </div>
                                 </div>
                             </div>
@@ -259,12 +285,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['procesar_pago'])) {
                                 </div>
                                 <div class="card-body">
                                     <div class="mb-3">
-                                        <label for="numero_tarjeta" class="form-label">Número de Tarjeta (Sandbox)</label>
+                                        <label for="numero_tarjeta" class="form-label">Número de Tarjeta</label>
                                         <input type="text" class="form-control" id="numero_tarjeta" name="numero_tarjeta" 
                                                placeholder="Ingresa solo números" 
                                                pattern="[0-9]+" 
                                                title="Solo se aceptan números">
-                                        <small class="text-muted">Ingresa solo números para simular el pago en sandbox</small>
+                                        <small class="text-muted">Ingresa solo números</small>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6">
@@ -275,12 +301,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['procesar_pago'])) {
                                         </div>
                                         <div class="col-md-6">
                                             <div class="mb-3">
-                                                <label for="cvv" class="form-label">CVV (Sandbox)</label>
+                                                <label for="cvv" class="form-label">CVV</label>
                                                 <input type="text" class="form-control" id="cvv" name="cvv" 
                                                        placeholder="Ingresa solo números" 
                                                        pattern="[0-9]{3,4}" 
                                                        title="Solo se aceptan números (3-4 dígitos)">
-                                                <small class="text-muted">Ingresa solo números para simular el pago en sandbox</small>
+                                                <small class="text-muted">Ingresa solo números</small>
                                             </div>
                                         </div>
                                     </div>
@@ -306,6 +332,64 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['procesar_pago'])) {
     <?php include 'includes/footer.php'; ?>
 
     <script>
+        // Función para actualizar la barra de progreso
+        function actualizarProgreso() {
+            const orderId = document.getElementById('order_id').value;
+            const metodoPago = document.querySelector('input[name="metodo_pago"]:checked');
+            
+            // Paso 1: Seleccionar Pedido (siempre completado)
+            const step1 = document.getElementById('step1');
+            step1.classList.add('completed');
+            step1.classList.remove('active');
+            
+            // Paso 2: Método de Pago
+            const step2 = document.getElementById('step2');
+            if (orderId) {
+                step2.classList.add('active');
+                if (metodoPago) {
+                    step2.classList.remove('active');
+                    step2.classList.add('completed');
+                }
+            } else {
+                step2.classList.remove('active', 'completed');
+            }
+            
+            // Paso 3: Datos de Pago
+            const step3 = document.getElementById('step3');
+            if (metodoPago) {
+                step3.classList.add('active');
+                // Validar si los datos están completos
+                if (validarDatosPago()) {
+                    step3.classList.remove('active');
+                    step3.classList.add('completed');
+                }
+            } else {
+                step3.classList.remove('active', 'completed');
+            }
+        }
+
+        // Función para validar si los datos de pago están completos
+        function validarDatosPago() {
+            const metodoPago = document.querySelector('input[name="metodo_pago"]:checked');
+            
+            if (!metodoPago) return false;
+            
+            if (metodoPago.value === 'paypal') {
+                const paypalEmail = document.getElementById('paypal_email').value.trim();
+                return paypalEmail && paypalEmail.match(/^[0-9]+$/);
+            } else if (metodoPago.value === 'tarjeta') {
+                const numeroTarjeta = document.getElementById('numero_tarjeta').value.trim();
+                const fechaVencimiento = document.getElementById('fecha_vencimiento').value.trim();
+                const cvv = document.getElementById('cvv').value.trim();
+                
+                return numeroTarjeta && numeroTarjeta.match(/^[0-9]+$/) &&
+                       fechaVencimiento && 
+                       cvv && cvv.match(/^[0-9]{3,4}$/);
+            }
+            
+            return false;
+        }
+
         function seleccionarPedido(elemento) {
             // Remover clase activa de todos los elementos
             document.querySelectorAll('.list-group-item').forEach(item => {
@@ -338,6 +422,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['procesar_pago'])) {
             
             // Deshabilitar botón de pago
             document.getElementById('btnPagar').disabled = true;
+            
+            // Actualizar progreso
+            actualizarProgreso();
         }
 
         function mostrarFormularioPago() {
@@ -356,19 +443,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['procesar_pago'])) {
             
             // Habilitar botón de pago
             document.getElementById('btnPagar').disabled = false;
+            
+            // Actualizar progreso
+            actualizarProgreso();
         }
 
         // Validar que solo se ingresen números en los campos
         document.getElementById('paypal_email').addEventListener('input', function(e) {
             this.value = this.value.replace(/[^0-9]/g, '');
+            actualizarProgreso();
         });
 
         document.getElementById('numero_tarjeta').addEventListener('input', function(e) {
             this.value = this.value.replace(/[^0-9]/g, '');
+            actualizarProgreso();
         });
 
         document.getElementById('cvv').addEventListener('input', function(e) {
             this.value = this.value.replace(/[^0-9]/g, '');
+            actualizarProgreso();
+        });
+
+        // Actualizar progreso cuando cambia la fecha de vencimiento
+        document.getElementById('fecha_vencimiento').addEventListener('change', function(e) {
+            actualizarProgreso();
         });
 
         // Validar formulario antes de enviar

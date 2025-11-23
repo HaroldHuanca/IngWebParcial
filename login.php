@@ -29,15 +29,21 @@ if (isset($_POST['btnEnviar'])) {
         JOIN shopping_carts sc ON ci.cart_id = sc.cart_id
         WHERE sc.user_id = $user_id;";
         $result = $con->query($sql);
+
+        //Si no hay carrito en la base de datos
         if($result->num_rows == 0){
+
+            //Si hay carrito en el navegador entonces llenamos el carrito de la base de datos
             if(isset($_SESSION['cart']) && !empty($_SESSION['cart']) ){
                 $cart = $_SESSION['cart'];
                 $sqlCheckCart = "SELECT * FROM shopping_carts WHERE user_id = $user_id;";
                 $resCheck = $con->query($sqlCheckCart);
+                //Si no existe el shopping cart lo creamos
                 if($resCheck->num_rows ==0){
                     $sqlInsert = "INSERT INTO shopping_carts (cart_id, user_id, created_at) VALUES ($user_id, $user_id, NOW());";
                     $con->query($sqlInsert);
                 }
+                //Llenamos los items del shooping cart
                 foreach ($cart as $book_id => $item):
                     $quantity = $item['quantity'];
                     $price_at_time = $item['price_at_time'];
@@ -46,16 +52,18 @@ if (isset($_POST['btnEnviar'])) {
                     $con->query($sqlInsertItems);
                 endforeach;
             }
+            //Si existe la variable cart en el navegador la eliminamos
             else{
                 unset($_SESSION['cart']);
             }
         }
+        //Si hay carrito en la base de datos, llenamos la variable cart
         else{
             $_SESSION['cart'] = array();
             while ($row = $result->fetch_assoc()) {
-            $book_id = $row['book_id'];
-            $_SESSION['cart'][$book_id]['quantity'] = $row['quantity'];
-            $_SESSION['cart'][$book_id]['price_at_time'] = $row['price_at_time'];
+                $book_id = $row['book_id'];
+                $_SESSION['cart'][$book_id]['quantity'] = $row['quantity'];
+                $_SESSION['cart'][$book_id]['price_at_time'] = $row['price_at_time'];
             }
         }
         

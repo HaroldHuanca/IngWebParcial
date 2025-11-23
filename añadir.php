@@ -17,11 +17,13 @@ if ($book_id > 0) {
             $stmt->bind_param("i", $user_id);
             $stmt->execute();
             $result = $stmt->get_result();
+            $stmt->close();
             if($result && $result->num_rows == 0){
                 $sql = "INSERT INTO shopping_carts (cart_id, user_id, created_at) VALUES (?, ?, NOW());";
                 $stmt = $con->prepare($sql);
                 $stmt->bind_param("ii", $user_id, $user_id);
                 $stmt->execute();
+                $stmt->close();
             }
         }
     }
@@ -39,6 +41,7 @@ if ($book_id > 0) {
             $stmt = $con->prepare($sql);
             $stmt->bind_param("dii", $precio, $user_id, $book_id);
             $stmt->execute();
+            $stmt->close();
         }
     } else {
         // Si no existe, agregarlo con cantidad 1
@@ -47,9 +50,27 @@ if ($book_id > 0) {
             'price_at_time' => $precio
         );
         if($user_id){
+            $sql = "SELECT cart_id FROM shopping_carts WHERE user_id = ?;";
+            $stmt = $con->prepare($sql);
+            $stmt->bind_param("i", $user_id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $stmt->close();
+            $cart_id = null;
+            if($result && $result->num_rows > 0){
+                $cart_id = $result->fetch_assoc()['cart_id'];
+            }
+            else{
+                $sql = "INSERT INTO shopping_carts (cart_id, user_id, created_at) VALUES (?, ?, NOW());";
+                $stmt = $con->prepare($sql);
+                $stmt->bind_param("ii", $user_id, $user_id);
+                $stmt->execute();
+                $cart_id = $stmt->insert_id;
+                $stmt->close();
+            }
             $sql = "INSERT INTO cart_items (cart_id, book_id, quantity, price_at_time)
             VALUES (
-                (SELECT cart_id FROM shopping_carts WHERE user_id = ?),
+                ?,
                 ?,
                 1,
                 ?
@@ -57,6 +78,7 @@ if ($book_id > 0) {
             $stmt = $con->prepare($sql);
             $stmt->bind_param("iid", $user_id, $book_id, $precio);
             $stmt->execute();
+            $stmt->close();
         }
     }
 
