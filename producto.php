@@ -1,5 +1,7 @@
 <?php
 session_start();
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -79,8 +81,8 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                         $stmtFav->execute();
                         $resultFav = $stmtFav->get_result();
                     ?>
-                        <a href="alternar.php?user=<?php echo $user_id; ?>&book=<?php echo $book_id ?>&eliminar=<?php echo ($resultFav->num_rows > 0);?>&envio='producto.php?id=<?php echo $book_id; ?>'" class="btn" style="border: 2px solid var(--texto-principal); background-color: transparent; padding: 0.5rem 1rem;">
-                            <i class="bi bi-star<?php echo ($resultFav->num_rows > 0 ? '-fill text-warning' : ''); ?> fs-4"></i>
+                        <a href="alternar.php?user=<?php echo $user_id; ?>&book=<?php echo $book_id ?>&eliminar=<?php echo ($resultFav->num_rows > 0);?>&envio='producto.php?id=<?php echo $book_id; ?>'" class="btn featured-btn">
+                            <i class="bi bi-star<?php echo ($resultFav->num_rows > 0 ? '-fill text-warning' : ''); ?> fs-5"></i>
                         </a>
                     <?php endif; ?>
                 </div>

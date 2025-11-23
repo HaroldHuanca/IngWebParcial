@@ -82,7 +82,7 @@ $favorites = $result->fetch_all(MYSQLI_ASSOC);
                                     ?>
                                         <a href="favoritos.php?userDel=<?php echo $user_id; ?>&bookDel=<?php echo $book_id ?>" 
                                         class="buy-btn d-flex align-items-center gap-1">
-                                            <i class="bi bi-star<?php echo ($resultFav->num_rows > 0 ? '-fill text-warning' : ''); ?> fs-3"></i>Quitar
+                                            <i class="bi bi-star<?php echo ($resultFav->num_rows > 0 ? '-fill text-warning' : ''); ?> fs-5"></i>Quitar
                                         </a>
                                     <?php endif; ?>
                             </div>

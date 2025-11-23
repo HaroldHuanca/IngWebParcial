@@ -273,8 +273,8 @@ session_start();
                             $sqlFav = "SELECT * from favorites where user_id = $user_id and book_id = $book_id;";
                             $resultFav = $con->query($sqlFav);
                           ?>
-                          <a href="alternar.php?user=<?php echo $user_id;?>&book=<?php echo $book_id?>&eliminar=<?php echo ($resultFav->num_rows > 0);?>&envio='Catalogo.php'">
-                            <i class="bi bi-star<?php echo ($resultFav->num_rows > 0 ? '-fill text-warning' : ''); ?> fs-3"></i>
+                          <a href="alternar.php?user=<?php echo $user_id;?>&book=<?php echo $book_id?>&eliminar=<?php echo ($resultFav->num_rows > 0);?>&envio='Catalogo.php'" class="buy-btn">
+                            <i class="bi bi-star<?php echo ($resultFav->num_rows > 0 ? '-fill text-warning' : ''); ?> fs-5"></i>
                           </a>
                           <?php endif;?>
                       </div>

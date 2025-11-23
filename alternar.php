@@ -1,6 +1,5 @@
 <?php
 session_start();
-
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
 include "includes/conexion.php";
@@ -25,6 +24,7 @@ if ($eliminar) {
 
 // Redirigir
 $envio = isset($_GET['envio']) ? trim($_GET['envio'], "'") : 'index.php';
-header('Location: ' . $envio . '?msg=' . urlencode($msg));
+$signo = str_contains($envio,"?") ? "&" : "?";
+header('Location: ' . $envio . $signo.'msg=' . urlencode($msg));
 exit();
 ?>
