@@ -1,5 +1,8 @@
 <?php
 session_start();
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
 include 'includes/conexion.php';
 if (isset($_SESSION['usuario'])) {
     header('Location: miPerfil.php');
@@ -26,7 +29,7 @@ if (isset($_POST["btnEnviar"])) {
     } else {
         // Usar prepared statements para evitar SQL Injection
         $sql = "insert into users (first_name, last_name, username, email, phone, address, password_hash, created_at, last_login, is_active) 
-                    values (?, ?, ?, ?, ?, ?, ?, ?, NULL, 1)";
+                    values (?, ?, ?, ?, ?, ?, ?, NOW(), NULL, 1)";
         $stmt = $con->prepare($sql);
         $stmt->bind_param("sssssss", $first_name, $last_name, $username, $email, $phone, $address, $password);
         $resultado = $stmt->execute();
