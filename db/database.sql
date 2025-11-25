@@ -14,7 +14,8 @@ CREATE TABLE users (
     address TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     last_login TIMESTAMP NULL,
-    is_active BOOLEAN DEFAULT TRUE
+    is_active BOOLEAN DEFAULT TRUE,
+    is_admin BOOLEAN DEFAULT FALSE
 );
 
 -- Tabla de categorías de libros

@@ -169,10 +169,13 @@ if (isset($_POST["btnEnviar"])) {
             });
         } else {
             Swal.fire({
-                icon: "success",
-                title: "¡Éxito!",
-                text: mensaje,
-            });
+            icon: "success",
+            title: "¡Éxito!",
+            text: mensaje,
+        }).then(() => {
+            // Solo se ejecuta después de cerrar la alerta
+            window.location.href = "login.php";
+        });
         }
     </script>
 </body>

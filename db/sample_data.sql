@@ -1,5 +1,9 @@
 USE bookport_db;
 
+-- Insertar usuario admin
+INSERT INTO users (username, email, password_hash, first_name, last_name, phone, address, is_admin) VALUES
+('admin', 'admin@email.com', '123456', 'Admin', 'Admin', '999888777', 'Av. Lima 123', TRUE);
+
 -- Insertar usuarios de muestra (contraseña hash es 'password123' en todos los casos)
 INSERT INTO users (username, email, password_hash, first_name, last_name, phone, address) VALUES
 ('juan_perez', 'juan.perez@email.com', '123456', 'Juan', 'Pérez', '999888777', 'Av. Lima 123'),

@@ -22,6 +22,13 @@ if (isset($_POST['btnEnviar'])) {
         $fila = $resultado->fetch_assoc();
         $_SESSION['usuario'] = $email;
         $_SESSION['user_id'] = $fila['user_id'];
+        $_SESSION['is_admin'] = $fila['is_admin'];
+
+        //Si es admin lo enviamos al dashboard del admin
+        if ($fila['is_admin'] == 1) {
+            header('Location:admin/dashboard.php');
+            exit();
+        }
 
         //Cargar los datos del carrito        
         $user_id = $_SESSION['user_id'];

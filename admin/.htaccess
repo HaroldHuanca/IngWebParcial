@@ -1,0 +1,50 @@
+# Proteger acceso al admin
+# Requiere autenticación
+
+# Habilitar mod_rewrite
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Redirigir a dashboard.php si se accede a /admin/
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^$ dashboard.php [L]
+</IfModule>
+
+# Prevenir acceso a archivos sensibles
+<FilesMatch "\.php$">
+    # Permitir acceso solo a archivos específicos
+</FilesMatch>
+
+# Desabilitar listado de directorios
+Options -Indexes
+
+# Configurar headers de seguridad
+<IfModule mod_headers.c>
+    # Prevenir clickjacking
+    Header always set X-Frame-Options "SAMEORIGIN"
+    
+    # Prevenir MIME type sniffing
+    Header always set X-Content-Type-Options "nosniff"
+    
+    # Habilitar XSS protection
+    Header always set X-XSS-Protection "1; mode=block"
+    
+    # Content Security Policy
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; img-src 'self' data: https:; font-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com;"
+</IfModule>
+
+# Comprimir contenido
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript
+</IfModule>
+
+# Cache
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/gif "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+</IfModule>

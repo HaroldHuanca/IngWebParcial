@@ -1,0 +1,212 @@
+/* ============================================
+   PALETAS DE COLORES PREDEFINIDAS
+   ============================================ */
+
+/* PALETA 1: AZUL (Por defecto) */
+:root.paleta-azul {
+    --color-primary: #0d6efd;
+    --color-primary-dark: #0b5ed7;
+    --color-primary-light: #0dcaf0;
+    --color-success: #198754;
+    --color-danger: #dc3545;
+    --color-warning: #ffc107;
+    --color-info: #0dcaf0;
+}
+
+/* PALETA 2: PÚRPURA */
+:root.paleta-purpura {
+    --color-primary: #7c3aed;
+    --color-primary-dark: #6d28d9;
+    --color-primary-light: #a78bfa;
+    --color-success: #10b981;
+    --color-danger: #ef4444;
+    --color-warning: #f59e0b;
+    --color-info: #8b5cf6;
+}
+
+/* PALETA 3: VERDE */
+:root.paleta-verde {
+    --color-primary: #059669;
+    --color-primary-dark: #047857;
+    --color-primary-light: #6ee7b7;
+    --color-success: #10b981;
+    --color-danger: #dc2626;
+    --color-warning: #d97706;
+    --color-info: #14b8a6;
+}
+
+/* PALETA 4: ROJO */
+:root.paleta-rojo {
+    --color-primary: #dc2626;
+    --color-primary-dark: #b91c1c;
+    --color-primary-light: #fca5a5;
+    --color-success: #16a34a;
+    --color-danger: #991b1b;
+    --color-warning: #ea580c;
+    --color-info: #f87171;
+}
+
+/* PALETA 5: NARANJA */
+:root.paleta-naranja {
+    --color-primary: #ea580c;
+    --color-primary-dark: #c2410c;
+    --color-primary-light: #fed7aa;
+    --color-success: #15803d;
+    --color-danger: #dc2626;
+    --color-warning: #f59e0b;
+    --color-info: #fb923c;
+}
+
+/* PALETA 6: ROSA */
+:root.paleta-rosa {
+    --color-primary: #ec4899;
+    --color-primary-dark: #be185d;
+    --color-primary-light: #fbcfe8;
+    --color-success: #10b981;
+    --color-danger: #dc2626;
+    --color-warning: #f59e0b;
+    --color-info: #f472b6;
+}
+
+/* PALETA 7: CIAN */
+:root.paleta-cian {
+    --color-primary: #0891b2;
+    --color-primary-dark: #0e7490;
+    --color-primary-light: #67e8f9;
+    --color-success: #10b981;
+    --color-danger: #dc2626;
+    --color-warning: #f59e0b;
+    --color-info: #06b6d4;
+}
+
+/* PALETA 8: ÍNDIGO */
+:root.paleta-indigo {
+    --color-primary: #4f46e5;
+    --color-primary-dark: #4338ca;
+    --color-primary-light: #a5b4fc;
+    --color-success: #10b981;
+    --color-danger: #dc2626;
+    --color-warning: #f59e0b;
+    --color-info: #6366f1;
+}
+
+/* PALETA 9: GRIS PROFESIONAL */
+:root.paleta-gris {
+    --color-primary: #374151;
+    --color-primary-dark: #1f2937;
+    --color-primary-light: #9ca3af;
+    --color-success: #059669;
+    --color-danger: #dc2626;
+    --color-warning: #d97706;
+    --color-info: #6b7280;
+}
+
+/* PALETA 10: MINIMALISTA */
+:root.paleta-minimalista {
+    --color-primary: #000000;
+    --color-primary-dark: #1a1a1a;
+    --color-primary-light: #333333;
+    --color-success: #22c55e;
+    --color-danger: #ef4444;
+    --color-warning: #eab308;
+    --color-info: #3b82f6;
+}
+
+/* ============================================
+   TEMAS OSCUROS
+   ============================================ */
+
+/* TEMA OSCURO AZUL */
+body.theme-dark.paleta-azul {
+    --color-bg-light: #1a1f2e;
+    --color-bg-white: #242d3d;
+    --color-text-dark: #e0e0e0;
+    --color-text-light: #a0a0a0;
+    --color-border: #3a4452;
+}
+
+/* TEMA OSCURO PÚRPURA */
+body.theme-dark.paleta-purpura {
+    --color-bg-light: #1e1a2e;
+    --color-bg-white: #2d2540;
+    --color-text-dark: #e0d5ff;
+    --color-text-light: #a89fd5;
+    --color-border: #3d3555;
+}
+
+/* TEMA OSCURO VERDE */
+body.theme-dark.paleta-verde {
+    --color-bg-light: #1a2e24;
+    --color-bg-white: #243d33;
+    --color-text-dark: #d5ffe0;
+    --color-text-light: #a0d5b0;
+    --color-border: #3a5545;
+}
+
+/* ============================================
+   UTILIDADES DE PALETA
+   ============================================ */
+
+.paleta-selector {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 20px 0;
+}
+
+.paleta-boton {
+    padding: 10px 15px;
+    border: 2px solid transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    background-color: var(--color-bg-light);
+    color: var(--color-text-dark);
+}
+
+.paleta-boton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.paleta-boton.activo {
+    border-color: var(--color-primary);
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.paleta-preview {
+    display: inline-flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.paleta-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* ============================================
+   ANIMACIÓN DE CAMBIO DE PALETA
+   ============================================ */
+
+@keyframes paleta-cambio {
+    0% {
+        opacity: 0.8;
+        transform: scale(0.95);
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+body.paleta-cambio {
+    animation: paleta-cambio 0.3s ease-in-out;
+}
