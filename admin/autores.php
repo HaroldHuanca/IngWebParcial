@@ -57,7 +57,6 @@
                                         <th>Nombre</th>
                                         <th>Apellido</th>
                                         <th>Biografía</th>
-                                        <th>Foto</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
@@ -98,11 +97,6 @@
                             <label class="form-label">Biografía</label>
                             <textarea class="form-control" id="biography" rows="4"></textarea>
                         </div>
-
-                        <div class="form-group">
-                            <label class="form-label">URL de Foto</label>
-                            <input type="url" class="form-control" id="photo_url" placeholder="https://ejemplo.com/foto.jpg">
-                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -131,13 +125,9 @@
                             <td>${autor.first_name}</td>
                             <td>${autor.last_name}</td>
                             <td>${autor.biography ? autor.biography.substring(0, 50) + '...' : '-'}</td>
-                            <td>${autor.photo_url ? '<i class="bi bi-image text-success"></i>' : '-'}</td>
                             <td>
                                 <button class="btn btn-warning btn-sm btn-icon" onclick="editarAutor(${autor.author_id})" title="Editar">
                                     <i class="bi bi-pencil"></i>
-                                </button>
-                                <button class="btn btn-danger btn-sm btn-icon" onclick="eliminarAutor(${autor.author_id})" title="Eliminar">
-                                    <i class="bi bi-trash"></i>
                                 </button>
                             </td>
                         `;
@@ -159,7 +149,6 @@
                     document.getElementById('first_name').value = autor.first_name;
                     document.getElementById('last_name').value = autor.last_name;
                     document.getElementById('biography').value = autor.biography || '';
-                    document.getElementById('photo_url').value = autor.photo_url || '';
                     document.getElementById('tituloModal').textContent = 'Editar Autor';
                     
                     const modal = new bootstrap.Modal(document.getElementById('modalAutor'));
@@ -171,30 +160,6 @@
                 });
         }
 
-        // Eliminar autor
-        function eliminarAutor(id) {
-            confirmarEliminacion(() => {
-                fetch('api/autores_api.php?action=eliminar', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ id })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        mostrarAlerta('Autor eliminado correctamente', 'success');
-                        cargarAutores();
-                    } else {
-                        mostrarAlerta(data.message || 'Error al eliminar', 'error');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    mostrarAlerta('Error al eliminar autor', 'error');
-                });
-            });
-        }
-
         // Guardar autor
         document.getElementById('formAutor').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -204,8 +169,7 @@
                 id: id || null,
                 first_name: document.getElementById('first_name').value,
                 last_name: document.getElementById('last_name').value,
-                biography: document.getElementById('biography').value,
-                photo_url: document.getElementById('photo_url').value
+                biography: document.getElementById('biography').value
             };
 
             fetch('api/autores_api.php?action=guardar', {

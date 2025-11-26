@@ -32,8 +32,7 @@ CREATE TABLE authors (
     author_id INT PRIMARY KEY AUTO_INCREMENT,
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
-    biography TEXT,
-    photo_url VARCHAR(255)
+    biography TEXT
 );
 
 -- Tabla de libros
@@ -44,7 +43,7 @@ CREATE TABLE books (
     description TEXT,
     price DECIMAL(10,2) NOT NULL,
     stock INT NOT NULL DEFAULT 0,
-    cover_image_url VARCHAR(255),
+    image_extension VARCHAR(10),
     publication_date DATE,
     publisher VARCHAR(100),
     language VARCHAR(50),

@@ -209,11 +209,9 @@
                                 <button class="btn btn-info btn-sm btn-icon" onclick="verPedido(${pedido.order_id})" title="Ver">
                                     <i class="bi bi-eye"></i>
                                 </button>
-                                <button class="btn btn-danger btn-sm btn-icon" onclick="eliminarPedido(${pedido.order_id})" title="Eliminar">
-                                    <i class="bi bi-trash"></i>
-                                </button>
                             </td>
                         `;
+                        fila.dataset.estado = pedido.status.toLowerCase();
                         tbody.appendChild(fila);
                     });
                 })
@@ -264,30 +262,6 @@
                 });
         }
 
-        // Eliminar pedido
-        function eliminarPedido(id) {
-            confirmarEliminacion(() => {
-                fetch('api/pedidos_api.php?action=eliminar', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ id })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        mostrarAlerta('Pedido eliminado correctamente', 'success');
-                        cargarPedidos();
-                    } else {
-                        mostrarAlerta(data.message || 'Error al eliminar', 'error');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    mostrarAlerta('Error al eliminar pedido', 'error');
-                });
-            });
-        }
-
         // Guardar cambios del pedido
         document.getElementById('formPedido').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -329,7 +303,8 @@
             const filas = document.querySelectorAll('#tablaPedidos tbody tr');
             
             filas.forEach(fila => {
-                if (!estado || fila.textContent.includes(estado)) {
+                const estadoFila = fila.dataset.estado;
+                if (estado === "" || estado === estadoFila) {
                     fila.style.display = '';
                 } else {
                     fila.style.display = 'none';

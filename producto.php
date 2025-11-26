@@ -42,7 +42,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         <div class="row">
             <div class="col-lg-6 d-flex align-items-center justify-content-center">
                 <div class="product-img">
-                    <img src="<?php echo htmlspecialchars($book['cover_image_url']); ?>" alt="Portada del libro <?php echo htmlspecialchars($book['title']); ?>" class="img-fluid">
+                    <img src="<?php echo htmlspecialchars("books/" . $book['book_id'] . '.' . $book['image_extension']); ?>" alt="Portada del libro <?php echo htmlspecialchars($book['title']); ?>" class="img-fluid">
                 </div>
             </div>
 

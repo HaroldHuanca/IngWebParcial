@@ -36,7 +36,7 @@ if (!$result_order || $result_order->num_rows === 0) {
 $order = $result_order->fetch_assoc();
 
 // Obtener items del pedido
-$sql_items = "SELECT oi.*, b.title, b.cover_image_url 
+$sql_items = "SELECT oi.*, b.title, b.image_extension 
               FROM order_items oi
               JOIN books b ON oi.book_id = b.book_id
               WHERE oi.order_id = ?";
@@ -149,7 +149,7 @@ foreach ($items as $item) {
                             <!-- Item del pedido -->
                             <tr class="order-item">
                                 <td class="d-flex align-items-center">
-                                    <img src="<?php echo htmlspecialchars($item['cover_image_url']); ?>" alt="<?php echo htmlspecialchars($item['title']); ?>" width="80" class="me-3">
+                                    <img src="<?php echo htmlspecialchars("books/" . $item['image_extension']); ?>" alt="<?php echo htmlspecialchars($item['title']); ?>" width="80" class="me-3">
                                     <div>
                                         <strong><?php echo htmlspecialchars($item['title']); ?></strong>
                                         <div class="text-muted">Autor: <?php echo htmlspecialchars($authors[intval($item['book_id'])]); ?></div>

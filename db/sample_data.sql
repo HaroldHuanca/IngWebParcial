@@ -31,40 +31,40 @@ INSERT INTO categories (name, description, parent_category_id) VALUES
 ('Aventura', 'Historias llenas de acción y descubrimiento', 1);
 
 -- Insertar autores
-INSERT INTO authors (first_name, last_name, biography, photo_url) VALUES
-('Gabriel', 'García Márquez', 'Premio Nobel de Literatura 1982', 'authors/garcia_marquez.jpg'),
-('Isabel', 'Allende', 'Reconocida escritora chilena', 'authors/allende.jpg'),
-('Mario', 'Vargas Llosa', 'Premio Nobel de Literatura 2010', 'authors/vargas_llosa.jpg'),
-('Jorge Luis', 'Borges', 'Célebre escritor argentino', 'authors/borges.jpg'),
-('Julio', 'Cortázar', 'Maestro del cuento corto', 'authors/cortazar.jpg'),
-('Pablo', 'Neruda', 'Premio Nobel de Literatura 1971', 'authors/neruda.jpg'),
-('Octavio', 'Paz', 'Premio Nobel de Literatura 1990', 'authors/paz.jpg'),
-('Carlos', 'Fuentes', 'Renovador de la literatura mexicana', 'authors/fuentes.jpg'),
-('César', 'Vallejo', 'Poeta peruano universal', 'authors/vallejo.jpg'),
-('Miguel', 'Ángel Asturias', 'Premio Nobel de Literatura 1967', 'authors/asturias.jpg'),
-('Alfonsina', 'Storni', 'Poetisa argentina moderna', 'authors/storni.jpg'),
-('Juan', 'Rulfo', 'Maestro del realismo mágico', 'authors/rulfo.jpg'),
-('Gabriela', 'Mistral', 'Primera latinoamericana Premio Nobel', 'authors/mistral.jpg'),
-('José', 'Donoso', 'Novelista chileno del boom', 'authors/donoso.jpg'),
-('Alejo', 'Carpentier', 'Precursor del realismo mágico', 'authors/carpentier.jpg'),
-('Roberto', 'Bolaño', 'Renovador de la literatura contemporánea', 'authors/bolano.jpg'),
-('Juan Carlos', 'Onetti', 'Narrador uruguayo fundamental', 'authors/onetti.jpg'),
-('Elena', 'Poniatowska', 'Cronista de la realidad mexicana', 'authors/poniatowska.jpg'),
-('Augusto', 'Roa Bastos', 'Narrador paraguayo esencial', 'authors/roa_bastos.jpg'),
-('Cristina', 'Peri Rossi', 'Escritora uruguaya contemporánea', 'authors/peri_rossi.jpg');
+INSERT INTO authors (first_name, last_name, biography) VALUES
+('Gabriel', 'García Márquez', 'Premio Nobel de Literatura 1982'),
+('Isabel', 'Allende', 'Reconocida escritora chilena'),
+('Mario', 'Vargas Llosa', 'Premio Nobel de Literatura 2010'),
+('Jorge Luis', 'Borges', 'Célebre escritor argentino'),
+('Julio', 'Cortázar', 'Maestro del cuento corto'),
+('Pablo', 'Neruda', 'Premio Nobel de Literatura 1971'),
+('Octavio', 'Paz', 'Premio Nobel de Literatura 1990'),
+('Carlos', 'Fuentes', 'Renovador de la literatura mexicana'),
+('César', 'Vallejo', 'Poeta peruano universal'),
+('Miguel', 'Ángel Asturias', 'Premio Nobel de Literatura 1967'),
+('Alfonsina', 'Storni', 'Poetisa argentina moderna'),
+('Juan', 'Rulfo', 'Maestro del realismo mágico'),
+('Gabriela', 'Mistral', 'Primera latinoamericana Premio Nobel'),
+('José', 'Donoso', 'Novelista chileno del boom'),
+('Alejo', 'Carpentier', 'Precursor del realismo mágico'),
+('Roberto', 'Bolaño', 'Renovador de la literatura contemporánea'),
+('Juan Carlos', 'Onetti', 'Narrador uruguayo fundamental'),
+('Elena', 'Poniatowska', 'Cronista de la realidad mexicana'),
+('Augusto', 'Roa Bastos', 'Narrador paraguayo esencial'),
+('Cristina', 'Peri Rossi', 'Escritora uruguaya contemporánea');
 
 -- Insertar libros
-INSERT INTO books (title, isbn, description, price, stock, cover_image_url, publication_date, publisher, language, page_count, format, is_featured) VALUES
-('Cien años de soledad', '9780307474728', 'La obra maestra del realismo mágico', 59.90, 100, 'books/cien_anos.jpg', '1967-05-30', 'Editorial Sudamericana', 'Español', 432, 'Tapa blanda', TRUE),
-('La casa de los espíritus', '9780525433477', 'Saga familiar en Chile', 49.90, 75, 'books/casa_espiritus.jpg', '1982-01-01', 'Plaza & Janés', 'Español', 368, 'Tapa dura', TRUE),
-('La ciudad y los perros', '9788420471839', 'La vida en un colegio militar', 45.90, 50, 'books/ciudad_perros.jpg', '1963-10-10', 'Alfaguara', 'Español', 448, 'Tapa blanda', FALSE),
-('Ficciones', '9780802130303', 'Colección de cuentos fundamentales', 39.90, 60, 'books/ficciones.jpg', '1944-01-01', 'Sur', 'Español', 288, 'Tapa blanda', TRUE),
-('Rayuela', '9788437604572', 'Novela experimental revolucionaria', 54.90, 40, 'books/rayuela.jpg', '1963-06-28', 'Editorial Sudamericana', 'Español', 635, 'Tapa dura', FALSE),
-('Veinte poemas de amor', '9780307474689', 'Poesía romántica esencial', 29.90, 120, 'books/veinte_poemas.jpg', '1924-01-01', 'Editorial Nascimento', 'Español', 56, 'Tapa blanda', TRUE),
-('El laberinto de la soledad', '9780802150646', 'Ensayo sobre la identidad mexicana', 44.90, 30, 'books/laberinto.jpg', '1950-01-01', 'Cuadernos Americanos', 'Español', 351, 'Tapa blanda', FALSE),
-('La muerte de Artemio Cruz', '9788420422290', 'La revolución mexicana', 49.90, 45, 'books/artemio_cruz.jpg', '1962-01-01', 'Fondo de Cultura Económica', 'Español', 315, 'Tapa blanda', FALSE),
-('Los heraldos negros', '9788437604589', 'Poesía peruana moderna', 34.90, 25, 'books/heraldos.jpg', '1919-01-01', 'Editorial Sur', 'Español', 154, 'Tapa blanda', FALSE),
-('El señor presidente', '9788437604596', 'Novela sobre la dictadura', 47.90, 35, 'books/sr_presidente.jpg', '1946-01-01', 'Editorial Losada', 'Español', 288, 'Tapa blanda', TRUE);
+INSERT INTO books (title, isbn, description, price, stock, image_extension, publication_date, publisher, language, page_count, format, is_featured) VALUES
+('Cien años de soledad', '9780307474728', 'La obra maestra del realismo mágico', 59.90, 100, 'jpg', '1967-05-30', 'Editorial Sudamericana', 'Español', 432, 'Tapa blanda', TRUE),
+('La casa de los espíritus', '9780525433477', 'Saga familiar en Chile', 49.90, 75, 'jpg', '1982-01-01', 'Plaza & Janés', 'Español', 368, 'Tapa dura', TRUE),
+('La ciudad y los perros', '9788420471839', 'La vida en un colegio militar', 45.90, 50, 'jpg', '1963-10-10', 'Alfaguara', 'Español', 448, 'Tapa blanda', FALSE),
+('Ficciones', '9780802130303', 'Colección de cuentos fundamentales', 39.90, 60, 'jpg', '1944-01-01', 'Sur', 'Español', 288, 'Tapa blanda', TRUE),
+('Rayuela', '9788437604572', 'Novela experimental revolucionaria', 54.90, 40, 'jpg', '1963-06-28', 'Editorial Sudamericana', 'Español', 635, 'Tapa dura', FALSE),
+('Veinte poemas de amor', '9780307474689', 'Poesía romántica esencial', 29.90, 120, 'jpg', '1924-01-01', 'Editorial Nascimento', 'Español', 56, 'Tapa blanda', TRUE),
+('El laberinto de la soledad', '9780802150646', 'Ensayo sobre la identidad mexicana', 44.90, 30, 'jpg', '1950-01-01', 'Cuadernos Americanos', 'Español', 351, 'Tapa blanda', FALSE),
+('La muerte de Artemio Cruz', '9788420422290', 'La revolución mexicana', 49.90, 45, 'jpg', '1962-01-01', 'Fondo de Cultura Económica', 'Español', 315, 'Tapa blanda', FALSE),
+('Los heraldos negros', '9788437604589', 'Poesía peruana moderna', 34.90, 25, 'jpg', '1919-01-01', 'Editorial Sur', 'Español', 154, 'Tapa blanda', FALSE),
+('El señor presidente', '9788437604596', 'Novela sobre la dictadura', 47.90, 35, 'jpg', '1946-01-01', 'Editorial Losada', 'Español', 288, 'Tapa blanda', TRUE);
 
 -- Relacionar libros con autores
 INSERT INTO book_authors (book_id, author_id) VALUES

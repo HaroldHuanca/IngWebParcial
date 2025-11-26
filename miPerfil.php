@@ -102,7 +102,7 @@ if (!isset($_SESSION['usuario'])) {
                                                 <div class="card h-100">
                                                     <div class="row g-0">
                                                         <div class="col-4">
-                                                            <img src="<?php echo htmlspecialchars($book['cover_image_url']); ?>" class="img-fluid rounded-start" alt="Portada de '<?php echo htmlspecialchars($book['title']); ?>'" style="height: 100%; object-fit: cover;">
+                                                            <img src="<?php echo htmlspecialchars("books/" . $book['book_id'] . '.' . $book['image_extension']); ?>" class="img-fluid rounded-start" alt="Portada de '<?php echo htmlspecialchars($book['title']); ?>'" style="height: 100%; object-fit: cover;">
                                                         </div>
                                                         <div class="col-8">
                                                             <div class="card-body">

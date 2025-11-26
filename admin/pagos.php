@@ -191,9 +191,6 @@
                                 <button class="btn btn-info btn-sm btn-icon" onclick="verPago(${pago.transaction_id})" title="Ver">
                                     <i class="bi bi-eye"></i>
                                 </button>
-                                <button class="btn btn-danger btn-sm btn-icon" onclick="eliminarPago(${pago.transaction_id})" title="Eliminar">
-                                    <i class="bi bi-trash"></i>
-                                </button>
                             </td>
                         `;
                         tbody.appendChild(fila);
@@ -228,30 +225,6 @@
                     console.error('Error:', error);
                     mostrarAlerta('Error al cargar pago', 'error');
                 });
-        }
-
-        // Eliminar pago
-        function eliminarPago(id) {
-            confirmarEliminacion(() => {
-                fetch('api/pagos_api.php?action=eliminar', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ id })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        mostrarAlerta('Pago eliminado correctamente', 'success');
-                        cargarPagos();
-                    } else {
-                        mostrarAlerta(data.message || 'Error al eliminar', 'error');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    mostrarAlerta('Error al eliminar pago', 'error');
-                });
-            });
         }
 
         // Guardar cambios del pago

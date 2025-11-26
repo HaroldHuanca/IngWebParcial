@@ -62,7 +62,6 @@ function guardarAutor() {
     $first_name = $datos['first_name'] ?? '';
     $last_name = $datos['last_name'] ?? '';
     $biography = $datos['biography'] ?? '';
-    $photo_url = $datos['photo_url'] ?? '';
     
     if (empty($first_name) || empty($last_name)) {
         echo json_encode(['success' => false, 'message' => 'Nombre y apellido son requeridos']);
@@ -71,12 +70,12 @@ function guardarAutor() {
     
     if ($id) {
         // Actualizar
-        $stmt = $con->prepare("UPDATE authors SET first_name=?, last_name=?, biography=?, photo_url=? WHERE author_id=?");
-        $stmt->bind_param("ssssi", $first_name, $last_name, $biography, $photo_url, $id);
+        $stmt = $con->prepare("UPDATE authors SET first_name=?, last_name=?, biography=? WHERE author_id=?");
+        $stmt->bind_param("sssi", $first_name, $last_name, $biography, $id);
     } else {
         // Crear
-        $stmt = $con->prepare("INSERT INTO authors (first_name, last_name, biography, photo_url) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("ssss", $first_name, $last_name, $biography, $photo_url);
+        $stmt = $con->prepare("INSERT INTO authors (first_name, last_name, biography) VALUES (?, ?, ?)");
+        $stmt->bind_param("sss", $first_name, $last_name, $biography);
     }
     
     if ($stmt->execute()) {

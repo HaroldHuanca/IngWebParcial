@@ -131,9 +131,6 @@
                                 <button class="btn btn-warning btn-sm btn-icon" onclick="editarCategoria(${categoria.category_id})" title="Editar">
                                     <i class="bi bi-pencil"></i>
                                 </button>
-                                <button class="btn btn-danger btn-sm btn-icon" onclick="eliminarCategoria(${categoria.category_id})" title="Eliminar">
-                                    <i class="bi bi-trash"></i>
-                                </button>
                             </td>
                         `;
                         tbody.appendChild(fila);
@@ -178,30 +175,6 @@
                     console.error('Error:', error);
                     mostrarAlerta('Error al cargar categoría', 'error');
                 });
-        }
-
-        // Eliminar categoría
-        function eliminarCategoria(id) {
-            confirmarEliminacion(() => {
-                fetch('api/categorias_api.php?action=eliminar', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ id })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        mostrarAlerta('Categoría eliminada correctamente', 'success');
-                        cargarCategorias();
-                    } else {
-                        mostrarAlerta(data.message || 'Error al eliminar', 'error');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    mostrarAlerta('Error al eliminar categoría', 'error');
-                });
-            });
         }
 
         // Guardar categoría

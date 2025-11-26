@@ -70,13 +70,13 @@ if(isset($_GET['book_id']) && isset($_GET['quantity'])) {
                                 ? $resultTitle->fetch_assoc()['title']
                                 : "Título desconocido";
                             // Obtener la direccion de la portada del libro
-                            $sqlCover = "SELECT cover_image_url FROM books WHERE book_id = ?;";
+                            $sqlCover = "SELECT image_extension FROM books WHERE book_id = ?;";
                             $stmtCover = $con->prepare($sqlCover);
                             $stmtCover->bind_param("i", $book_id);
                             $stmtCover->execute();
                             $resultCover = $stmtCover->get_result();
                             $cover = ($resultCover && $resultCover->num_rows > 0)
-                                ? $resultCover->fetch_assoc()['cover_image_url']
+                                ? "books/" . $book_id . '.' . $resultCover->fetch_assoc()['image_extension']
                                 : "Imagen desconocido";
                             // Obtener el nombre completo del autor
                             $sqlAuthor = "SELECT CONCAT(a.first_name, ' ', a.last_name) AS author_name

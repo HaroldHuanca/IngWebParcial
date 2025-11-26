@@ -51,7 +51,7 @@ session_start();
                     ?>
                             <div class="product-card">
                                 <a href="producto.php?id=<?php echo $book['book_id']; ?>" style="text-decoration: none; color: inherit;">
-                                    <img src="<?php echo htmlspecialchars($book['cover_image_url']); ?>" alt="Portada de '<?php echo htmlspecialchars($book['title']); ?>'">
+                                    <img src="books/<?php echo htmlspecialchars($book['book_id'] . '.' . $book['image_extension']); ?>" alt="Portada de '<?php echo htmlspecialchars($book['title']); ?>'">
                                     <div class="card-content">
                                         <h3 class="mb-2"><?php echo htmlspecialchars($book['title']); ?></h3>
                                         <?php

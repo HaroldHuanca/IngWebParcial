@@ -163,8 +163,22 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="form-label">URL de Portada</label>
-                            <input type="url" class="form-control" id="cover_image_url" placeholder="https://ejemplo.com/portada.jpg">
+                            <label class="form-label">Portada (imagen)</label>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div id="currentImageContainer" style="display:none;">
+                                        <label class="form-label">Imagen Actual</label>
+                                        <img id="currentImage" src="" alt="Imagen actual" style="max-width: 100%; max-height: 300px; border: 1px solid #ddd; border-radius: 4px;">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Nueva Imagen</label>
+                                    <input type="file" class="form-control" id="cover_image" accept=".png,.jpg,.jpeg,.webp">
+                                    <div id="previewImageContainer" style="display:none; margin-top: 10px;">
+                                        <img id="previewImage" src="" alt="Vista previa" style="max-width: 100%; max-height: 300px; border: 1px solid #ddd; border-radius: 4px;">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="form-check">
@@ -216,9 +230,6 @@
                                 <button class="btn btn-warning btn-sm btn-icon" onclick="editarLibro(${libro.book_id})" title="Editar">
                                     <i class="bi bi-pencil"></i>
                                 </button>
-                                <button class="btn btn-danger btn-sm btn-icon" onclick="eliminarLibro(${libro.book_id})" title="Eliminar">
-                                    <i class="bi bi-trash"></i>
-                                </button>
                             </td>
                         `;
                         tbody.appendChild(fila);
@@ -246,9 +257,39 @@
                     document.getElementById('publication_date').value = libro.publication_date || '';
                     document.getElementById('page_count').value = libro.page_count || '';
                     document.getElementById('format').value = libro.format || '';
-                    document.getElementById('cover_image_url').value = libro.cover_image_url || '';
+                    document.getElementById('cover_image').value = '';
                     document.getElementById('is_featured').checked = libro.is_featured;
                     document.getElementById('tituloModal').textContent = 'Editar Libro';
+                    
+                    // Mostrar imagen actual si existe
+                    const currentImageContainer = document.getElementById('currentImageContainer');
+                    const currentImage = document.getElementById('currentImage');
+                    const previewImageContainer = document.getElementById('previewImageContainer');
+                    const previewImage = document.getElementById('previewImage');
+                    
+                    // Buscar imagen existente en las extensiones permitidas
+                    const allowedExt = ['png', 'jpg', 'jpeg', 'webp'];
+                    let imageFound = false;
+                    
+                    const checkImage = (ext) => {
+                        const imagePath = `../books/${libro.book_id}.${ext}`;
+                        const img = new Image();
+                        img.onload = () => {
+                            currentImage.src = imagePath;
+                            currentImageContainer.style.display = 'block';
+                            imageFound = true;
+                        };
+                        img.onerror = () => {
+                            if (!imageFound && ext !== allowedExt[allowedExt.length - 1]) {
+                                checkImage(allowedExt[allowedExt.indexOf(ext) + 1]);
+                            }
+                        };
+                        img.src = imagePath;
+                    };
+                    
+                    currentImageContainer.style.display = 'none';
+                    previewImageContainer.style.display = 'none';
+                    checkImage(allowedExt[0]);
                     
                     const modal = new bootstrap.Modal(document.getElementById('modalLibro'));
                     modal.show();
@@ -259,55 +300,50 @@
                 });
         }
 
-        // Eliminar libro
-        function eliminarLibro(id) {
-            confirmarEliminacion(() => {
-                fetch('api/libros_api.php?action=eliminar', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ id })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        mostrarAlerta('Libro eliminado correctamente', 'success');
-                        cargarLibros();
-                    } else {
-                        mostrarAlerta(data.message || 'Error al eliminar', 'error');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    mostrarAlerta('Error al eliminar libro', 'error');
-                });
-            });
-        }
+        // Vista previa de imagen al seleccionar archivo
+        document.getElementById('cover_image').addEventListener('change', function(e) {
+            const previewImageContainer = document.getElementById('previewImageContainer');
+            const previewImage = document.getElementById('previewImage');
+            
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    previewImage.src = event.target.result;
+                    previewImageContainer.style.display = 'block';
+                };
+                reader.readAsDataURL(this.files[0]);
+            } else {
+                previewImageContainer.style.display = 'none';
+            }
+        });
 
         // Guardar libro
         document.getElementById('formLibro').addEventListener('submit', function(e) {
             e.preventDefault();
             
             const id = document.getElementById('libroId').value;
-            const datos = {
-                id: id || null,
-                title: document.getElementById('title').value,
-                isbn: document.getElementById('isbn').value,
-                description: document.getElementById('description').value,
-                price: parseFloat(document.getElementById('price').value),
-                stock: parseInt(document.getElementById('stock').value),
-                publisher: document.getElementById('publisher').value,
-                language: document.getElementById('language').value,
-                publication_date: document.getElementById('publication_date').value,
-                page_count: document.getElementById('page_count').value,
-                format: document.getElementById('format').value,
-                cover_image_url: document.getElementById('cover_image_url').value,
-                is_featured: document.getElementById('is_featured').checked
-            };
+            const formData = new FormData();
+            formData.append('id', id || '');
+            formData.append('title', document.getElementById('title').value);
+            formData.append('isbn', document.getElementById('isbn').value);
+            formData.append('description', document.getElementById('description').value);
+            formData.append('price', document.getElementById('price').value);
+            formData.append('stock', document.getElementById('stock').value);
+            formData.append('publisher', document.getElementById('publisher').value);
+            formData.append('language', document.getElementById('language').value);
+            formData.append('publication_date', document.getElementById('publication_date').value);
+            formData.append('page_count', document.getElementById('page_count').value);
+            formData.append('format', document.getElementById('format').value);
+            formData.append('is_featured', document.getElementById('is_featured').checked ? '1' : '0');
+
+            const coverInput = document.getElementById('cover_image');
+            if (coverInput.files && coverInput.files.length > 0) {
+                formData.append('cover_image', coverInput.files[0]);
+            }
 
             fetch('api/libros_api.php?action=guardar', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(datos)
+                body: formData
             })
             .then(response => response.json())
             .then(data => {

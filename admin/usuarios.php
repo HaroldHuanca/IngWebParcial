@@ -165,20 +165,17 @@
                             <td>${usuario.phone || '-'}</td>
                             <td>
                                 <span class="badge ${usuario.is_active ? 'badge-success' : 'badge-danger'}">
-                                    ${usuario.is_active ? 'Activo' : 'Inactivo'}
+                                    ${Boolean(Number(usuario.is_active)) ? 'Activo' : 'Inactivo'}
                                 </span>
                             </td>
                             <td>
                                 <span class="badge ${usuario.is_admin ? 'badge-primary' : 'badge-secondary'}">
-                                    ${usuario.is_admin ? 'Sí' : 'No'}
+                                    ${Boolean(Number(usuario.is_admin)) ? 'Sí' : 'No'}
                                 </span>
                             </td>
                             <td>
                                 <button class="btn btn-warning btn-sm btn-icon" onclick="editarUsuario(${usuario.user_id})" title="Editar">
                                     <i class="bi bi-pencil"></i>
-                                </button>
-                                <button class="btn btn-danger btn-sm btn-icon" onclick="eliminarUsuario(${usuario.user_id})" title="Eliminar">
-                                    <i class="bi bi-trash"></i>
                                 </button>
                             </td>
                         `;
@@ -215,30 +212,6 @@
                     console.error('Error:', error);
                     mostrarAlerta('Error al cargar usuario', 'error');
                 });
-        }
-
-        // Eliminar usuario
-        function eliminarUsuario(id) {
-            confirmarEliminacion(() => {
-                fetch('api/usuarios_api.php?action=eliminar', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ id })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        mostrarAlerta('Usuario eliminado correctamente', 'success');
-                        cargarUsuarios();
-                    } else {
-                        mostrarAlerta(data.message || 'Error al eliminar', 'error');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    mostrarAlerta('Error al eliminar usuario', 'error');
-                });
-            });
         }
 
         // Guardar usuario
