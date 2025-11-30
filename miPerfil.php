@@ -51,11 +51,11 @@ if (!isset($_SESSION['usuario'])) {
                         </div>
                         <div class="mb-3">
                             <label class="text-muted d-block">Teléfono</label>
-                            <div><?php echo htmlspecialchars($user['phone']); ?></div>
+                            <div><?php echo htmlspecialchars($user['phone'] ?? ''); ?></div>
                         </div>
                         <div class="mb-3">
                             <label class="text-muted d-block">Dirección</label>
-                            <div><?php echo htmlspecialchars($user['address']); ?></div>
+                            <div><?php echo htmlspecialchars($user['address'] ?? ''); ?></div>
                         </div>
                     </div>
                 </div>

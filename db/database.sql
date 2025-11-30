@@ -15,7 +15,10 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     last_login TIMESTAMP NULL,
     is_active BOOLEAN DEFAULT TRUE,
-    is_admin BOOLEAN DEFAULT FALSE
+    is_admin BOOLEAN DEFAULT FALSE,
+    google_id VARCHAR(255) NULL,
+    facebook_id VARCHAR(255) NULL,
+    avatar VARCHAR(255) NULL
 );
 
 -- Tabla de categorías de libros

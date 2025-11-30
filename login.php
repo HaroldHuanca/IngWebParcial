@@ -13,13 +13,15 @@ if (isset($_POST['btnEnviar'])) {
     // Por simplicidad, asumimos que el login es exitoso si el email es "
     $email = $_POST['email'];
     $password = $_POST['password'];
-    $sql = "SELECT * FROM users WHERE email = ? and password_hash = ?;";
+    $sql = "SELECT * FROM users WHERE email = ?";
     $stmt = $con->prepare($sql);
-    $stmt->bind_param("ss", $email, $password);
+    $stmt->bind_param("s", $email);
     $stmt->execute();
     $resultado = $stmt->get_result();
+    
     if ($resultado && $resultado->num_rows > 0) {
         $fila = $resultado->fetch_assoc();
+        if (password_verify($password, $fila['password_hash'])) {
         $_SESSION['usuario'] = $email;
         $_SESSION['user_id'] = $fila['user_id'];
         $_SESSION['is_admin'] = $fila['is_admin'];
@@ -78,6 +80,9 @@ if (isset($_POST['btnEnviar'])) {
         // Redirigir al perfil del usuario después del login exitoso
         header('Location: miPerfil.php');
         exit();
+    } else {
+        $mensaje = "Correo o contraseña incorrectos.";
+    }
     } else {
         $mensaje = "Correo o contraseña incorrectos.";
     }
@@ -151,12 +156,12 @@ if (isset($_POST['btnEnviar'])) {
 
                                 <!-- Botones de Login Social (usando clases de Bootstrap existentes) -->
                                 <div class="d-grid gap-2">
-                                    <button class="btn btn-secondary" type="button">
+                                    <a href="google_auth.php" class="btn btn-secondary">
                                         <i class="bi bi-google me-2"></i> Continuar con Google
-                                    </button>
-                                    <button class="btn btn-secondary" type="button">
+                                    </a>
+                                    <a href="facebook_auth.php" class="btn btn-secondary">
                                         <i class="bi bi-facebook me-2"></i> Continuar con Facebook
-                                    </button>
+                                    </a>
                                 </div>
 
                             </form>

@@ -28,10 +28,11 @@ if (isset($_POST["btnEnviar"])) {
         $mensaje = "El correo electrónico no es válido.";
     } else {
         // Usar prepared statements para evitar SQL Injection
+        $password_hashed = password_hash($password, PASSWORD_DEFAULT);
         $sql = "insert into users (first_name, last_name, username, email, phone, address, password_hash, created_at, last_login, is_active) 
                     values (?, ?, ?, ?, ?, ?, ?, NOW(), NULL, 1)";
         $stmt = $con->prepare($sql);
-        $stmt->bind_param("sssssss", $first_name, $last_name, $username, $email, $phone, $address, $password);
+        $stmt->bind_param("sssssss", $first_name, $last_name, $username, $email, $phone, $address, $password_hashed);
         $resultado = $stmt->execute();
         if ($resultado) {
             $mensaje = "Registro exitoso. Ahora puedes iniciar sesión.";
@@ -126,12 +127,12 @@ if (isset($_POST["btnEnviar"])) {
                                 <!-- Botones sociales -->
                                 <p class="text-center text-muted small">O regístrate con</p>
                                 <div class="d-grid gap-2">
-                                    <button class="btn btn-secondary" type="button">
+                                    <a href="google_auth.php" class="btn btn-secondary">
                                         <i class="bi bi-google me-2"></i> Google
-                                    </button>
-                                    <button class="btn btn-secondary" type="button">
+                                    </a>
+                                    <a href="facebook_auth.php" class="btn btn-secondary">
                                         <i class="bi bi-facebook me-2"></i> Facebook
-                                    </button>
+                                    </a>
                                 </div>
                             </form>
 
