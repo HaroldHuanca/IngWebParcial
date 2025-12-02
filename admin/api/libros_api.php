@@ -45,7 +45,7 @@ function obtenerLibro() {
     global $con;
     $id = intval($_GET['id'] ?? 0);
     
-    $stmt = $con->prepare("SELECT * FROM books WHERE book_id = ?");
+    $stmt = $con->prepare("SELECT b.*, ba.author_id, bc.category_id FROM books b LEFT JOIN book_authors ba ON b.book_id = ba.book_id LEFT JOIN book_categories bc ON b.book_id = bc.book_id WHERE b.book_id = ?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -68,9 +68,11 @@ function guardarLibro() {
     $page_count = isset($_POST['page_count']) && $_POST['page_count'] !== '' ? intval($_POST['page_count']) : 0;
     $format = $_POST['format'] ?? '';
     $is_featured = isset($_POST['is_featured']) && $_POST['is_featured'] == '1' ? 1 : 0;
+    $author_id = isset($_POST['author_id']) && $_POST['author_id'] !== '' ? intval($_POST['author_id']) : null;
+    $category_id = isset($_POST['category_id']) && $_POST['category_id'] !== '' ? intval($_POST['category_id']) : null;
     
-    if (empty($title) || $price <= 0 || $stock < 0) {
-        echo json_encode(['success' => false, 'message' => 'Datos inválidos']);
+    if (empty($title) || $price <= 0 || $stock < 0 || empty($category_id)) {
+        echo json_encode(['success' => false, 'message' => 'Datos inválidos. Asegúrese de seleccionar una categoría.']);
         return;
     }
     
@@ -87,6 +89,28 @@ function guardarLibro() {
     if ($stmt->execute()) {
         $book_id = $id ? $id : $con->insert_id;
 
+        // Guardar autor
+        if ($author_id) {
+            // Verificar si ya existe relación
+            $check = $con->query("SELECT * FROM book_authors WHERE book_id = $book_id");
+            if ($check->num_rows > 0) {
+                $con->query("UPDATE book_authors SET author_id = $author_id WHERE book_id = $book_id");
+            } else {
+                $con->query("INSERT INTO book_authors (book_id, author_id) VALUES ($book_id, $author_id)");
+            }
+        }
+
+        // Guardar categoría
+        if ($category_id) {
+            // Verificar si ya existe relación
+            $check = $con->query("SELECT * FROM book_categories WHERE book_id = $book_id");
+            if ($check->num_rows > 0) {
+                $con->query("UPDATE book_categories SET category_id = $category_id WHERE book_id = $book_id");
+            } else {
+                $con->query("INSERT INTO book_categories (book_id, category_id) VALUES ($book_id, $category_id)");
+            }
+        }
+
         // Manejo de imagen de portada
         if (isset($_FILES['cover_image']) && $_FILES['cover_image']['error'] === UPLOAD_ERR_OK) {
             $allowed_ext = ['png', 'jpg', 'jpeg', 'webp'];
@@ -94,23 +118,53 @@ function guardarLibro() {
             $original_name = $_FILES['cover_image']['name'];
             $ext = strtolower(pathinfo($original_name, PATHINFO_EXTENSION));
 
+            // Log para debug
+            error_log("Intento de subida: " . print_r($_FILES['cover_image'], true));
+            error_log("Extension detectada: " . $ext);
+
             if (in_array($ext, $allowed_ext)) {
                 $baseDir = dirname(__DIR__, 2) . '/books';
                 if (!is_dir($baseDir)) {
-                    @mkdir($baseDir, 0777, true);
+                    mkdir($baseDir, 0777, true);
                 }
 
                 // Eliminar archivos anteriores del libro con cualquier extensión permitida
                 foreach ($allowed_ext as $oldExt) {
                     $oldPath = $baseDir . '/' . $book_id . '.' . $oldExt;
                     if (file_exists($oldPath)) {
-                        @unlink($oldPath);
+                        unlink($oldPath);
                     }
                 }
 
                 $destPath = $baseDir . '/' . $book_id . '.' . $ext;
-                @move_uploaded_file($file_tmp, $destPath);
+                error_log("Intentando mover archivo a: " . $destPath);
+                
+                if (move_uploaded_file($file_tmp, $destPath)) {
+                    error_log("Archivo movido exitosamente");
+                    // Actualizar extensión en base de datos
+                    $stmtUpdate = $con->prepare("UPDATE books SET image_extension = ? WHERE book_id = ?");
+                    $stmtUpdate->bind_param("si", $ext, $book_id);
+                    $stmtUpdate->execute();
+                } else {
+                    $lastError = error_get_last();
+                    $errorMsg = "Fallo al mover archivo. Error PHP: " . ($lastError['message'] ?? 'Desconocido');
+                    error_log($errorMsg);
+                    echo json_encode(['success' => false, 'message' => $errorMsg]);
+                    return;
+                }
+            } else {
+                $errorMsg = "Extensión no permitida: " . $ext;
+                error_log($errorMsg);
+                echo json_encode(['success' => false, 'message' => $errorMsg]);
+                return;
             }
+        } else {
+             if (isset($_FILES['cover_image'])) {
+                $errorMsg = "Error en subida: Código " . $_FILES['cover_image']['error'];
+                error_log($errorMsg);
+                echo json_encode(['success' => false, 'message' => $errorMsg]);
+                return;
+             }
         }
 
         echo json_encode(['success' => true, 'message' => 'Libro guardado correctamente']);

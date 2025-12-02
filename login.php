@@ -122,10 +122,15 @@ if (isset($_POST['btnEnviar'])) {
                                     <label for="floatingInput">Correo Electrónico</label>
                                 </div>
 
-                                <!-- Campo de Contraseña con etiqueta flotante -->
-                                <div class="form-floating mb-3">
-                                    <input name="password" class="form-control" id="floatingPassword" placeholder="Contraseña" required>
-                                    <label for="floatingPassword">Contraseña</label>
+                                <!-- Campo de Contraseña con etiqueta flotante y botón de ver -->
+                                <div class="input-group mb-3">
+                                    <div class="form-floating">
+                                        <input name="password" type="password" class="form-control" id="floatingPassword" placeholder="Contraseña" required>
+                                        <label for="floatingPassword">Contraseña</label>
+                                    </div>
+                                    <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
                                 </div>
 
                                 <!-- Opciones: Recordar y Olvidé contraseña -->
@@ -179,6 +184,22 @@ if (isset($_POST['btnEnviar'])) {
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script>
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const passwordInput = document.getElementById('floatingPassword');
+            const icon = this.querySelector('i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('bi-eye');
+                icon.classList.add('bi-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('bi-eye-slash');
+                icon.classList.add('bi-eye');
+            }
+        });
+    </script>
 </body>
 
 </html>

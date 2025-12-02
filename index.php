@@ -1,6 +1,9 @@
 <?php
 //cloudflared tunnel --url http://ingweb.local --http-host-header ingweb.local
 session_start();
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+include 'includes/conexion.php';
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -16,17 +19,63 @@ session_start();
                 <div class="row align-items-center g-4">
                     <div class="col-lg-6 text-center text-lg-start">
                         <h4 class="featured-subtitle">AUTOR DEL MES</h4>
-                        <h1 class="featured-title">Junji Ito</h1>
-                        <p class="featured-text">
-                            Sumérgete en el oscuro y fascinante mundo de Junji Ito, maestro del horror psicológico. Descubre sus obras maestras que te helarán la sangre.
-                        </p>
-                        <a href="autor_junji_ito.php" class="featured-btn">Explorar su obra</a>
+                        <?php
+                        $sql = "SELECT book_id, SUM(quantity) AS total_sold FROM order_items GROUP BY book_id ORDER BY total_sold DESC LIMIT 1;";
+                        $result = $con->query($sql);
+                        $book = $result->fetch_assoc();
+                        
+                        // Fallback si no hay ventas
+                        if (!$book) {
+                            $sql = "SELECT book_id FROM books ORDER BY created_at DESC LIMIT 1";
+                            $result = $con->query($sql);
+                            $book = $result->fetch_assoc();
+                        }
+
+                        if ($book) {
+                            $book_id = $book['book_id'];
+
+                            $sql = "SELECT a.* FROM authors a JOIN book_authors ba ON a.author_id = ba.author_id JOIN books b ON ba.book_id = b.book_id WHERE b.book_id = $book_id ORDER BY created_at DESC LIMIT 1";
+                            $result = $con->query($sql);
+                            $author = $result->fetch_assoc();
+
+                            $sql = "select * from books where book_id = $book_id";
+                            $result = $con->query($sql);
+                            $book = $result->fetch_assoc();
+                        }
+                        ?>
+                        <?php if ($book && $author): ?>
+                            <h1 class="featured-title"><?php echo htmlspecialchars($author['first_name'] . " " . $author['last_name']); ?></h1>
+                            <p class="featured-text">
+                                <?php echo htmlspecialchars($book['description']); ?>
+                            </p>
+                            <a href="producto.php?id=<?php echo $book_id; ?>" class="featured-btn">Explorar su obra</a>
+                        <?php else: ?>
+                            <h1 class="featured-title">Descubre nuestros libros</h1>
+                            <p class="featured-text">Explora nuestra colección de obras maestras.</p>
+                            <a href="Catalogo.php" class="featured-btn">Ver Catálogo</a>
+                        <?php endif; ?>
                     </div>
 
                     <div class="col-lg-6">
                         <div class="featured-image-container position-relative" style="padding-top: 2%;">
                             <div class="background-shape"></div>
-                            <img src="img/LPimg.webp" alt="Ilustración de Junji Ito" class="featured-image img-fluid" />
+                            <?php if ($book): 
+                                $imgExt = $book['image_extension'] ?? 'jpg';
+                                $imgPath = "books/{$book['book_id']}.{$imgExt}";
+                                if (!file_exists($imgPath)) {
+                                    // Fallback check
+                                    foreach(['jpg', 'jpeg', 'png', 'webp'] as $ext) {
+                                        if (file_exists("books/{$book['book_id']}.{$ext}")) {
+                                            $imgPath = "books/{$book['book_id']}.{$ext}";
+                                            break;
+                                        }
+                                    }
+                                }
+                            ?>
+                                <img src="<?php echo htmlspecialchars($imgPath); ?>" alt="Portada de <?php echo htmlspecialchars($book['title']); ?>" class="featured-image img-fluid" />
+                            <?php else: ?>
+                                <img src="img/default-book.png" alt="Libro destacado" class="featured-image img-fluid" />
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -51,7 +100,19 @@ session_start();
                     ?>
                             <div class="product-card">
                                 <a href="producto.php?id=<?php echo $book['book_id']; ?>" style="text-decoration: none; color: inherit;">
-                                    <img src="books/<?php echo htmlspecialchars($book['book_id'] . '.' . $book['image_extension']); ?>" alt="Portada de '<?php echo htmlspecialchars($book['title']); ?>'">
+                                    <?php 
+                                    $imgExt = $book['image_extension'] ?? 'jpg';
+                                    $imgPath = "books/{$book['book_id']}.{$imgExt}";
+                                    if (!file_exists($imgPath)) {
+                                        foreach(['jpg', 'jpeg', 'png', 'webp'] as $ext) {
+                                            if (file_exists("books/{$book['book_id']}.{$ext}")) {
+                                                $imgPath = "books/{$book['book_id']}.{$ext}";
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    ?>
+                                    <img src="<?php echo htmlspecialchars($imgPath); ?>" alt="Portada de '<?php echo htmlspecialchars($book['title']); ?>'">
                                     <div class="card-content">
                                         <h3 class="mb-2"><?php echo htmlspecialchars($book['title']); ?></h3>
                                         <?php
@@ -62,7 +123,7 @@ session_start();
                                         $resultadazo = $con->query($sql);
                                         $author = $resultadazo->fetch_assoc();
                                         ?>
-                                        <h5 class="mb-2"><?php echo htmlspecialchars($author['first_name'] . " " . $author['last_name']); ?></h5>
+                                        <h5 class="mb-2"><?php echo $author ? htmlspecialchars($author['first_name'] . " " . $author['last_name']) : 'Autor Desconocido'; ?></h5>
                                         <p class="mb-3">
                                             <?php
                                             echo !empty($book['description'])

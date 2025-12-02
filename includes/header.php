@@ -1,3 +1,10 @@
+<?php
+        //Si es admin lo enviamos al dashboard del admin
+        if ($_SESSION && $_SESSION['is_admin'] == 1) {
+            header('Location:admin/dashboard.php');
+            exit();
+        }
+?>
 <header>
     <nav class="navbar navbar-expand-lg bg-fondo-1 shadow-sm fixed-top">
         <div class="container-fluid EspacioHeader"><!--container fluid para mejorar la responsividad-->

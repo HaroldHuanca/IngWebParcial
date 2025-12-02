@@ -176,33 +176,38 @@
                     data.forEach(pedido => {
                         const fila = document.createElement('tr');
                         const estadoClase = {
-                            'pending': 'badge-warning',
-                            'processing': 'badge-info',
-                            'shipped': 'badge-primary',
-                            'completed': 'badge-success',
-                            'cancelled': 'badge-danger'
+                            'pending': 'text-bg-warning',
+                            'processing': 'text-bg-info',
+                            'prosessing': 'text-bg-info', // Handle typo
+                            'shipped': 'text-bg-primary',
+                            'completed': 'text-bg-success',
+                            'cancelled': 'text-bg-danger'
                         };
                         const estadoTexto = {
                             'pending': 'Pendiente',
                             'processing': 'En Proceso',
+                            'prosessing': 'En Proceso', // Handle typo
                             'shipped': 'Enviado',
                             'completed': 'Completado',
                             'cancelled': 'Cancelado'
                         };
                         
+                        const statusKey = pedido.status.toLowerCase();
+                        const paymentStatusKey = pedido.payment_status.toLowerCase();
+
                         fila.innerHTML = `
                             <td>#${pedido.order_id}</td>
                             <td>${pedido.username}</td>
                             <td>${formatearFecha(pedido.order_date)}</td>
                             <td>S/ ${parseFloat(pedido.total_amount).toFixed(2)}</td>
                             <td>
-                                <span class="badge ${estadoClase[pedido.status] || 'badge-secondary'}">
-                                    ${estadoTexto[pedido.status] || pedido.status}
+                                <span class="badge ${estadoClase[statusKey] || 'badge-secondary'}">
+                                    ${estadoTexto[statusKey] || pedido.status}
                                 </span>
                             </td>
                             <td>
-                                <span class="badge ${pedido.payment_status === 'completed' ? 'badge-success' : 'badge-warning'}">
-                                    ${pedido.payment_status === 'completed' ? 'Pagado' : 'Pendiente'}
+                                <span class="badge ${paymentStatusKey === 'completed' || paymentStatusKey === 'paid' ? 'text-bg-success' : 'text-bg-warning'}">
+                                    ${paymentStatusKey === 'completed' || paymentStatusKey === 'paid' ? 'Pagado' : 'Pendiente'}
                                 </span>
                             </td>
                             <td>
@@ -211,7 +216,7 @@
                                 </button>
                             </td>
                         `;
-                        fila.dataset.estado = pedido.status.toLowerCase();
+                        fila.dataset.estado = statusKey;
                         tbody.appendChild(fila);
                     });
                 })

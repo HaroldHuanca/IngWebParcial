@@ -95,8 +95,26 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
+                                    <label class="form-label">Autor</label>
+                                    <select class="form-select" id="author_id" required>
+                                        <option value="">Cargando autores...</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
                                     <label class="form-label">ISBN</label>
                                     <input type="text" class="form-control" id="isbn" placeholder="978-0-123456-78-9">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Categoría</label>
+                                    <select class="form-select" id="category_id" required>
+                                        <option value="">Cargando categorías...</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -200,6 +218,43 @@
     <?php include '../includes/footer2.php'; ?>
 
     <script>
+        // Cargar categorías
+        function cargarCategorias() {
+            return fetch('api/categorias_api.php?action=listar')
+                .then(response => response.json())
+                .then(categorias => {
+                    // Ordenar alfabéticamente
+                    categorias.sort((a, b) => a.name.localeCompare(b.name));
+                    
+                    const select = document.getElementById('category_id');
+                    select.innerHTML = '<option value="">Seleccionar Categoría</option>';
+                    categorias.forEach(cat => {
+                        const option = document.createElement('option');
+                        option.value = cat.category_id;
+                        option.textContent = cat.name;
+                        select.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error al cargar categorías:', error));
+        }
+
+        // Cargar autores
+        function cargarAutores() {
+            return fetch('api/autores_api.php?action=listar')
+                .then(response => response.json())
+                .then(autores => {
+                    const select = document.getElementById('author_id');
+                    select.innerHTML = '<option value="">Seleccionar Autor</option>';
+                    autores.forEach(autor => {
+                        const option = document.createElement('option');
+                        option.value = autor.author_id;
+                        option.textContent = `${autor.first_name} ${autor.last_name}`;
+                        select.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error al cargar autores:', error));
+        }
+
         // Cargar libros
         function cargarLibros() {
             fetch('api/libros_api.php?action=listar')
@@ -259,6 +314,8 @@
                     document.getElementById('format').value = libro.format || '';
                     document.getElementById('cover_image').value = '';
                     document.getElementById('is_featured').checked = libro.is_featured;
+                    document.getElementById('author_id').value = libro.author_id || '';
+                    document.getElementById('category_id').value = libro.category_id || '';
                     document.getElementById('tituloModal').textContent = 'Editar Libro';
                     
                     // Mostrar imagen actual si existe
@@ -271,25 +328,33 @@
                     const allowedExt = ['png', 'jpg', 'jpeg', 'webp'];
                     let imageFound = false;
                     
-                    const checkImage = (ext) => {
-                        const imagePath = `../books/${libro.book_id}.${ext}`;
-                        const img = new Image();
-                        img.onload = () => {
-                            currentImage.src = imagePath;
-                            currentImageContainer.style.display = 'block';
-                            imageFound = true;
+                    // Usar la extensión guardada si existe, sino intentar detectar
+                    if (libro.image_extension) {
+                        const imagePath = `../books/${libro.book_id}.${libro.image_extension}`;
+                        currentImage.src = imagePath;
+                        currentImageContainer.style.display = 'block';
+                    } else {
+                        // Fallback para libros antiguos sin extensión guardada
+                        const checkImage = (ext) => {
+                            const imagePath = `../books/${libro.book_id}.${ext}`;
+                            const img = new Image();
+                            img.onload = () => {
+                                currentImage.src = imagePath;
+                                currentImageContainer.style.display = 'block';
+                                imageFound = true;
+                            };
+                            img.onerror = () => {
+                                if (!imageFound && ext !== allowedExt[allowedExt.length - 1]) {
+                                    checkImage(allowedExt[allowedExt.indexOf(ext) + 1]);
+                                }
+                            };
+                            img.src = imagePath;
                         };
-                        img.onerror = () => {
-                            if (!imageFound && ext !== allowedExt[allowedExt.length - 1]) {
-                                checkImage(allowedExt[allowedExt.indexOf(ext) + 1]);
-                            }
-                        };
-                        img.src = imagePath;
-                    };
+                        checkImage(allowedExt[0]);
+                    }
                     
                     currentImageContainer.style.display = 'none';
                     previewImageContainer.style.display = 'none';
-                    checkImage(allowedExt[0]);
                     
                     const modal = new bootstrap.Modal(document.getElementById('modalLibro'));
                     modal.show();
@@ -335,6 +400,8 @@
             formData.append('page_count', document.getElementById('page_count').value);
             formData.append('format', document.getElementById('format').value);
             formData.append('is_featured', document.getElementById('is_featured').checked ? '1' : '0');
+            formData.append('author_id', document.getElementById('author_id').value);
+            formData.append('category_id', document.getElementById('category_id').value);
 
             const coverInput = document.getElementById('cover_image');
             if (coverInput.files && coverInput.files.length > 0) {
@@ -370,10 +437,16 @@
             limpiarFormulario('formLibro');
             document.getElementById('libroId').value = '';
             document.getElementById('tituloModal').textContent = 'Nuevo Libro';
+            
+            // Limpiar imágenes
+            document.getElementById('currentImageContainer').style.display = 'none';
+            document.getElementById('currentImage').src = '';
+            document.getElementById('previewImageContainer').style.display = 'none';
+            document.getElementById('previewImage').src = '';
         });
 
-        // Cargar libros al iniciar
-        cargarLibros();
+        // Cargar datos al iniciar
+        Promise.all([cargarAutores(), cargarCategorias(), cargarLibros()]);
     </script>
 </body>
 </html>
