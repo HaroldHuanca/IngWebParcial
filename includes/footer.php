@@ -14,8 +14,8 @@
                     <h5 class="text-uppercase mb-4 fw-bold section-title">Enlaces</h5>
                     <p><a href="index.php" class="footer-link text-decoration-none">Inicio</a></p>
                     <p><a href="Catalogo.php" class="footer-link text-decoration-none">Catalogo</a></p>
-                    <p><a href="nosotros.php" class="footer-link text-decoration-none">Nosotros</a></p>
-                    <p><a href="contacto.php" class="footer-link text-decoration-none">Contacto</a></p>
+                    <p><a href="politica_privacidad.php" class="footer-link text-decoration-none">Politicas de Privacidad</a></p>
+                    <p><a href="eliminacion_datos.php" class="footer-link text-decoration-none">Eliminación de datos</a></p>
                 </div>
 
                 <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">

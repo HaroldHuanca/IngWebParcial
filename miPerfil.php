@@ -32,7 +32,23 @@ if (!isset($_SESSION['usuario'])) {
             <div class="col-lg-4 mb-4">
                 <div class="perfil-card shadow-sm">
                     <div class="card-body text-center">
-                        <img src="img/user-default.jpg" alt="Foto de perfil" class="rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                        <?php
+                        // Determinar qué imagen de perfil mostrar
+                        $profile_image = 'img/user-default.jpg';
+                        
+                        // Si hay avatar guardado, usarlo
+                        if (!empty($user['avatar']) && file_exists($user['avatar'])) {
+                            $profile_image = $user['avatar'];
+                        }
+                        // Si no hay avatar pero tiene google_id o facebook_id, buscar la imagen descargada
+                        elseif (!empty($user['google_id']) && file_exists('img/google_' . $user['user_id'] . '.jpg')) {
+                            $profile_image = 'img/google_' . $user['user_id'] . '.jpg';
+                        }
+                        elseif (!empty($user['facebook_id']) && file_exists('img/facebook_' . $user['user_id'] . '.jpg')) {
+                            $profile_image = 'img/facebook_' . $user['user_id'] . '.jpg';
+                        }
+                        ?>
+                        <img src="<?php echo htmlspecialchars($profile_image); ?>" alt="Foto de perfil" class="rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
                         <h3 class="card-title mb-3"><?php echo htmlspecialchars($user['first_name'])." ".htmlspecialchars($user['last_name']); ?> </h3>
                         <p class="text-muted">Miembro desde <?php echo htmlspecialchars($user['created_at']); ?></p>
                         <a href="editarPerfil.php" class="featured-btn mb-2 w-100">

@@ -1,6 +1,6 @@
 <?php
         //Si es admin lo enviamos al dashboard del admin
-        if ($_SESSION && $_SESSION['is_admin'] == 1) {
+        if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1) {
             header('Location:admin/dashboard.php');
             exit();
         }

@@ -6,6 +6,42 @@ $config = include 'includes/social_config.php';
 
 require_once 'includes/CustomFacebookCurlHttpClient.php';
 
+/**
+ * Descarga y guarda la foto de perfil de redes sociales
+ * @param string $picture_url URL de la imagen
+ * @param string $provider 'google' o 'facebook'
+ * @param int $user_id ID del usuario
+ * @return string Ruta relativa de la imagen guardada
+ */
+function downloadProfilePicture($picture_url, $provider, $user_id) {
+    $img_dir = __DIR__ . '/img/';
+    
+    // Crear directorio si no existe
+    if (!is_dir($img_dir)) {
+        mkdir($img_dir, 0755, true);
+    }
+    
+    // Determinar extensión
+    $extension = 'jpg'; // Por defecto JPG
+    
+    // Descargar la imagen
+    $image_content = @file_get_contents($picture_url);
+    if ($image_content === false) {
+        return null; // Si falla la descarga, retornar null
+    }
+    
+    // Generar nombre del archivo
+    $filename = $provider . '_' . $user_id . '.' . $extension;
+    $filepath = $img_dir . $filename;
+    
+    // Guardar archivo
+    if (file_put_contents($filepath, $image_content)) {
+        return 'img/' . $filename; // Retornar ruta relativa
+    }
+    
+    return null;
+}
+
 $fb = new \Facebook\Facebook([
   'app_id' => $config['facebook']['app_id'],
   'app_secret' => $config['facebook']['app_secret'],
@@ -52,9 +88,12 @@ if (isset($_GET['code'])) {
             $user = $result->fetch_assoc();
             
             if (empty($user['facebook_id'])) {
+                // Download and save profile picture
+                $avatar_path = downloadProfilePicture($picture, 'facebook', $user['user_id']);
+                
                 $update_sql = "UPDATE users SET facebook_id = ?, avatar = ? WHERE user_id = ?";
                 $update_stmt = $con->prepare($update_sql);
-                $update_stmt->bind_param("ssi", $facebook_id, $picture, $user['user_id']);
+                $update_stmt->bind_param("ssi", $facebook_id, $avatar_path, $user['user_id']);
                 $update_stmt->execute();
             }
             
@@ -69,13 +108,24 @@ if (isset($_GET['code'])) {
             $default_phone = "000000";
             $default_address = "mi direccion";
             
-            $insert_sql = "INSERT INTO users (first_name, last_name, username, email, password_hash, facebook_id, avatar, created_at, is_active, phone, address) VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), 1, ?, ?)";
+            $insert_sql = "INSERT INTO users (first_name, last_name, username, email, password_hash, facebook_id, created_at, is_active, phone, address) VALUES (?, ?, ?, ?, ?, ?, NOW(), 1, ?, ?)";
             $insert_stmt = $con->prepare($insert_sql);
-            $insert_stmt->bind_param("sssssssss", $first_name, $last_name, $username, $email, $password_hash, $facebook_id, $picture, $default_phone, $default_address);
+            $insert_stmt->bind_param("ssssssss", $first_name, $last_name, $username, $email, $password_hash, $facebook_id, $default_phone, $default_address);
             
             if ($insert_stmt->execute()) {
+                $new_user_id = $con->insert_id;
+                
+                // Download and save profile picture
+                $avatar_path = downloadProfilePicture($picture, 'facebook', $new_user_id);
+                
+                // Update avatar path
+                $update_sql = "UPDATE users SET avatar = ? WHERE user_id = ?";
+                $update_stmt = $con->prepare($update_sql);
+                $update_stmt->bind_param("si", $avatar_path, $new_user_id);
+                $update_stmt->execute();
+                
                 $_SESSION['usuario'] = $email;
-                $_SESSION['user_id'] = $con->insert_id;
+                $_SESSION['user_id'] = $new_user_id;
                 $_SESSION['is_admin'] = 0;
             } else {
                 die("Error creando usuario: " . $con->error);
