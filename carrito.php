@@ -108,7 +108,11 @@ if(isset($_GET['book_id']) && isset($_GET['quantity'])) {
                                 </td>
                                 <td class="text-center">S/ <span class="item-price"><?php echo number_format($price, 2); ?></span></td>
                                 <td class="text-center">
-                                    <input type="number" class="form-control quantity-input" value="<?php echo $quantity; ?>" min="1" style="width:90px;margin:0 auto;">
+                                    <input type="number" class="form-control quantity-input"
+       value="<?php echo $quantity; ?>" min="1"
+       style="width:90px;margin:0 auto;"
+       oninput="if (this.value < 1) this.value = 1;">
+
                                 </td>
                                 <td class="text-center">S/ <span class="item-subtotal"><?php echo number_format($subtotal, 2); ?></span></td>
                                 <td class="text-end">
